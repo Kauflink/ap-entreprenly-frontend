@@ -1,3 +1,95 @@
 {
-    
+  "nav": {
+    "home": "Inicio",
+    "pedidos": "Pedidos",
+    "catalogo": "Catálogo",
+    "chat": "Conversaciones",
+    "ayuda": "Ayuda"
+  },
+  "home": {
+    "title": "Dashboard - Entreprenly",
+    "pendientes": "Pedidos pendientes",
+    "por_validar": "Pagos por validar",
+    "aprobados_hoy": "Aprobados hoy",
+    "alertas": "Clientes con alertas",
+    "sin_pendientes": "No hay pagos por validar",
+    "validar_pago": "Validar pago"
+  },
+  "catalogo": {
+    "title": "Catálogo de productos",
+    "descripcion": "Productos disponibles para tus clientes en WhatsApp.",
+    "nombre": "Nombre",
+    "precio": "Precio",
+    "stock": "Stock",
+    "tipo": "Tipo",
+    "unidad": "Por unidad",
+    "peso": "Por kg (IoT)",
+    "sin_stock": "Sin stock",
+    "sin_productos": "No hay productos en el catálogo",
+    "iot_descripcion": "El stock de estos productos se actualiza automáticamente desde la balanza IoT en tiempo real."
+  },
+  "pedido": {
+    "title": "Gestión de pedidos",
+    "cliente": "Cliente",
+    "total": "Total",
+    "estado": "Estado",
+    "fecha": "Fecha",
+    "acciones": "Acciones",
+    "detalle": "Detalle del pedido",
+    "items": "Productos",
+    "expira_en": "Expira en",
+    "sin_pedidos": "No hay pedidos en esta categoría",
+    "no_encontrado": "Pedido no encontrado",
+    "estados": {
+      "pendiente_pago": "Pendiente de pago",
+      "pago_reportado": "Pago reportado",
+      "aprobado": "Aprobado",
+      "cancelado": "Cancelado"
+    },
+    "filtros": {
+      "todos": "Todos",
+      "por_validar": "Por validar",
+      "pendientes": "Pendientes",
+      "aprobados": "Aprobados",
+      "cancelados": "Cancelados"
+    },
+    "timeout_aviso": "Expira en"
+  },
+  "pago": {
+    "title": "Validar pago",
+    "detalle": "Detalle del pago",
+    "metodo": "Método de pago",
+    "monto": "Monto reportado",
+    "comprobante": "Comprobante",
+    "fecha_reporte": "Fecha de reporte",
+    "aprobar_pago": "Aprobar pago",
+    "rechazar_pago": "Rechazar pago",
+    "confirmacion_aprobar": "¿Confirmar aprobación del pago?",
+    "confirmacion_rechazar": "¿Rechazar este pago? El pedido quedará cancelado.",
+    "aprobado_ok": "El pago fue aprobado correctamente.",
+    "rechazado_ok": "El pago fue rechazado y el pedido cancelado.",
+    "sin_pago": "El cliente aún no ha enviado su comprobante",
+    "sin_comprobante": "Sin comprobante adjunto"
+  },
+  "chat": {
+    "title": "Conversaciones activas",
+    "sin_conversaciones": "No hay conversaciones activas",
+    "selecciona": "Selecciona una conversación para verla",
+    "gestionado_bot": "Las conversaciones son gestionadas automáticamente por el chatbot de WhatsApp."
+  },
+  "ayuda": {
+    "title": "Centro de ayuda",
+    "faq_title": "Preguntas frecuentes",
+    "contacto_title": "Contacto y soporte",
+    "guias_title": "Guías de uso"
+  },
+  "comun": {
+    "cargando": "Cargando...",
+    "error": "Ocurrió un error",
+    "exito": "Éxito",
+    "aviso": "Aviso",
+    "volver": "Volver",
+    "cancelar": "Cancelar",
+    "confirmar": "Confirmar"
+  }
 }
