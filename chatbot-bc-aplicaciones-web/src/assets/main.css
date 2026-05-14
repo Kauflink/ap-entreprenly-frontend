@@ -1,0 +1,28 @@
+:root {
+  --color-brand: #F38313;
+  --color-brand-dark: #d06a00;
+  --color-brand-light: #fff3e0;
+  --color-text: #1a1a1a;
+  --color-bg: #f8f8f8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Reddit Sans', 'Roboto', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.brand-color {
+  color: var(--color-brand);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

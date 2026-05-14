@@ -1,0 +1,72 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "pedidos": "Pedidos",
+    "catalogo": "Catálogo",
+    "chat": "Conversaciones",
+    "ayuda": "Ayuda"
+  },
+  "home": {
+    "title": "Dashboard - Entreprenly",
+    "pendientes": "Pedidos pendientes",
+    "por_validar": "Pagos por validar",
+    "aprobados_hoy": "Aprobados hoy",
+    "alertas": "Clientes con alertas",
+    "sin_pendientes": "No hay pagos por validar",
+    "validar_pago": "Validar pago"
+  },
+  "catalogo": {
+    "title": "Catálogo de productos",
+    "nombre": "Nombre",
+    "precio": "Precio",
+    "stock": "Stock",
+    "tipo": "Tipo",
+    "unidad": "Por unidad",
+    "peso": "Por kg (IoT)",
+    "sin_stock": "Sin stock"
+  },
+  "pedido": {
+    "title": "Gestión de pedidos",
+    "cliente": "Cliente",
+    "total": "Total",
+    "estado": "Estado",
+    "fecha": "Fecha",
+    "acciones": "Acciones",
+    "estados": {
+      "pendiente_pago": "Pendiente de pago",
+      "pago_reportado": "Pago reportado",
+      "aprobado": "Aprobado",
+      "cancelado": "Cancelado"
+    },
+    "ver_detalle": "Ver detalle",
+    "timeout_aviso": "Expira en"
+  },
+  "pago": {
+    "title": "Validar pago",
+    "metodo": "Método",
+    "monto": "Monto reportado",
+    "comprobante": "Comprobante",
+    "fecha_reporte": "Fecha de reporte",
+    "aprobar_pago": "Aprobar pago",
+    "rechazar_pago": "Rechazar pago",
+    "confirmacion_aprobar": "¿Confirmar aprobación del pago? El stock se descontará automáticamente.",
+    "confirmacion_rechazar": "¿Rechazar este pago? El pedido quedará cancelado."
+  },
+  "chat": {
+    "title": "Conversaciones activas",
+    "sin_conversaciones": "No hay conversaciones activas"
+  },
+  "ayuda": {
+    "title": "Centro de ayuda",
+    "faq_title": "Preguntas frecuentes",
+    "contacto_title": "Contacto y soporte",
+    "guias_title": "Guías de uso"
+  },
+  "comun": {
+    "cargando": "Cargando...",
+    "error": "Ocurrió un error",
+    "volver": "Volver",
+    "cancelar": "Cancelar",
+    "confirmar": "Confirmar"
+  }
+}
