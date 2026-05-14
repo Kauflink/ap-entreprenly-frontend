@@ -1,3 +1,82 @@
 {
-    
+    "dashboard": {
+        "welcome": "Entreprenly INC",
+        "role": "Administrador",
+        "logout": "Cerrar sesión",
+        "nav": {
+            "home":         "Inicio",
+            "products":     "Productos",
+            "lots":         "Lotes",
+            "sales":        "Ventas",
+            "subscription": "Suscripción",
+            "orders":       "Pedidos",
+            "chatbot":      "Chatbot",
+            "help":         "Ayuda"
+        }
+    },
+    "sales": {
+        "page": {
+            "title": "Ventas",
+            "subtitle": "Registra y procesa las ventas del día"
+        },
+        "cart": {
+            "title": "Detalle de venta",
+            "searchPlaceholder": "Buscar producto por nombre ...",
+            "notFound": "Producto no encontrado",
+            "empty": "No hay productos en el ticket.",
+            "emptyTicket": "Aún no se han añadido productos al ticket",
+            "product": "Producto",
+            "type": "Tipo",
+            "quantity": "Cantidad/peso",
+            "unitPrice": "P. Unit.",
+            "subtotal": "Subtotal",
+            "typeUnit": "Unidad",
+            "typeWeight": "Peso"
+        },
+        "summary": {
+            "title": "Resumen",
+            "itemsLabel": "Items",
+            "items": "productos",
+            "subtotal": "Subtotal",
+            "total": "Total"
+        },
+        "payment": {
+            "title": "Método de Pago",
+            "cash": "Efectivo",
+            "digital": "Tarjeta yape/plin",
+            "finalize": "Finalizar Venta y Emitir Boleta",
+            "cancel": "Cancelar Venta",
+            "error": "Selecciona un método de pago"
+        },
+        "register": {
+            "title": "Resumen de Caja",
+            "subtitle": "Ingresos acumulados por método de pago",
+            "totalDay": "Total del Día",
+            "totalCash": "Efectivo",
+            "totalDigital": "Tarjeta - Yape/Plin"
+        },
+        "modal": {
+            "quantity": {
+                "title": "Registrar Cantidad",
+                "subtitle": "Ingrese la cantidad de productos",
+                "confirm": "Confirmar Cantidad"
+            },
+            "weight": {
+                "title": "Registrar Peso",
+                "subtitleScale": "Registrando el peso del producto",
+                "subtitleManual": "Ingresa el peso del producto manualmente",
+                "label": "Peso (kg)",
+                "scalePlaceholder": "Esperando respuesta de la balanza...",
+                "confirm": "Confirmar Peso",
+                "enterManually": "Ingresar manualmente"
+            },
+            "confirm": "Confirmar",
+            "cancel": "Cancelar"
+        },
+        "success": {
+            "title": "Venta Registrada",
+            "message": "La venta fue registrada exitosamente.",
+            "close": "Cerrar"
+        }
+    }
 }

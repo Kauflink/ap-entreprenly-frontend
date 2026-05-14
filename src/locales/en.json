@@ -1,3 +1,82 @@
 {
-    
+    "dashboard": {
+        "welcome": "Entreprenly INC",
+        "role": "Administrator",
+        "logout": "Log out",
+        "nav": {
+            "home":         "Home",
+            "products":     "Products",
+            "lots":         "Lots",
+            "sales":        "Sales",
+            "subscription": "Subscription",
+            "orders":       "Orders",
+            "chatbot":      "Chatbot",
+            "help":         "Help"
+        }
+    },
+    "sales": {
+        "page": {
+            "title": "Sales",
+            "subtitle": "Register and process daily sales"
+        },
+        "cart": {
+            "title": "Sale Detail",
+            "searchPlaceholder": "Search product by name ...",
+            "notFound": "Product not found",
+            "empty": "No items in the ticket.",
+            "emptyTicket": "No products have been added to the ticket yet",
+            "product": "Product",
+            "type": "Type",
+            "quantity": "Qty/weight",
+            "unitPrice": "Unit P.",
+            "subtotal": "Subtotal",
+            "typeUnit": "Unit",
+            "typeWeight": "Weight"
+        },
+        "summary": {
+            "title": "Summary",
+            "itemsLabel": "Items",
+            "items": "products",
+            "subtotal": "Subtotal",
+            "total": "Total"
+        },
+        "payment": {
+            "title": "Payment Method",
+            "cash": "Cash",
+            "digital": "Card / Yape",
+            "finalize": "Finalize Sale & Print Receipt",
+            "cancel": "Cancel Sale",
+            "error": "Please select a payment method"
+        },
+        "register": {
+            "title": "Cash Summary",
+            "subtitle": "Accumulated income by payment method",
+            "totalDay": "Total Day",
+            "totalCash": "Cash",
+            "totalDigital": "Card - Yape/Plin"
+        },
+        "modal": {
+            "quantity": {
+                "title": "Enter Quantity",
+                "subtitle": "Enter the number of products",
+                "confirm": "Confirm Quantity"
+            },
+            "weight": {
+                "title": "Enter Weight",
+                "subtitleScale": "Reading weight from scale",
+                "subtitleManual": "Enter product weight manually",
+                "label": "Weight (kg)",
+                "scalePlaceholder": "Waiting for scale response...",
+                "confirm": "Confirm Weight",
+                "enterManually": "Enter manually"
+            },
+            "confirm": "Confirm",
+            "cancel": "Cancel"
+        },
+        "success": {
+            "title": "Sale Completed",
+            "message": "The sale was registered successfully.",
+            "close": "Close"
+        }
+    }
 }
