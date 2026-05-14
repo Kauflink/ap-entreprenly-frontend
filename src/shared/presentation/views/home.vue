@@ -2,7 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import useChatbotStore from '@/chatbot/application/chatbot.store.js'
+import useChatbotStore from '@chatbot-bc/chatbot/application/chatbot.store.js'
 
 const { t } = useI18n()
 const router = useRouter()

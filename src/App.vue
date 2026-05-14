@@ -1,5 +1,5 @@
 <script setup>
-import Layout from '@chatbot-bc/shared/presentation/components/layout.vue'
+import Layout from '@/shared/presentation/components/layout.vue'
 </script>
 
 <template>
