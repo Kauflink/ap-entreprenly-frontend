@@ -1,4 +1,4 @@
-import { Pago } from '@/chatbot/domain/model/pago-entity.js'
+import { Pago } from 'chatbot-bc-aplicaciones-web/src/chatbot/domain/model/pago-entity.js'
 
 export class PagoAssembler {
   static toEntityFromResource(resource) {

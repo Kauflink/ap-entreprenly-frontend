@@ -1,4 +1,4 @@
-import { Producto } from '@/chatbot/domain/model/producto-entity.js'
+import { Producto } from 'chatbot-bc-aplicaciones-web/src/chatbot/domain/model/producto-entity.js'
 
 export class ProductoAssembler {
   static toEntityFromResource(resource) {

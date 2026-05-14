@@ -1,4 +1,4 @@
-import { Cliente } from '@/chatbot/domain/model/cliente-entity.js'
+import { Cliente } from 'chatbot-bc-aplicaciones-web/src/chatbot/domain/model/cliente-entity.js'
 
 export class ClienteAssembler {
   static toEntityFromResource(resource) {

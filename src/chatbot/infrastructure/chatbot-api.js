@@ -1,6 +1,6 @@
 // Sigue el patrón de inventory-api.js del compañero: extiende BaseApi, endpoints privados con #
-import { BaseApi } from '@/shared/infrastructure/base-api.js'
-import { BaseEndpoint } from '@/shared/infrastructure/base-endpoint.js'
+import { BaseApi } from 'src/shared/infrastructure/base-api.js'
+import { BaseEndpoint } from 'src/shared/infrastructure/base-endpoint.js'
 
 const pedidoPath   = import.meta.env.VITE_PEDIDO_ENDPOINT_PATH
 const clientePath  = import.meta.env.VITE_CLIENTE_ENDPOINT_PATH

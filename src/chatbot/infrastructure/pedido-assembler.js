@@ -1,5 +1,5 @@
 // Sigue el patrón de tutorial.assembler.js del profe (métodos estáticos)
-import { Pedido } from '@/chatbot/domain/model/pedido-entity.js'
+import { Pedido } from 'chatbot-bc-aplicaciones-web/src/chatbot/domain/model/pedido-entity.js'
 
 export class PedidoAssembler {
   static toEntityFromResource(resource) {

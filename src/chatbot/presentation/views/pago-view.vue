@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
-import useChatbotStore from '@/chatbot/application/chatbot.store.js'
+import useChatbotStore from 'chatbot-bc-aplicaciones-web/src/chatbot/application/chatbot.store.js'
 
 const { t }   = useI18n()
 const route   = useRoute()

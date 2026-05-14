@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ChatBubble from '../components/chat-bubble.vue'
-import useChatbotStore from '@/chatbot/application/chatbot.store.js'
+import useChatbotStore from 'chatbot-bc-aplicaciones-web/src/chatbot/application/chatbot.store.js'
 
 const { t } = useI18n()
 const store = useChatbotStore()

@@ -12,8 +12,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@chatbot-bc': fileURLToPath(new URL('./chatbot-bc-aplicaciones-web/src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
 })

@@ -2,13 +2,13 @@
 // Implementa: timeout 60 min, validación manual de pagos, caché catálogo 30 seg, alerta rechazos
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { ChatbotApi } from '@/chatbot/infrastructure/chatbot-api.js'
-import { PedidoAssembler } from '@/chatbot/infrastructure/pedido-assembler.js'
-import { ProductoAssembler } from '@/chatbot/infrastructure/producto-assembler.js'
-import { ClienteAssembler } from '@/chatbot/infrastructure/cliente-assembler.js'
-import { PagoAssembler } from '@/chatbot/infrastructure/pago-assembler.js'
-import { Pedido } from '@/chatbot/domain/model/pedido-entity.js'
-import { Pago } from '@/chatbot/domain/model/pago-entity.js'
+import { ChatbotApi } from 'chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/chatbot-api.js'
+import { PedidoAssembler } from 'chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/pedido-assembler.js'
+import { ProductoAssembler } from 'chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/producto-assembler.js'
+import { ClienteAssembler } from 'chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/cliente-assembler.js'
+import { PagoAssembler } from 'chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/pago-assembler.js'
+import { Pedido } from 'chatbot-bc-aplicaciones-web/src/chatbot/domain/model/pedido-entity.js'
+import { Pago } from 'chatbot-bc-aplicaciones-web/src/chatbot/domain/model/pago-entity.js'
 
 const chatbotApi = new ChatbotApi()
 

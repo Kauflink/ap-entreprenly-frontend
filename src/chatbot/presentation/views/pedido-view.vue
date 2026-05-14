@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
 import PedidoCard from '../components/pedido-card.vue'
-import useChatbotStore from '@/chatbot/application/chatbot.store.js'
+import useChatbotStore from 'chatbot-bc-aplicaciones-web/src/chatbot/application/chatbot.store.js'
 
 const { t } = useI18n()
 const router  = useRouter()

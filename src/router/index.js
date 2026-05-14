@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/shared/presentation/views/home.vue'
-import chatbotRoutes from '@chatbot-bc/chatbot/presentation/chatbot-routes.js'
+import chatbotRoutes from '@/chatbot/presentation/chatbot-routes.js'
 
 const ayuda        = () => import('@/shared/presentation/views/ayuda.vue')
 const pageNotFound = () => import('@/shared/presentation/views/page-not-found.vue')
