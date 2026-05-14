@@ -24,14 +24,14 @@ const { totalDay, totalCash, totalDigital } = storeToRefs(store)
             <div class="cash-widget">
                 <p class="widget-label">
                     <span class="material-icons widget-icon">payments</span>
-                    {{ t('sales.register.totalCash') }}
+                    {{ t('sales.register.cash') }}
                 </p>
                 <p class="widget-value">S/ {{ totalCash.toFixed(2) }}</p>
             </div>
             <div class="cash-widget">
                 <p class="widget-label">
                     <span class="material-icons widget-icon">point_of_sale</span>
-                    {{ t('sales.register.totalDigital') }}
+                    {{ t('sales.register.digital') }}
                 </p>
                 <p class="widget-value">S/ {{ totalDigital.toFixed(2) }}</p>
             </div>

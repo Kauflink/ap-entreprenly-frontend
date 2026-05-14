@@ -149,10 +149,16 @@ const useSalesStore = defineStore('sales', () => {
         return Promise.all(patches)
     }
 
+    function getScaleStatus() {
+        return salesApi.getScaleStatus()
+            .then(res => res.data)
+            .catch(() => ({ connected: false }))
+    }
+
     return {
         products, cashRegister, loading, error,
         totalCash, totalDigital, totalDay,
-        fetchProducts, loadTodayCashRegister, createSale
+        fetchProducts, loadTodayCashRegister, createSale, getScaleStatus
     }
 })
 

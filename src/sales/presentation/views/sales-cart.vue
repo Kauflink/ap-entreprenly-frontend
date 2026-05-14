@@ -13,35 +13,32 @@ const props = defineProps({
 
 const emit = defineEmits(['product-selected', 'item-deleted'])
 
-const searchQuery  = ref('')
-const showDropdown = ref(false)
+const searchTerm   = ref('')
+const dropdownOpen = ref(false)
 
 const filteredProducts = computed(() => {
-    const q = searchQuery.value.trim().toLowerCase()
+    const q = searchTerm.value.trim().toLowerCase()
     if (!q) return []
     return props.products.filter(p => p.name.toLowerCase().includes(q))
 })
 
 const showNotFound = computed(() =>
-    searchQuery.value.trim().length > 0 && showDropdown.value === false && filteredProducts.value.length === 0
+    searchTerm.value.trim().length > 0 && filteredProducts.value.length === 0
 )
 
-function onSearchInput() {
-    if (searchQuery.value.trim().length > 0) {
-        showDropdown.value = filteredProducts.value.length > 0
-    } else {
-        showDropdown.value = false
-    }
+function onSearchInput(val) {
+    searchTerm.value = val
+    dropdownOpen.value = filteredProducts.value.length > 0
 }
 function onSearchFocus() {
-    if (searchQuery.value.trim() && filteredProducts.value.length > 0) showDropdown.value = true
+    if (filteredProducts.value.length > 0) dropdownOpen.value = true
 }
 function onSearchBlur() {
-    setTimeout(() => { showDropdown.value = false }, 150)
+    setTimeout(() => { dropdownOpen.value = false }, 150)
 }
-function selectProduct(product) {
-    searchQuery.value  = ''
-    showDropdown.value = false
+function onSelectProduct(product) {
+    searchTerm.value   = ''
+    dropdownOpen.value = false
     emit('product-selected', product)
 }
 function deleteItem(index) {
@@ -50,93 +47,88 @@ function deleteItem(index) {
 
 function formatQty(item) {
     return item.isWeighted
-        ? item.quantity.toFixed(3) + ' kg'
-        : item.quantity + ' und'
+        ? item.quantity.toFixed(3) + ' ' + t('sales.ticket.kg')
+        : item.quantity + ' ' + t('sales.ticket.unit')
 }
 </script>
 
 <template>
-    <div class="card">
+    <section class="card detail-card">
         <h2 class="card-title">
             <span class="title-icon">☀</span>
-            {{ t('sales.cart.title') }}
+            {{ t('sales.detail.title') }}
         </h2>
 
         <div class="search-container">
             <input
-                v-model="searchQuery"
-                class="search-input"
                 type="text"
-                :placeholder="t('sales.cart.searchPlaceholder')"
+                :placeholder="t('sales.search.placeholder')"
+                class="search-input"
+                :value="searchTerm"
                 :disabled="loading"
                 autocomplete="off"
-                @input="onSearchInput"
+                @input="onSearchInput($event.target.value)"
                 @focus="onSearchFocus"
                 @blur="onSearchBlur"
             />
 
-            <ul v-if="showDropdown && filteredProducts.length > 0" class="suggestions-dropdown">
+            <ul v-if="dropdownOpen && filteredProducts.length > 0" class="suggestions-dropdown">
                 <li
                     v-for="product in filteredProducts"
                     :key="product.id"
                     class="suggestion-item"
-                    @mousedown.prevent="selectProduct(product)"
+                    @mousedown.prevent="onSelectProduct(product)"
                 >
-                    <span>{{ product.name }}</span>
-                    <span class="suggestion-price">
-                        S/ {{ product.unitPrice.toFixed(2) }}{{ product.isWeighted ? '/kg' : '/und' }}
-                    </span>
+                    {{ product.name }}
                 </li>
             </ul>
-        </div>
 
-        <div v-if="showEmptyError" class="alert-pill alert-danger">
-            <span class="material-icons alert-icon">cancel</span>
-            {{ t('sales.cart.empty') }}
-        </div>
+            <div v-if="showNotFound" class="not-found-message">
+                <span class="error-icon">⊘</span>
+                {{ t('sales.search.notFound') }}
+            </div>
 
-        <div v-else-if="searchQuery.trim() && !showDropdown && filteredProducts.length === 0" class="alert-pill alert-danger">
-            <span class="material-icons alert-icon">cancel</span>
-            {{ t('sales.cart.notFound') }}
+            <div v-if="showEmptyError" class="not-found-message">
+                <span class="error-icon">⊘</span>
+                {{ t('sales.search.emptyTicket') }}
+            </div>
         </div>
 
         <table class="ticket-table">
             <thead>
                 <tr>
-                    <th>{{ t('sales.cart.product') }}</th>
-                    <th>{{ t('sales.cart.type') }}</th>
-                    <th>{{ t('sales.cart.quantity') }}</th>
-                    <th>{{ t('sales.cart.unitPrice') }}</th>
-                    <th>{{ t('sales.cart.subtotal') }}</th>
+                    <th>{{ t('sales.ticket.col.product') }}</th>
+                    <th>{{ t('sales.ticket.col.type') }}</th>
+                    <th>{{ t('sales.ticket.col.quantity') }}</th>
+                    <th>{{ t('sales.ticket.col.unitPrice') }}</th>
+                    <th>{{ t('sales.ticket.col.subtotal') }}</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-if="ticketItems.length === 0" class="empty-row">
-                    <td colspan="6">{{ t('sales.cart.emptyTicket') }}</td>
+                    <td colspan="6">{{ t('sales.ticket.empty') }}</td>
                 </tr>
                 <tr v-for="(item, index) in ticketItems" :key="index">
                     <td class="product-cell">{{ item.productName }}</td>
                     <td>
-                        <span :class="['badge', item.isWeighted ? 'badge-weight' : 'badge-unit']">
-                            <span class="material-icons badge-icon">
-                                {{ item.isWeighted ? 'scale' : 'inventory_2' }}
-                            </span>
-                            {{ item.isWeighted ? t('sales.cart.typeWeight') : t('sales.cart.typeUnit') }}
+                        <span v-if="!item.isWeighted" class="badge badge-unit">
+                            📦 {{ t('sales.ticket.badge.unit') }}
+                        </span>
+                        <span v-else class="badge badge-weight">
+                            ⚖ {{ t('sales.ticket.badge.weight') }}
                         </span>
                     </td>
-                    <td class="qty-cell">{{ formatQty(item) }}</td>
+                    <td>{{ formatQty(item) }}</td>
                     <td>S/ {{ item.unitPrice.toFixed(2) }}</td>
                     <td>S/ {{ item.subtotal.toFixed(2) }}</td>
                     <td>
-                        <button class="delete-btn" @click="deleteItem(index)">
-                            <span class="material-icons">delete</span>
-                        </button>
+                        <button class="delete-btn" @click="deleteItem(index)">🗑</button>
                     </td>
                 </tr>
             </tbody>
         </table>
-    </div>
+    </section>
 </template>
 
 <style scoped>
@@ -157,8 +149,7 @@ function formatQty(item) {
 }
 .title-icon { color: var(--color-primary); font-size: 16px; }
 
-/* Search */
-.search-container { position: relative; margin-bottom: 12px; }
+.search-container { position: relative; margin-bottom: 16px; }
 .search-input {
     width: 100%;
     padding: 14px 24px;
@@ -194,36 +185,28 @@ function formatQty(item) {
     font-size: 14px;
     color: var(--color-text-strong);
     transition: background 0.15s ease;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 .suggestion-item:hover {
     background: var(--color-theme-btn-active-bg);
     color: var(--color-primary);
     font-weight: 500;
 }
-.suggestion-price { font-size: 12px; color: var(--color-text-muted); }
 
-/* Alerts */
-.alert-pill {
-    margin-bottom: 12px;
-    padding: 8px 16px;
+.not-found-message {
+    margin-top: 8px;
+    padding: 10px 20px;
+    background: rgba(211, 47, 47, 0.12);
+    color: var(--color-danger);
     border-radius: 30px;
     font-size: 13px;
     font-weight: 500;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
 }
-.alert-danger {
-    background: rgba(211, 47, 47, 0.12);
-    color: var(--color-danger);
-}
-.alert-icon { font-size: 16px; }
+.error-icon { font-size: 14px; font-weight: bold; }
 
-/* Table */
-.ticket-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+.ticket-table { width: 100%; border-collapse: collapse; }
 .ticket-table th {
     text-align: left;
     padding: 12px 8px;
@@ -243,7 +226,6 @@ function formatQty(item) {
     padding: 40px 0;
 }
 .product-cell { font-weight: 500; color: var(--color-text-strong); }
-.qty-cell { font-weight: 600; color: var(--color-text-strong); }
 
 .badge {
     display: inline-flex;
@@ -254,7 +236,6 @@ function formatQty(item) {
     font-size: 12px;
     font-weight: 500;
 }
-.badge-icon { font-size: 14px; }
 .badge-unit   { background: var(--color-primary); color: #fff; }
 .badge-weight { background: var(--color-avatar-bg); color: var(--color-avatar-fg); }
 
@@ -262,12 +243,10 @@ function formatQty(item) {
     background: none;
     border: none;
     cursor: pointer;
+    font-size: 16px;
     color: var(--color-danger);
     padding: 4px 8px;
     border-radius: 4px;
-    display: flex;
-    align-items: center;
 }
 .delete-btn:hover { background: rgba(211, 47, 47, 0.12); }
-.delete-btn .material-icons { font-size: 18px; }
 </style>

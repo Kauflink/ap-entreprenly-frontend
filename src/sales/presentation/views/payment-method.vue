@@ -35,7 +35,7 @@ const emit = defineEmits(['method-selected', 'finalize-sale', 'cancel-sale'])
                 :disabled="!hasItems"
                 @click="emit('method-selected', 'digital')"
             >
-                <span class="material-icons payment-icon">account_balance_wallet</span>
+                <span class="material-icons payment-icon">point_of_sale</span>
                 <span class="payment-label">{{ t('sales.payment.digital') }}</span>
             </button>
         </div>
@@ -51,10 +51,10 @@ const emit = defineEmits(['method-selected', 'finalize-sale', 'cancel-sale'])
         :class="{ 'btn-finalize-inactive': !hasItems || selectedMethod === null }"
         @click="emit('finalize-sale')"
     >
-        {{ t('sales.payment.finalize') }}
+        {{ t('sales.finalize') }}
     </button>
     <button class="btn-cancel" @click="emit('cancel-sale')">
-        {{ t('sales.payment.cancel') }}
+        {{ t('sales.cancel') }}
     </button>
 </template>
 
@@ -118,6 +118,7 @@ const emit = defineEmits(['method-selected', 'finalize-sale', 'cancel-sale'])
     align-items: center;
     gap: 6px;
 }
+.error-icon { font-size: 14px; font-weight: bold; }
 
 .btn-finalize {
     background: var(--color-primary);

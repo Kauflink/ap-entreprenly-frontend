@@ -49,4 +49,6 @@ export class SalesApi extends BaseApi {
     patchWeightLot(id, quantityKg) {
         return this.http.patch(`${weightLotsPath}/${id}`, { quantityKg })
     }
+
+    getScaleStatus() { return this.http.get('/iot-scale') }
 }
