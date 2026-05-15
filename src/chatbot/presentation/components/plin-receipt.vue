@@ -124,7 +124,7 @@ function formatDateShort(dateStr) {
 .receipt-wrap { display: flex; justify-content: center; flex-shrink: 0; }
 
 .phone {
-  width: 148px;
+  width: clamp(130px, 40vw, 148px);
   border-radius: 18px;
   background: #fff;
   box-shadow: 0 4px 20px rgb(0 194 179 / 0.2), 0 1px 4px rgb(0 0 0 / 0.1);

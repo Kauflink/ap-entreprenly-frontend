@@ -32,7 +32,7 @@ const emit = defineEmits(['selected-conversation'])
   transition: background 0.15s;
 }
 .conv-item:hover { background: #f9fafb; }
-.conv-item--active { background: #fff7ed; }
+.conv-item--active { background: #fff7ed; border-left: 3px solid #f97316; }
 .conv-item__row {
   display: flex;
   align-items: flex-start;
@@ -43,6 +43,9 @@ const emit = defineEmits(['selected-conversation'])
   font-weight: 700;
   color: #111827;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .conv-item__time {
   flex-shrink: 0;
@@ -56,5 +59,30 @@ const emit = defineEmits(['selected-conversation'])
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+/* ── Móvil: chip horizontal ─────────────────────────── */
+@media (max-width: 768px) {
+  .conv-item {
+    width: auto;
+    min-width: 7rem;
+    max-width: 9rem;
+    border-bottom: none;
+    border-right: 1px solid #f3f4f6;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .conv-item--active {
+    border-left: none;
+    border-bottom: 3px solid #f97316;
+    background: #fff7ed;
+  }
+  .conv-item__time    { display: none; }
+  .conv-item__name    { font-size: 0.75rem; max-width: 100%; }
+  .conv-item__preview { font-size: 0.625rem; -webkit-line-clamp: 2; white-space: normal;
+                        display: -webkit-box; -webkit-box-orient: vertical; }
 }
 </style>

@@ -453,7 +453,7 @@ onMounted(async () => {
 
 <style scoped>
 .home-page   { height: 100%; overflow-y: auto; background: #f9fafb; }
-.home-inner  { max-width: 72rem; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; padding: 1.5rem; }
+.home-inner  { width: 100%; display: flex; flex-direction: column; gap: 1.5rem; padding: clamp(1rem, 2.5vw, 2rem); }
 
 /* ── Banner ─────────────────────────────────────────────────────── */
 .banner {
@@ -665,6 +665,17 @@ onMounted(async () => {
 .empty-state__sub   { margin-top: 0.25rem; font-size: 0.75rem; color: #9ca3af; }
 
 /* ── Responsive ───────────────────────────────────────────────────── */
+@media (min-width: 1440px) {
+  .main-grid        { grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+  .banner__title    { font-size: clamp(1.25rem, 1.8vw, 1.75rem); }
+  .cash-total       { font-size: clamp(1.875rem, 2.5vw, 2.5rem); }
+  .stat__value      { font-size: clamp(1.5rem, 2vw, 2rem); }
+  .ql-grid          { grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+  .ql-card          { padding: 1.25rem 1rem; }
+  .ql-icon          { width: 3rem; height: 3rem; }
+  .ql-label         { font-size: 0.875rem; }
+}
+
 @media (max-width: 1024px) {
   /* Grid: columna izquierda + pedidos en fila, inventario abajo full */
   .main-grid {

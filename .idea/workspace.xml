@@ -6,8 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="f86d113d-579d-4282-b287-3158d95c6f20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/src/.env.development" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/chatbot-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/infrastructure/chatbot-api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/conversation-list-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/components/conversation-list-item.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/conversation-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/components/conversation-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/message-bubble.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/components/message-bubble.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/plin-receipt.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/components/plin-receipt.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/whatsapp-status-card.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/components/whatsapp-status-card.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/yape-receipt.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/components/yape-receipt.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/views/conversations-view.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/views/conversations-view.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/presentation/views/ayuda.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/views/ayuda.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared/presentation/views/home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/views/home.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
