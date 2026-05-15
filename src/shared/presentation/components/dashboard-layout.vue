@@ -1,10 +1,9 @@
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const router = useRouter()
-const route  = useRoute()
 
 const navItems = [
     { labelKey: 'dashboard.nav.home',         icon: 'dashboard',     path: '/home' },
@@ -17,9 +16,6 @@ const navItems = [
     { labelKey: 'dashboard.nav.help',         icon: 'help_outline',  path: '/help' },
 ]
 
-function isActive(path) {
-    return route.path === path || route.path.startsWith(path + '/')
-}
 </script>
 
 <template>
@@ -41,7 +37,8 @@ function isActive(path) {
                     <li v-for="item in navItems" :key="item.labelKey">
                         <router-link
                             class="navigation-link"
-                            :class="{ 'navigation-link--active': isActive(item.path) }"
+                            active-class=""
+                            exact-active-class="navigation-link--active"
                             :to="item.path"
                             :aria-label="t(item.labelKey)"
                         >
