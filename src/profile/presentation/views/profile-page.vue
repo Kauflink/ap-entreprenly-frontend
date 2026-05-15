@@ -33,8 +33,8 @@ onMounted(() => {
             </section>
 
             <section class="col col--right" :aria-label="t('profile.page.rightSectionLabel')">
-                <PreferencesCard />
-                <EmailChangeCard />
+                <PreferencesCard class="preferences" />
+                <EmailChangeCard class="email-change" />
             </section>
 
             <div class="row row--bottom">
@@ -104,6 +104,14 @@ onMounted(() => {
 }
 .col--center > .phone-verify {
     flex: 2 1 0;
+    min-height: 0;
+}
+.col--right > .preferences {
+    flex: 4 1 0;
+    min-height: 0;
+}
+.col--right > .email-change {
+    flex: 1 1 0;
     min-height: 0;
 }
 

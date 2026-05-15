@@ -146,10 +146,13 @@ function setTheme(theme) {
     border: 1px solid var(--color-card-border);
     box-shadow: var(--color-card-shadow);
     border-radius: 25px;
-    padding: clamp(8px, 1.11dvh, 12px) 24px;
+    padding: clamp(6px, 0.74dvh, 10px) 24px;
     display: flex;
     flex-direction: column;
-    gap: clamp(6px, 0.93dvh, 10px);
+    gap: clamp(4px, 0.55dvh, 8px);
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .card__title {
@@ -161,30 +164,34 @@ function setTheme(theme) {
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(5px, 0.74dvh, 8px);
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    gap: clamp(4px, 0.55dvh, 8px);
     flex: 1;
-    justify-content: center;
+    min-height: 0;
+    align-content: start;
 }
 
 .field {
     display: flex;
     flex-direction: column;
-    gap: clamp(3px, 0.55dvh, 6px);
+    gap: 0;
+    min-height: 0;
 }
 
 .field__label {
     font-weight: 800;
     font-size: clamp(10px, 1.11dvh, 12px);
+    line-height: 1;
     color: var(--color-label-accent);
+    margin-bottom: 2px;
 }
 
 .field__select {
     background: var(--color-card-bg);
     border: 1px solid var(--color-card-border);
     border-radius: 25px;
-    padding: clamp(5px, 0.65dvh, 7px) 20px;
+    padding: clamp(3px, 0.46dvh, 6px) 20px;
     font-weight: 500;
     font-size: clamp(10px, 1.11dvh, 12px);
     color: var(--color-text-secondary);
@@ -210,7 +217,7 @@ form {
     background: var(--color-card-bg);
     border: 1px solid var(--color-theme-btn-border);
     border-radius: 25px;
-    padding: clamp(5px, 0.74dvh, 8px) 12px;
+    padding: clamp(3px, 0.46dvh, 6px) 12px;
     font-family: 'Reddit Sans', sans-serif;
     font-weight: 800;
     font-size: clamp(10px, 1.11dvh, 12px);

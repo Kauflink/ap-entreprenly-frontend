@@ -138,12 +138,15 @@ function onSubmit() {
     border: 1px solid var(--color-card-border);
     box-shadow: var(--color-card-shadow);
     border-radius: 25px;
-    padding: clamp(8px, 1.11dvh, 12px) 24px;
+    padding: clamp(6px, 0.74dvh, 10px) 24px;
     display: flex;
     flex-direction: column;
-    gap: clamp(6px, 0.93dvh, 10px);
+    gap: clamp(4px, 0.55dvh, 8px);
+    height: 100%;
     flex: 1;
     min-height: 0;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .card__title {
@@ -154,24 +157,27 @@ function onSubmit() {
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(5px, 0.74dvh, 8px);
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    gap: clamp(3px, 0.55dvh, 6px);
     flex: 1;
     min-height: 0;
-    justify-content: space-between;
+    align-content: space-between;
 }
 
 .field {
     display: flex;
     flex-direction: column;
-    gap: clamp(3px, 0.55dvh, 6px);
+    gap: 0;
+    min-height: 0;
 }
 
 .field__label {
     font-weight: 800;
     font-size: clamp(10px, 1.11dvh, 12px);
+    line-height: 1;
     color: var(--color-label-accent);
+    margin-bottom: 6px;
 }
 
 .field__input-wrap {
@@ -185,7 +191,7 @@ form {
     background: var(--color-card-bg);
     border: 1px solid var(--color-card-border);
     border-radius: 25px;
-    padding: clamp(6px, 0.75dvh, 8px) 48px clamp(6px, 0.75dvh, 8px) 20px;
+    padding: clamp(5px, 0.69dvh, 9px) 48px clamp(5px, 0.69dvh, 9px) 20px;
     font-weight: 500;
     font-size: clamp(10px, 1.11dvh, 12px);
     color: var(--color-text-primary);
@@ -236,11 +242,12 @@ form {
 }
 
 .btn-primary {
+    align-self: end;
     background: var(--color-primary);
     border: 1px solid var(--color-card-border);
     box-shadow: var(--color-card-shadow);
     border-radius: 25px;
-    padding: clamp(5px, 0.74dvh, 8px) 24px;
+    padding: clamp(3px, 0.46dvh, 6px) 24px;
     font-weight: 800;
     font-size: clamp(10px, 1.11dvh, 12px);
     color: var(--color-primary-text);
