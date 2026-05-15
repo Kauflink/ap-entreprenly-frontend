@@ -1,4 +1,8 @@
 {
+    "comingSoon": {
+        "title": "Coming soon",
+        "subtitle": "This section is under development."
+    },
     "dashboard": {
         "welcome": "Welcome, user",
         "role": "Administrator",
