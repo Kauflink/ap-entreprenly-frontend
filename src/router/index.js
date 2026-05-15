@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { watch } from 'vue'
+import i18n from '@/i18n.js'
 import salesRoutes from '@/sales/presentation/sales-routes.js'
 import subscriptionRoutes from '@/subscription/presentation/subscription-routes.js'
 import chatbotRoutes from '@/chatbot/presentation/chatbot-routes.js'
@@ -15,10 +17,10 @@ const router = createRouter({
             path: '/',
             component: () => import('@/shared/presentation/components/dashboard-layout.vue'),
             children: [
-                { path: 'home', name: 'home', component: () => import('@/shared/presentation/views/home.vue'), meta: { title: 'Inicio' } },
-                { path: 'help', name: 'help', component: () => import('@/shared/presentation/views/ayuda.vue'), meta: { title: 'Ayuda' } },
-                { path: 'products', name: 'products', component: () => import('@/shared/presentation/views/coming-soon.vue'), meta: { title: 'Productos' } },
-                { path: 'lots', name: 'lots', component: () => import('@/shared/presentation/views/coming-soon.vue'), meta: { title: 'Lotes' } },
+                { path: 'home', name: 'home', component: () => import('@/shared/presentation/views/home.vue'), meta: { titleKey: 'pages.home' } },
+                { path: 'help', name: 'help', component: () => import('@/shared/presentation/views/ayuda.vue'), meta: { titleKey: 'pages.help' } },
+                { path: 'products', name: 'products', component: () => import('@/shared/presentation/views/coming-soon.vue'), meta: { titleKey: 'pages.products' } },
+                { path: 'lots', name: 'lots', component: () => import('@/shared/presentation/views/coming-soon.vue'), meta: { titleKey: 'pages.lots' } },
                 ...salesRoutes,
                 ...subscriptionRoutes,
                 ...chatbotRoutes,
@@ -33,8 +35,13 @@ const router = createRouter({
     ]
 })
 
-router.beforeEach((to) => {
-    if (to.meta?.title) document.title = `${to.meta.title} | Entreprenly`
-})
+function applyTitle(route) {
+    const key = route?.meta?.titleKey
+    if (key) document.title = `${i18n.global.t(key)} | Entreprenly`
+}
+
+router.beforeEach((to) => { applyTitle(to) })
+
+watch(i18n.global.locale, () => applyTitle(router.currentRoute.value))
 
 export default router
