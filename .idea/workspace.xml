@@ -6,31 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="f86d113d-579d-4282-b287-3158d95c6f20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/application/chatbot.store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/application/chatbot.store.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/domain/model/cliente-entity.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/domain/model/item-pedido-entity.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/domain/model/pago-entity.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/domain/model/pedido-entity.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/domain/model/producto-entity.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/chatbot-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/infrastructure/chatbot-api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/cliente-assembler.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/pago-assembler.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/pedido-assembler.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/producto-assembler.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/chatbot-routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/chatbot-routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/chat-bubble.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/pedido-card.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/product-card.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/views/catalogo-view.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/views/chat-view.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/views/pago-view.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/views/pedido-view.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/db.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/db.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/locales/es.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/es.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/presentation/components/layout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/components/layout.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/presentation/views/ayuda.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/views/ayuda.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/presentation/views/home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/views/home.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/presentation/components/dashboard-layout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/components/dashboard-layout.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
