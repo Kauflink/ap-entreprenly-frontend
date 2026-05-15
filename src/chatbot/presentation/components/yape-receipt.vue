@@ -1,0 +1,201 @@
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps({
+  order: { type: Object, required: true }
+})
+
+const statusIconClass = computed(() => {
+  if (props.order.status === 'CONFIRMED') return 'status-icon--green'
+  if (props.order.status === 'BLOCKED')   return 'status-icon--red'
+  return 'status-icon--orange'
+})
+
+const statusLabel = computed(() => {
+  if (props.order.status === 'CONFIRMED') return '¡Yapeo exitoso!'
+  if (props.order.status === 'BLOCKED')   return 'Pago no válido'
+  return 'Pago enviado'
+})
+
+function shortCode(id) {
+  return 'YP' + String(id ?? '').slice(-6).toUpperCase().padStart(6, '0')
+}
+
+function formatTime(dateStr) {
+  return new Date(dateStr).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })
+}
+
+function formatDateShort(dateStr) {
+  return new Date(dateStr).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' })
+}
+</script>
+
+<template>
+  <div class="receipt-wrap">
+    <div class="phone">
+
+      <!-- Status bar -->
+      <div class="status-bar">
+        <span class="status-bar__time">{{ formatTime(order.createdAt) }}</span>
+        <span class="status-bar__icons">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M1.41 1.41L0 2.83l4.84 4.83C2.98 9.28 1.67 11 1 13h2.05c.65-1.58 1.72-2.94 3.06-4L7.5 10.44C6.28 11.26 5.26 12.32 4.5 13.56L6.5 15.5C7.06 14.55 7.83 13.76 8.78 13.2L10.5 14.93C9.62 15.29 8.9 15.95 8.5 16.8l1.5 1.5c.42-.56 1.02-.95 1.75-1.08l4.25 4.25 1.41-1.41L1.41 1.41zM12 4c-2.37 0-4.55.78-6.32 2.07l1.45 1.45C8.46 6.57 10.17 6 12 6c3.53 0 6.57 1.96 8.22 4.88L22 11.36C20.08 7.69 16.34 5 12 5V4zm0 2c-1.6 0-3.09.47-4.35 1.27l1.46 1.46C9.98 8.27 10.97 8 12 8c2.23 0 4.17 1.09 5.38 2.75L19 12.11C17.44 9.63 14.91 8 12 8V6z"/>
+          </svg>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/>
+          </svg>
+        </span>
+      </div>
+
+      <!-- Header Yape -->
+      <div class="yape-header">
+        <svg class="yape-header__back" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <div class="yape-logo">
+          <span class="yape-logo__y">y</span><span class="yape-logo__text">ape</span>
+        </div>
+        <div style="width:16px"></div>
+      </div>
+
+      <!-- Cuerpo -->
+      <div class="receipt-body">
+
+        <!-- Ícono de estado -->
+        <div :class="['status-icon', statusIconClass]">
+          <svg v-if="order.status === 'BLOCKED'" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          <svg v-else width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+
+        <p class="receipt-label">{{ statusLabel }}</p>
+        <p class="receipt-amount">S/ {{ order.total?.toFixed(2) ?? '0.00' }}</p>
+        <p class="receipt-to">Para <strong>Bodega El Huerto</strong></p>
+
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-details">
+          <div class="receipt-row">
+            <span class="receipt-row__label">Pedido</span>
+            <span class="receipt-row__value">{{ order.orderNumber }}</span>
+          </div>
+          <div class="receipt-row">
+            <span class="receipt-row__label">Fecha</span>
+            <span class="receipt-row__value">{{ formatDateShort(order.createdAt) }}</span>
+          </div>
+          <div class="receipt-row">
+            <span class="receipt-row__label">Hora</span>
+            <span class="receipt-row__value">{{ formatTime(order.createdAt) }}</span>
+          </div>
+          <div class="receipt-row">
+            <span class="receipt-row__label">Código</span>
+            <span class="receipt-row__value receipt-row__value--purple">{{ shortCode(order.id) }}</span>
+          </div>
+          <div class="receipt-row">
+            <span class="receipt-row__label">Método</span>
+            <span class="receipt-row__value">{{ order.paymentMethod }}</span>
+          </div>
+        </div>
+
+        <div class="receipt-divider"></div>
+
+        <!-- Sello de estado -->
+        <div v-if="order.status === 'CONFIRMED'" class="stamp stamp--green">APROBADO ✓</div>
+        <div v-else-if="order.status === 'BLOCKED'" class="stamp stamp--red">RECHAZADO ✗</div>
+        <div v-else-if="order.status === 'WAITING_PAYMENT'" class="stamp stamp--orange">EN REVISIÓN</div>
+
+        <!-- Footer -->
+        <div class="yape-footer">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#6C2E84">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+          </svg>
+          <span>Pago procesado por Yape</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.receipt-wrap { display: flex; justify-content: center; flex-shrink: 0; }
+
+/* ── Teléfono ──────────────────────────────────────────────────── */
+.phone {
+  width: 148px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 4px 20px rgb(108 46 132 / 0.2), 0 1px 4px rgb(0 0 0 / 0.1);
+  overflow: hidden;
+  border: 2px solid #e9d5f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ── Status bar ────────────────────────────────────────────────── */
+.status-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #5a1f72; padding: 3px 10px; font-size: 8px; color: #e9d5f5;
+}
+.status-bar__icons { display: flex; gap: 3px; align-items: center; }
+
+/* ── Header ────────────────────────────────────────────────────── */
+.yape-header {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #6C2E84; padding: 9px 12px;
+}
+.yape-logo { display: flex; align-items: baseline; gap: 1px; }
+.yape-logo__y    { font-size: 18px; font-weight: 900; color: #fff; line-height: 1; }
+.yape-logo__text { font-size: 13px; font-weight: 700; color: #e9d5f5; }
+.yape-header__back { opacity: 0.8; cursor: pointer; }
+
+/* ── Cuerpo ────────────────────────────────────────────────────── */
+.receipt-body {
+  position: relative; display: flex; flex-direction: column; align-items: center;
+  padding: 14px 12px 10px; background: #faf5ff; gap: 0;
+}
+
+/* ── Ícono estado ──────────────────────────────────────────────── */
+.status-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 7px;
+}
+.status-icon--green  { background: #22c55e; box-shadow: 0 0 0 6px #dcfce7; }
+.status-icon--red    { background: #ef4444; box-shadow: 0 0 0 6px #fee2e2; }
+.status-icon--orange { background: #f97316; box-shadow: 0 0 0 6px #fff7ed; }
+
+.receipt-label  { font-size: 9.5px; font-weight: 800; color: #3b0764; margin: 6px 0 4px; }
+.receipt-amount { font-size: 24px; font-weight: 900; color: #1f0540; letter-spacing: -0.5px; margin-bottom: 4px; line-height: 1; }
+.receipt-to     { font-size: 8px; color: #7c3aed; margin-bottom: 10px; }
+.receipt-to strong { color: #5b21b6; }
+
+.receipt-divider { width: 100%; height: 1px; background: #e9d5f5; margin-bottom: 9px; }
+
+/* ── Detalles ──────────────────────────────────────────────────── */
+.receipt-details { width: 100%; display: flex; flex-direction: column; gap: 4px; margin-bottom: 9px; }
+.receipt-row { display: flex; justify-content: space-between; font-size: 7.5px; }
+.receipt-row__label { color: #a78bfa; }
+.receipt-row__value { color: #1f2937; font-weight: 600; max-width: 80px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.receipt-row__value--purple { color: #7c3aed; font-size: 6.5px; }
+
+/* ── Sello ─────────────────────────────────────────────────────── */
+.stamp {
+  position: absolute; top: 42%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-18deg);
+  border-radius: 3px; border: 2px solid;
+  padding: 2px 7px; font-size: 9px; font-weight: 900;
+  letter-spacing: 0.06em; opacity: 0.65; pointer-events: none;
+  white-space: nowrap;
+}
+.stamp--green  { color: #15803d; border-color: #15803d; background: rgb(220 252 231 / 0.5); }
+.stamp--red    { color: #b91c1c; border-color: #b91c1c; background: rgb(254 226 226 / 0.5); }
+.stamp--orange { color: #c2410c; border-color: #c2410c; background: rgb(255 247 237 / 0.5); }
+
+/* ── Footer ────────────────────────────────────────────────────── */
+.yape-footer {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 6.5px; color: #a78bfa; margin-top: 2px;
+}
+</style>

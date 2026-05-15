@@ -8,11 +8,11 @@ const route  = useRoute()
 
 const navItems = [
     { labelKey: 'dashboard.nav.home',         icon: 'dashboard',     path: '/home' },
-    { labelKey: 'dashboard.nav.products',     icon: 'inventory_2',   path: '/inventory/products' },
-    { labelKey: 'dashboard.nav.lots',         icon: 'category',      path: '/inventory/lots' },
+    { labelKey: 'dashboard.nav.products',     icon: 'inventory_2',   path: '/sales' },
+    { labelKey: 'dashboard.nav.lots',         icon: 'category',      path: '/sales' },
     { labelKey: 'dashboard.nav.sales',        icon: 'receipt_long',  path: '/sales' },
     { labelKey: 'dashboard.nav.subscription', icon: 'credit_card',   path: '/subscription' },
-    { labelKey: 'dashboard.nav.orders',       icon: 'shopping_cart', path: '/orders' },
+    { labelKey: 'dashboard.nav.orders',       icon: 'shopping_cart', path: '/chatbot/orders' },
     { labelKey: 'dashboard.nav.chatbot',      icon: 'smart_toy',     path: '/chatbot' },
     { labelKey: 'dashboard.nav.help',         icon: 'help_outline',  path: '/help' },
 ]
@@ -217,10 +217,13 @@ function isActive(path) {
     .sidebar { position: relative; height: auto; padding: 22px; }
     .profile { margin-block: 8px; }
     .navigation-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .dashboard-content { padding: 30px 22px 42px; }
+    .dashboard-content { padding: 24px 20px 36px; }
+}
+@media (max-width: 768px) {
+    .dashboard-content { padding: 16px 14px 28px; }
 }
 @media (max-width: 620px) {
     .navigation-list { grid-template-columns: 1fr; }
-    .dashboard-content { padding-inline: 14px; }
+    .dashboard-content { padding: 12px 10px 24px; }
 }
 </style>
