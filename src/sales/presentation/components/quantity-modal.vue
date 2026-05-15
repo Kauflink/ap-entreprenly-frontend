@@ -10,19 +10,22 @@ const props = defineProps({
 
 const emit = defineEmits(['confirm', 'cancel'])
 
-const displayValue = ref('')
+const displayValue  = ref('')
+const lastPressed   = ref(null)
 
 const hasInsufficientStock = computed(() => {
     if (!props.product || !displayValue.value) return false
-    return parseInt(displayValue.value) > props.product.stock
+    return parseInt(displayValue.value) > props.product.availableStock
 })
 
 function pressDigit(digit) {
     displayValue.value += String(digit)
+    lastPressed.value = digit
 }
 
 function pressBackspace() {
     displayValue.value = displayValue.value.slice(0, -1)
+    lastPressed.value = null
 }
 
 function onConfirm() {
@@ -50,21 +53,19 @@ function onCancel() {
                 <span class="display-value">{{ displayValue || '0' }}</span>
             </div>
 
-            <div v-if="hasInsufficientStock" class="stock-error">
-                <span class="error-icon">⊘</span>
-                {{ t('sales.quantity-modal.insufficientStock') }}
-            </div>
-
             <div class="keypad">
                 <button
                     v-for="n in [1,2,3,4,5,6,7,8,9]"
                     :key="n"
-                    class="keypad-btn"
+                    :class="['keypad-btn', { 'keypad-btn--active': lastPressed === n }]"
                     @click="pressDigit(n)"
                 >{{ n }}</button>
 
                 <button class="keypad-btn keypad-backspace" @click="pressBackspace">◀</button>
-                <button class="keypad-btn keypad-zero" @click="pressDigit(0)">0</button>
+                <button
+                    :class="['keypad-btn', 'keypad-zero', { 'keypad-btn--active': lastPressed === 0 }]"
+                    @click="pressDigit(0)"
+                >0</button>
             </div>
 
             <button
@@ -74,6 +75,11 @@ function onCancel() {
             >
                 {{ t('sales.quantity-modal.confirm') }}
             </button>
+
+            <div v-if="hasInsufficientStock" class="stock-error">
+                <span class="error-icon">⊘</span>
+                {{ t('sales.quantity-modal.insufficientStock') }}
+            </div>
         </div>
     </div>
 </template>
@@ -194,6 +200,11 @@ function onCancel() {
 }
 .keypad-btn:hover { background: var(--color-theme-btn-active-bg); }
 .keypad-btn:active { background: var(--color-card-border); }
+.keypad-btn--active {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+}
 
 .keypad-backspace {
     background: rgba(243, 131, 19, 0.12);
