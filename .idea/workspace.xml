@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f86d113d-579d-4282-b287-3158d95c6f20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/message-bubble.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/components/message-bubble.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/views/conversations-view.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/views/conversations-view.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/views/orders-view.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/views/orders-view.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/locales/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/en.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/presentation/components/dashboard-layout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/components/dashboard-layout.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/src/.env.development" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/chatbot-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/infrastructure/chatbot-api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared/presentation/views/home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/views/home.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,6 +29,11 @@
         </map>
       </branch-storage>
     </excluded-from-favorite>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProblemsViewState">
