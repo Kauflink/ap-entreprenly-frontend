@@ -1,8 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js'
 
 const { t } = useI18n()
+const { format } = useCurrencyFormatter()
 
 const props = defineProps({
     ticketItems:    { type: Array,   default: () => [] },
@@ -120,8 +122,8 @@ function formatQty(item) {
                         </span>
                     </td>
                     <td>{{ formatQty(item) }}</td>
-                    <td>S/ {{ item.unitPrice.toFixed(2) }}</td>
-                    <td>S/ {{ item.subtotal.toFixed(2) }}</td>
+                    <td>{{ format(item.unitPrice) }}</td>
+                    <td>{{ format(item.subtotal) }}</td>
                     <td>
                         <button class="delete-btn" @click="deleteItem(index)">🗑</button>
                     </td>

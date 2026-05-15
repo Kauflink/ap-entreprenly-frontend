@@ -2,10 +2,12 @@
 import { useI18n } from 'vue-i18n'
 import useSalesStore from '@/sales/application/sales.store.js'
 import { storeToRefs } from 'pinia'
+import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js'
 
 const { t } = useI18n()
 const store = useSalesStore()
 const { totalDay, totalCash, totalDigital } = storeToRefs(store)
+const { format } = useCurrencyFormatter()
 </script>
 
 <template>
@@ -19,21 +21,21 @@ const { totalDay, totalCash, totalDigital } = storeToRefs(store)
                     <span class="material-icons widget-icon">receipt</span>
                     {{ t('sales.register.totalDay') }}
                 </p>
-                <p class="widget-value">S/ {{ totalDay.toFixed(2) }}</p>
+                <p class="widget-value">{{ format(totalDay) }}</p>
             </div>
             <div class="cash-widget">
                 <p class="widget-label">
                     <span class="material-icons widget-icon">payments</span>
                     {{ t('sales.register.cash') }}
                 </p>
-                <p class="widget-value">S/ {{ totalCash.toFixed(2) }}</p>
+                <p class="widget-value">{{ format(totalCash) }}</p>
             </div>
             <div class="cash-widget">
                 <p class="widget-label">
                     <span class="material-icons widget-icon">point_of_sale</span>
                     {{ t('sales.register.digital') }}
                 </p>
-                <p class="widget-value">S/ {{ totalDigital.toFixed(2) }}</p>
+                <p class="widget-value">{{ format(totalDigital) }}</p>
             </div>
         </div>
     </section>
