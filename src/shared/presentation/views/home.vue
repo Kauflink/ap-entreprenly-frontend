@@ -71,11 +71,11 @@ const hasAlerts = computed(() => stockAlerts.value.length > 0)
 
 // ── Quick links ───────────────────────────────────────────────────────────
 const quickLinks = computed(() => [
-  { labelKey: 'dashboard-home.links.products', subtextKey: 'dashboard-home.links.productsSub', icon: 'products', route: '/home'                  },
-  { labelKey: 'dashboard-home.links.lots',     subtextKey: 'dashboard-home.links.lotsSub',     icon: 'lots',     route: '/home', alertBadge: hasAlerts.value },
-  { labelKey: 'dashboard-home.links.chatbot',  subtextKey: 'dashboard-home.links.chatbotSub',  icon: 'chat',     route: '/chatbot'               },
-  { labelKey: 'dashboard-home.links.orders',   subtextKey: 'dashboard-home.links.ordersSub',   icon: 'orders',   route: '/chatbot/conversations'  },
-  { labelKey: 'dashboard-home.links.reports',  subtextKey: 'dashboard-home.links.reportsSub',  icon: 'reports',  route: '/home'                  },
+  { labelKey: 'dashboard-home.links.products', subtextKey: 'dashboard-home.links.productsSub', icon: 'products', route: '/sales'                          },
+  { labelKey: 'dashboard-home.links.lots',     subtextKey: 'dashboard-home.links.lotsSub',     icon: 'lots',     route: '/sales', alertBadge: hasAlerts.value },
+  { labelKey: 'dashboard-home.links.chatbot',  subtextKey: 'dashboard-home.links.chatbotSub',  icon: 'chat',     route: '/chatbot'                        },
+  { labelKey: 'dashboard-home.links.orders',   subtextKey: 'dashboard-home.links.ordersSub',   icon: 'orders',   route: '/chatbot/orders'                 },
+  { labelKey: 'dashboard-home.links.reports',  subtextKey: 'dashboard-home.links.reportsSub',  icon: 'reports',  route: '/sales'                          },
 ])
 
 // ── Today label ───────────────────────────────────────────────────────────
@@ -212,7 +212,7 @@ onMounted(async () => {
           <p class="alert-banner__title">{{ t('dashboard-home.alertBannerTitle') }}</p>
           <p class="alert-banner__sub">{{ t('dashboard-home.alertBanner', { count: stockAlerts.length }) }}</p>
         </div>
-        <RouterLink to="/home" class="alert-banner__link">{{ t('dashboard-home.alertBannerLink') }}</RouterLink>
+        <RouterLink to="/sales" class="alert-banner__link">{{ t('dashboard-home.alertBannerLink') }}</RouterLink>
       </div>
 
       <!-- ══ QUICK LINKS ════════════════════════════════════════════════ -->
@@ -277,7 +277,7 @@ onMounted(async () => {
                 <p class="sale-badge__label">{{ t('dashboard-home.cash.ventas') }}</p>
               </div>
             </div>
-            <RouterLink to="/home" class="go-sales-btn">{{ t('dashboard-home.cash.goToSales') }}</RouterLink>
+            <RouterLink to="/sales" class="go-sales-btn">{{ t('dashboard-home.cash.goToSales') }}</RouterLink>
           </section>
 
           <!-- Estado chatbot -->
@@ -328,7 +328,7 @@ onMounted(async () => {
         <section class="card" aria-labelledby="orders-heading">
           <div class="section-header">
             <h2 id="orders-heading" class="card__section-title">{{ t('dashboard-home.orders.title') }}</h2>
-            <RouterLink to="/chatbot/conversations" class="view-all-link">{{ t('dashboard-home.orders.viewAll') }}</RouterLink>
+            <RouterLink to="/chatbot/orders" class="view-all-link">{{ t('dashboard-home.orders.viewAll') }}</RouterLink>
           </div>
 
           <div v-if="recentOrders.length === 0" class="empty-state" role="status">
@@ -384,7 +384,7 @@ onMounted(async () => {
         <section class="card inventory-col" aria-labelledby="inventory-heading">
           <div class="section-header">
             <h2 id="inventory-heading" class="card__section-title">{{ t('dashboard-home.inventory.title') }}</h2>
-            <RouterLink to="/home" class="view-all-link">{{ t('dashboard-home.inventory.viewAll') }}</RouterLink>
+            <RouterLink to="/sales" class="view-all-link">{{ t('dashboard-home.inventory.viewAll') }}</RouterLink>
           </div>
 
           <div v-if="alertsLoading" class="inv-skeleton" aria-busy="true">
@@ -439,7 +439,7 @@ onMounted(async () => {
                   <p :class="['inv-alert-card__sub', alertTextClass(alert)]">{{ alertLabel(alert) }}</p>
                 </div>
               </div>
-              <RouterLink v-if="stockAlerts.length > 3" to="/home" class="view-all-link view-all-link--center">
+              <RouterLink v-if="stockAlerts.length > 3" to="/sales" class="view-all-link view-all-link--center">
                 {{ t('dashboard-home.alerts.viewMore', { count: stockAlerts.length - 3 }) }}
               </RouterLink>
             </div>
