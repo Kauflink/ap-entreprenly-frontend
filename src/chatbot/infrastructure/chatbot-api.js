@@ -10,11 +10,11 @@ export class ChatbotApi extends BaseApi {
 
   constructor() {
     super()
-    this.#conversations    = new BaseEndpoint(this, '/conversations')
-    this.#chatMessages     = new BaseEndpoint(this, '/chat-messages')
-    this.#chatOrders       = new BaseEndpoint(this, '/chat-orders')
-    this.#whatsappSessions = new BaseEndpoint(this, '/whatsapp-sessions')
-    this.#inventoryProducts = new BaseEndpoint(this, '/inventory-products')
+    this.#conversations    = new BaseEndpoint(this, import.meta.env.VITE_CONVERSATIONS_ENDPOINT_PATH      ?? '/conversations')
+    this.#chatMessages     = new BaseEndpoint(this, import.meta.env.VITE_CHAT_MESSAGES_ENDPOINT_PATH     ?? '/chat-messages')
+    this.#chatOrders       = new BaseEndpoint(this, import.meta.env.VITE_CHAT_ORDERS_ENDPOINT_PATH       ?? '/chat-orders')
+    this.#whatsappSessions = new BaseEndpoint(this, import.meta.env.VITE_WHATSAPP_SESSIONS_ENDPOINT_PATH ?? '/whatsapp-sessions')
+    this.#inventoryProducts = new BaseEndpoint(this, import.meta.env.VITE_INVENTORY_PRODUCTS_ENDPOINT_PATH ?? '/inventory-products')
   }
 
   get conversations()     { return this.#conversations }

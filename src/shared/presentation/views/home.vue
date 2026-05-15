@@ -133,11 +133,11 @@ onMounted(async () => {
   store.loadOrders()
   store.loadConversations()
 
-  const BASE = import.meta.env.VITE_ENTREPENLY_PLATFORM_API_URL ?? 'http://localhost:3000'
+  const BASE = import.meta.env.VITE_ENTREPENLY_PLATFORM_API_URL ?? 'http://localhost:3000/api/v1'
 
   try {
     const today = new Date().toISOString().split('T')[0]
-    const cashRes = await axios.get(`${BASE}/cash-registers`)
+    const cashRes = await axios.get(`${BASE}${import.meta.env.VITE_CASH_REGISTERS_ENDPOINT_PATH ?? '/cash-registers'}`)
     const reg = cashRes.data.find(r => r.date === today)
     if (reg) { totalCash.value = reg.totalCash; totalDigital.value = reg.totalDigital; saleCount.value = reg.saleCount }
     totalDay.value = totalCash.value + totalDigital.value
@@ -145,11 +145,11 @@ onMounted(async () => {
 
   try {
     const [alertRes, upRes, ulRes, wpRes, wlRes] = await Promise.all([
-      axios.get(`${BASE}/inventory-stock-alerts`),
-      axios.get(`${BASE}/inventory-unit-products`),
-      axios.get(`${BASE}/inventory-unit-lots`),
-      axios.get(`${BASE}/inventory-weight-products`),
-      axios.get(`${BASE}/inventory-weight-lots`),
+      axios.get(`${BASE}${import.meta.env.VITE_STOCK_ALERT_ENDPOINT_PATH         ?? '/inventory-stock-alerts'}`),
+      axios.get(`${BASE}${import.meta.env.VITE_UNIT_PRODUCT_ENDPOINT_PATH        ?? '/inventory-unit-products'}`),
+      axios.get(`${BASE}${import.meta.env.VITE_UNIT_LOT_ENDPOINT_PATH            ?? '/inventory-unit-lots'}`),
+      axios.get(`${BASE}${import.meta.env.VITE_WEIGHT_PRODUCT_ENDPOINT_PATH      ?? '/inventory-weight-products'}`),
+      axios.get(`${BASE}${import.meta.env.VITE_WEIGHT_LOT_ENDPOINT_PATH          ?? '/inventory-weight-lots'}`),
     ])
     stockAlerts.value    = alertRes.data
     unitProducts.value   = upRes.data
