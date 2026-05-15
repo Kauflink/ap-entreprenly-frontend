@@ -8,8 +8,8 @@ const route  = useRoute()
 
 const navItems = [
     { labelKey: 'dashboard.nav.home',         icon: 'dashboard',     path: '/home' },
-    { labelKey: 'dashboard.nav.products',     icon: 'inventory_2',   path: '/sales' },
-    { labelKey: 'dashboard.nav.lots',         icon: 'category',      path: '/sales' },
+    { labelKey: 'dashboard.nav.products',     icon: 'inventory_2',   path: '/products' },
+    { labelKey: 'dashboard.nav.lots',         icon: 'category',      path: '/lots' },
     { labelKey: 'dashboard.nav.sales',        icon: 'receipt_long',  path: '/sales' },
     { labelKey: 'dashboard.nav.subscription', icon: 'credit_card',   path: '/subscription' },
     { labelKey: 'dashboard.nav.orders',       icon: 'shopping_cart', path: '/chatbot/orders' },
@@ -38,7 +38,7 @@ function isActive(path) {
 
             <nav>
                 <ul class="navigation-list">
-                    <li v-for="item in navItems" :key="item.path">
+                    <li v-for="item in navItems" :key="item.labelKey">
                         <router-link
                             class="navigation-link"
                             :class="{ 'navigation-link--active': isActive(item.path) }"
