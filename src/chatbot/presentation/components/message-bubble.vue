@@ -1,10 +1,14 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import YapeReceipt from './yape-receipt.vue'
+import PlinReceipt from './plin-receipt.vue'
 
 const props = defineProps({
-  message:        { type: Object, required: true },
-  clientInitials: { type: String, default: 'AT'  }
+  message:        { type: Object,  required: true },
+  clientInitials: { type: String,  default: 'AT'  },
+  paymentApp:     { type: String,  default: 'yape' }, // 'yape' | 'plin'
+  order:          { type: Object,  default: null   }
 })
 
 const { t } = useI18n()
@@ -28,6 +32,18 @@ const systemText = computed(() => {
 
   return t(key, paramMap)
 })
+
+// Siempre fuerza el método de pago al app correcto (Yape o Plin)
+const receiptOrder = computed(() => {
+  const base = props.order ?? {
+    id: 'demo',
+    orderNumber: '#ORD-???',
+    total: 0,
+    createdAt: new Date().toISOString(),
+    status: 'WAITING_PAYMENT'
+  }
+  return { ...base, paymentMethod: props.paymentApp === 'plin' ? 'Plin' : 'Yape' }
+})
 </script>
 
 <template>
@@ -39,13 +55,12 @@ const systemText = computed(() => {
   <!-- Client message -->
   <div v-else-if="message.sender === 'client'" class="client-msg">
     <div class="client-msg__avatar">{{ clientInitials }}</div>
-    <div class="client-msg__bubble">
-      <img
-        v-if="message.type === 'image'"
-        :src="message.content"
-        :alt="t('chatbot.message.receiptAlt')"
-        class="client-msg__img"
-      />
+    <div class="client-msg__bubble" :class="{ 'client-msg__bubble--receipt': message.type === 'image' }">
+      <!-- Comprobante simulado -->
+      <template v-if="message.type === 'image'">
+        <PlinReceipt v-if="paymentApp === 'plin'" :order="receiptOrder" />
+        <YapeReceipt v-else                        :order="receiptOrder" />
+      </template>
       <p v-else class="client-msg__text">{{ message.content }}</p>
     </div>
   </div>
@@ -101,15 +116,16 @@ const systemText = computed(() => {
   padding: 0.625rem 1rem;
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
 }
+/* Sin fondo naranja cuando es un recibo */
+.client-msg__bubble--receipt {
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
 .client-msg__text {
   font-size: 0.875rem;
   color: #fff;
   margin: 0;
-}
-.client-msg__img {
-  width: 10rem;
-  border-radius: 0.5rem;
-  display: block;
 }
 
 /* Bot */

@@ -2,6 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import useChatbotStore from '@/chatbot/application/chatbot.store.js'
+import YapeReceipt from '@/chatbot/presentation/components/yape-receipt.vue'
 
 const { t, locale } = useI18n()
 const store = useChatbotStore()
@@ -111,14 +112,8 @@ function reject(id)  { store.rejectOrder(id) }
         <!-- Cuerpo: comprobante + detalles -->
         <div class="order-card__body">
 
-          <!-- Comprobante (placeholder si tiene) -->
-          <div v-if="order.hasReceipt" class="receipt-placeholder" :aria-label="t('chatbot.orders.receiptAlt')">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span>{{ t('chatbot.orders.receiptAlt') }}</span>
-          </div>
+          <!-- Comprobante Yape simulado -->
+          <YapeReceipt v-if="order.hasReceipt" :order="order" />
 
           <!-- Info derecha -->
           <div class="order-info">
@@ -249,14 +244,6 @@ function reject(id)  { store.rejectOrder(id) }
 /* ── Card body ───────────────────────────────────────────────────────── */
 .order-card__body { display: flex; gap: 1.5rem; padding: 0 1.5rem 1.5rem; }
 
-/* ── Receipt placeholder ─────────────────────────────────────────────── */
-.receipt-placeholder {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  width: 9rem; min-height: 11rem; flex-shrink: 0; border-radius: 0.75rem;
-  border: 1.5px dashed #d1d5db; background: #f9fafb; gap: 0.5rem;
-  font-size: 0.625rem; color: #9ca3af; text-align: center; padding: 0.5rem;
-}
-.receipt-placeholder svg { width: 2rem; height: 2rem; color: #d1d5db; }
 
 /* ── Order info ──────────────────────────────────────────────────────── */
 .order-info { display: flex; flex-direction: column; flex: 1; gap: 1rem; min-width: 0; }
@@ -308,4 +295,28 @@ function reject(id)  { store.rejectOrder(id) }
 
 /* ── Blocked ─────────────────────────────────────────────────────────── */
 .blocked-msg { border-radius: 0.5rem; background: #fef2f2; padding: 0.625rem 1rem; font-size: 0.75rem; color: #dc2626; }
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .order-card__body { gap: 1rem; }
+}
+
+@media (max-width: 768px) {
+  .orders-page { padding: 1.25rem; }
+  /* Recibo encima, info debajo */
+  .order-card__body { flex-direction: column; padding: 0 1rem 1rem; }
+  /* Recibo centrado */
+  .order-card__body > :first-child { align-self: center; }
+}
+
+@media (max-width: 640px) {
+  .orders-page { padding: 1rem; }
+  .orders-title { font-size: 1.25rem; }
+  .order-card__head { padding: 1rem 1rem 0.75rem; gap: 0.5rem; }
+  .order-card__title { font-size: 0.875rem; }
+  .order-card__meta  { font-size: 0.75rem; }
+  .order-actions { flex-direction: column; }
+  .btn-approve, .btn-reject { width: 100%; text-align: center; }
+  .empty-card { padding: 3rem 1.5rem; }
+}
 </style>

@@ -34,6 +34,12 @@ const clientInitials = computed(() => {
   return `${parts[0]?.[0] ?? ''}${parts[1]?.[0] ?? ''}`
 })
 
+// Luis Ramirez → Plin · todos los demás → Yape
+const paymentApp = computed(() => {
+  const name = store.selectedConversation?.clientName ?? ''
+  return name.toLowerCase().startsWith('luis') ? 'plin' : 'yape'
+})
+
 /** Redirect to chatbot config if session is not connected */
 watch(
   () => store.isSessionLoaded,
@@ -135,6 +141,8 @@ function onCancelReject() {
               <MessageBubble
                 :message="message"
                 :client-initials="clientInitials"
+                :payment-app="paymentApp"
+                :order="store.pendingOrder ?? store.orders.find(o => o.conversationId === store.selectedConversationId) ?? null"
               />
             </div>
 
@@ -436,5 +444,37 @@ function onCancelReject() {
   font-size: 0.875rem;
   color: #fb923c;
   margin: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .conversations-page { padding: 1rem; }
+  .conversations-sidebar { width: 13rem; }
+}
+
+@media (max-width: 768px) {
+  .conversations-layout { flex-direction: column; border-radius: 0.75rem; }
+  .conversations-sidebar {
+    width: 100%;
+    height: 10rem;
+    overflow-y: auto;
+    border-left: none;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+  }
+  .conversations-chat { border-left: none; min-height: 0; }
+  .conversations-messages { padding: 1rem; }
+}
+
+@media (max-width: 640px) {
+  .conversations-page { padding: 0.5rem; padding-top: 0.5rem; }
+  .conversations-layout { height: calc(100dvh - 4rem); }
+  .conversations-sidebar { height: 8rem; }
+  .payment-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .payment-bar__actions { width: 100%; justify-content: flex-end; }
 }
 </style>
