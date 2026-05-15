@@ -1,4 +1,16 @@
 {
+    "pages": {
+        "home":                 "Inicio",
+        "help":                 "Ayuda",
+        "products":             "Productos",
+        "lots":                 "Lotes",
+        "sales":                "Ventas",
+        "subscription":         "Suscripción",
+        "chatbot":              "Chatbot",
+        "chatbotConversations": "Conversaciones",
+        "chatbotOrders":        "Pedidos",
+        "profile":              "Perfil"
+    },
     "comingSoon": {
         "title": "Próximamente",
         "subtitle": "Esta sección está en desarrollo."
