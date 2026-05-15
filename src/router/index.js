@@ -1,25 +1,34 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/shared/presentation/views/home.vue'
+import salesRoutes from '@/sales/presentation/sales-routes.js'
+import subscriptionRoutes from '@/subscription/presentation/subscription-routes.js'
 import chatbotRoutes from '@/chatbot/presentation/chatbot-routes.js'
 
-const ayuda        = () => import('@/shared/presentation/views/ayuda.vue')
-const pageNotFound = () => import('@/shared/presentation/views/page-not-found.vue')
-
-const routes = [
-  { path: '/home',  name: 'home',  component: Home,  meta: { title: 'Inicio' } },
-  { path: '/ayuda', name: 'ayuda', component: ayuda, meta: { title: 'Ayuda'  } },
-  ...chatbotRoutes.map(r => ({ ...r, path: `/${r.path}` })),
-  { path: '/', redirect: '/home' },
-  { path: '/:pathMatch(.*)*', name: 'not-found', component: pageNotFound, meta: { title: 'Página no encontrada' } }
-]
-
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
+        {
+            path: '/',
+            redirect: '/sales'
+        },
+        {
+            path: '/',
+            component: () => import('@/shared/presentation/components/dashboard-layout.vue'),
+            children: [
+                ...salesRoutes,
+                ...subscriptionRoutes,
+                ...chatbotRoutes
+            ]
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'not-found',
+            component: () => import('@/shared/presentation/views/page-not-found.vue')
+        }
+    ]
 })
 
 router.beforeEach((to) => {
-  document.title = `Entreprenly - ${to.meta['title'] ?? ''}`
+    if (to.meta?.title) document.title = `${to.meta.title} | Entreprenly`
 })
 
 export default router

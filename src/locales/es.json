@@ -1,272 +1,507 @@
 {
-  "nav": {
-    "home": "Inicio",
-    "pedidos": "Pedidos",
-    "catalogo": "Catálogo",
-    "chat": "Conversaciones",
-    "ayuda": "Ayuda"
-  },
-  "home": {
-    "title": "Dashboard - Entreprenly",
-    "pendientes": "Pedidos pendientes",
-    "por_validar": "Pagos por validar",
-    "aprobados_hoy": "Aprobados hoy",
-    "alertas": "Clientes con alertas",
-    "sin_pendientes": "No hay pagos por validar",
-    "validar_pago": "Validar pago"
-  },
-  "catalogo": {
-    "title": "Catálogo de productos",
-    "descripcion": "Productos disponibles para tus clientes en WhatsApp.",
-    "nombre": "Nombre",
-    "precio": "Precio",
-    "stock": "Stock",
-    "tipo": "Tipo",
-    "unidad": "Por unidad",
-    "peso": "Por kg (IoT)",
-    "sin_stock": "Sin stock",
-    "sin_productos": "No hay productos en el catálogo",
-    "iot_descripcion": "El stock de estos productos se actualiza automáticamente desde la balanza IoT en tiempo real."
-  },
-  "pedido": {
-    "title": "Gestión de pedidos",
-    "cliente": "Cliente",
-    "total": "Total",
-    "estado": "Estado",
-    "fecha": "Fecha",
-    "acciones": "Acciones",
-    "detalle": "Detalle del pedido",
-    "items": "Productos",
-    "expira_en": "Expira en",
-    "sin_pedidos": "No hay pedidos en esta categoría",
-    "no_encontrado": "Pedido no encontrado",
-    "estados": {
-      "pendiente_pago": "Pendiente de pago",
-      "pago_reportado": "Pago reportado",
-      "aprobado": "Aprobado",
-      "cancelado": "Cancelado"
+    "dashboard": {
+        "welcome": "Bienvenido, usuario",
+        "role": "Administrador",
+        "sidebarLabel": "Navegación principal",
+        "logout": "Cerrar sesión",
+        "nav": {
+            "home":         "Inicio",
+            "products":     "Productos",
+            "lots":         "Lotes",
+            "sales":        "Ventas",
+            "subscription": "Suscripción",
+            "orders":       "Pedidos",
+            "chatbot":      "Chatbot",
+            "help":         "Ayuda"
+        }
     },
-    "filtros": {
-      "todos": "Todos",
-      "por_validar": "Por validar",
-      "pendientes": "Pendientes",
-      "aprobados": "Aprobados",
-      "cancelados": "Cancelados"
+    "sales": {
+        "page": {
+            "title": "Ventas",
+            "subtitle": "Registra y procesa las ventas del día"
+        },
+        "detail": {
+            "title": "Detalle de venta"
+        },
+        "search": {
+            "placeholder": "Buscar producto por nombre...",
+            "notFound": "Producto no encontrado",
+            "emptyTicket": "No hay productos en el ticket"
+        },
+        "ticket": {
+            "col": {
+                "product":   "Producto",
+                "type":      "Tipo",
+                "quantity":  "Cantidad/peso",
+                "unitPrice": "P. Unit.",
+                "subtotal":  "Subtotal"
+            },
+            "empty": "Aún no se han añadido productos al ticket",
+            "badge": {
+                "unit":   "Unidad",
+                "weight": "Peso"
+            },
+            "unit": "und",
+            "kg":   "kg"
+        },
+        "register": {
+            "title":    "Resumen de Caja",
+            "subtitle": "Ingresos acumulados por método de pago",
+            "totalDay": "Total del Día",
+            "cash":     "Efectivo",
+            "digital":  "Tarjeta - Yape/Plin"
+        },
+        "summary": {
+            "title":       "Resumen",
+            "subtotal":    "Subtotal",
+            "itemsLabel":  "Productos",
+            "items":       "productos",
+            "total":       "Total"
+        },
+        "payment": {
+            "title":   "Método de Pago",
+            "cash":    "Efectivo",
+            "digital": "Tarjeta yape/plin",
+            "error":   "Por favor, seleccione un método de pago"
+        },
+        "finalize": "Finalizar Venta y Emitir Boleta",
+        "cancel":   "Cancelar Venta",
+        "success": {
+            "title": "Venta Exitosa"
+        },
+        "quantity-modal": {
+            "title":             "Registrar Cantidad",
+            "subtitle":          "Ingrese la cantidad de productos",
+            "label":             "Cantidad",
+            "confirm":           "Confirmar Cantidad",
+            "insufficientStock": "Stock insuficiente"
+        },
+        "weight-modal": {
+            "title":             "Registrar Peso",
+            "subtitleAuto":      "Registrando el peso del producto",
+            "subtitleManual":    "Ingresa el peso del producto manualmente",
+            "label":             "Peso (kg)",
+            "waiting":           "Esperando respuesta de la balanza...",
+            "confirm":           "Confirmar Peso",
+            "insufficientStock": "Stock insuficiente"
+        }
     },
-    "timeout_aviso": "Expira en"
-  },
-  "pago": {
-    "title": "Validar pago",
-    "detalle": "Detalle del pago",
-    "metodo": "Método de pago",
-    "monto": "Monto reportado",
-    "comprobante": "Comprobante",
-    "fecha_reporte": "Fecha de reporte",
-    "aprobar_pago": "Aprobar pago",
-    "rechazar_pago": "Rechazar pago",
-    "confirmacion_aprobar": "¿Confirmar aprobación del pago?",
-    "confirmacion_rechazar": "¿Rechazar este pago? El pedido quedará cancelado.",
-    "aprobado_ok": "El pago fue aprobado correctamente.",
-    "rechazado_ok": "El pago fue rechazado y el pedido cancelado.",
-    "sin_pago": "El cliente aún no ha enviado su comprobante",
-    "sin_comprobante": "Sin comprobante adjunto"
-  },
-  "chat": {
-    "title": "Conversaciones activas",
-    "sin_conversaciones": "No hay conversaciones activas",
-    "selecciona": "Selecciona una conversación para verla",
-    "gestionado_bot": "Las conversaciones son gestionadas automáticamente por el chatbot de WhatsApp."
-  },
-  "ayuda": {
-    "title": "Centro de ayuda",
-    "faq_title": "Preguntas frecuentes",
-    "contacto_title": "Contacto y soporte",
-    "guias_title": "Guías de uso"
-  },
-  "comun": {
-    "cargando": "Cargando...",
-    "error": "Ocurrió un error",
-    "exito": "Éxito",
-    "aviso": "Aviso",
-    "volver": "Volver",
-    "cancelar": "Cancelar",
-    "confirmar": "Confirmar"
-  },
-  "dashboard": {
-    "sidebarLabel": "Menú principal",
-    "currentUserLabel": "Tu perfil",
-    "welcome": "Bienvenido",
-    "logout": "Cerrar sesión",
-    "nav": {
-      "home":         "Inicio",
-      "products":     "Productos",
-      "lots":         "Lotes",
-      "sales":        "Ventas",
-      "subscription": "Suscripción",
-      "orders":       "Pedidos",
-      "chatbot":      "Chatbot",
-      "help":         "Ayuda"
-    }
-  },
-  "dashboard-home": {
-    "welcomeBack": "Panel de control",
-    "welcome":     "¡Hola, bienvenido!",
-    "quickLinksLabel": "Accesos rápidos",
-    "quickLinksHint":  "Accede rápidamente a las secciones más usadas.",
-    "alertBannerTitle": "Alertas de inventario activas",
-    "alertBanner":      "Tienes {count} alerta(s) de stock que requieren atención.",
-    "alertBannerLink":  "Ver lotes",
-    "stats": {
-      "salesToday":   "ventas hoy",
-      "revenueToday": "ingresos hoy",
-      "botOrders":    "pedidos bot",
-      "alerts":       "alertas stock"
+    "subscription": {
+        "page": {
+            "title": "Suscripción",
+            "description": "Consulta tu plan actual, revisa límites disponibles, actualiza a Plan Control y gestiona facturación desde el dashboard.",
+            "loading": "Cargando panel de suscripción...",
+            "errorTitle": "No se pudo cargar la suscripción",
+            "errorDescription": "Revisa que el servidor local esté activo y que los endpoints de .env.development apunten a server/db.json.",
+            "retry": "Reintentar"
+        },
+        "overview": {
+            "eyebrow": "Suscripción",
+            "title": "Plan actual y facturación",
+            "description": "Administra el plan de tu negocio, revisa los límites disponibles y actualiza a Plan Control cuando necesites operar sin restricciones.",
+            "billingFrequencyLabel": "Frecuencia de facturación",
+            "monthly": "Mensual",
+            "annual": "Anual",
+            "upgradeAction": "Actualizar a Plan Control",
+            "renewAction": "Renovar suscripción",
+            "keepPlanAction": "Mantener plan",
+            "cancelAction": "Solicitar cancelación",
+            "priceLabel": {
+                "monthly": "pago mensual",
+                "annual": "pago anual",
+                "free": "por mes"
+            },
+            "priceAriaLabel": "Costo actual {price} {label}"
+        },
+        "usage": {
+            "eyebrow": "Uso del plan",
+            "title": "Límites disponibles",
+            "status": {
+                "control": "Control",
+                "free": "Free"
+            },
+            "counter": "{used} de {max}",
+            "limitValue": {
+                "products": "{count} productos",
+                "active-batches": "{count} lotes",
+                "users-singular": "1 usuario",
+                "users-plural": "{count} usuarios",
+                "generic": "{count}"
+            }
+        },
+        "limits": {
+            "products": {
+                "label": "Productos",
+                "ariaLabel": "Uso de Productos"
+            },
+            "active-batches": {
+                "label": "Lotes activos",
+                "ariaLabel": "Uso de Lotes activos"
+            },
+            "users": {
+                "label": "Usuarios",
+                "ariaLabel": "Uso de Usuarios"
+            }
+        },
+        "billing": {
+            "eyebrow": "Facturación",
+            "title": "Método de pago y datos fiscales",
+            "paymentMethod": {
+                "title": "Método de pago",
+                "emptyDescription": "Aún no hay tarjeta o medio de pago registrado.",
+                "addAction": "Agregar métodos de pago",
+                "available": "Disponible para pagos y renovaciones",
+                "additionalMethod": "+{count} método adicional",
+                "additionalMethods": "+{count} métodos adicionales",
+                "cardEnding": "{brand} terminada en {lastFour} - vence {month}/{year}"
+            },
+            "fiscalData": {
+                "title": "Datos de facturación",
+                "emptyDescription": "Completa RUC, razón social y correo de comprobantes.",
+                "addAction": "Completar datos",
+                "editAction": "Editar datos fiscales",
+                "complete": "Información fiscal completa"
+            }
+        },
+        "activity": {
+            "eyebrow": "Historial",
+            "title": "Actividad de la suscripción",
+            "downloadAction": "Descargar historial",
+            "created-account": {
+                "title": "Cuenta creada",
+                "detail": "16 abril 2026 - Plan Free asignado automáticamente"
+            },
+            "current-status": {
+                "title": "Estado actual",
+                "detail": {
+                    "free": "Plan Free activo - Sin cargos registrados",
+                    "active": "Plan Control activo - {price}/mes",
+                    "scheduled-cancellation": "Cancelación programada - {price}/mes"
+                }
+            },
+            "billing": {
+                "title": "Facturación",
+                "detail": {
+                    "free": "Pendiente de completar para actualizar a Plan Control",
+                    "renewalWithDate": "Próxima renovación: {date} - {cycle}",
+                    "accessUntil": "Acceso vigente hasta el {date} - sin siguiente cobro"
+                }
+            }
+        },
+        "plans": {
+            "free": {
+                "name": "Plan Free",
+                "status": "Plan Free activo",
+                "badge": "Plan actual",
+                "shortDescription": "Incluido automáticamente al crear la cuenta. No requiere tarjeta ni genera cargos.",
+                "features": {
+                    "basicInventory": "Inventario básico con productos y lotes limitados.",
+                    "manualMovements": "Registro manual de movimientos principales.",
+                    "noChatbot": "Sin chatbot de WhatsApp ni automatizaciones avanzadas."
+                }
+            },
+            "current": {
+                "badgeLabel": "Plan actual"
+            },
+            "control": {
+                "name": "Plan Control",
+                "badgeLabel": "Recomendado",
+                "statusLabel": {
+                    "active": "Plan Control activo",
+                    "recommended": "Recomendado",
+                    "scheduled-cancellation": "Cancelación programada"
+                },
+                "shortDescription": {
+                    "active": "Tu plan sigue activo hasta el {date}. Se renovará automáticamente.",
+                    "recommended": "Opera sin restricciones con automatizaciones, alertas y trazabilidad completa.",
+                    "scheduled-cancellation": "Tu plan sigue activo hasta el {date}. No se renovará automáticamente."
+                },
+                "features": {
+                    "unlimitedProducts": "Productos y lotes ilimitados",
+                    "salesOperations": "Ventas, pedidos, caja y trazabilidad en un solo flujo.",
+                    "chatbot": "Chatbot de WhatsApp y alertas operativas incluidas."
+                }
+            }
+        },
+        "modal": {
+            "close": "Cerrar modal",
+            "eyebrow": "Suscripción"
+        },
+        "cardBrand": {
+            "generic": "Tarjeta"
+        },
+        "planAction": {
+            "renew": {
+                "title": "Renovar suscripción",
+                "cardTitle": "Renovación preparada",
+                "cardDescription": "La nueva vigencia se extenderá hasta el {date}."
+            },
+            "cancel": {
+                "title": "Solicitar cancelación",
+                "cardTitle": "Confirma la cancelación",
+                "cardDescription": "Tu acceso al Plan Control se mantendrá hasta el {date}. No se realizará el siguiente cobro."
+            },
+            "cancelSuccess": {
+                "title": "Cancelación programada",
+                "cardTitle": "Cancelación programada",
+                "cardDescription": "La solicitud fue registrada. Tu acceso premium continúa hasta el {date}."
+            },
+            "keep": {
+                "title": "Mantener Plan Control",
+                "cardTitle": "Mantener renovación activa",
+                "cardDescription": "Se cancelará la solicitud de baja y el plan seguirá renovándose al finalizar la vigencia actual: {date}."
+            },
+            "understood": "Entendido",
+            "confirmCancellation": "Confirmar cancelación",
+            "keepPlan": "Mantener Plan Control",
+            "fallbackDate": "la fecha registrada en tu suscripción"
+        },
+        "upgrade": {
+            "title": "Actualizar a Plan Control",
+            "navAriaLabel": "Pasos de actualización",
+            "steps": {
+                "plan": "Plan",
+                "billing": "Facturación",
+                "payment": "Pago",
+                "activation": "Activación"
+            },
+            "activated": {
+                "title": "Suscripción activada",
+                "cardTitle": "Plan Control activado",
+                "cardDescription": "Tu suscripción ya está activa. Puedes cerrar este popup y continuar operando.",
+                "understood": "Entendido"
+            },
+            "plan": {
+                "helper": "Elegiste Plan Control. Revisa el ciclo de cobro antes de continuar con la suscripción.",
+                "billingLabel": {
+                    "monthly": "Facturación mensual",
+                    "annual": "Facturación anual"
+                },
+                "priceLabel": {
+                    "monthly": "/mes",
+                    "annual": "/año"
+                }
+            },
+            "billing": {
+                "documentType": "Tipo de documento",
+                "documentNumber": "Número de documento",
+                "documentNumberError": "Ingresa un documento válido.",
+                "businessName": "Razón social o nombre",
+                "businessNameError": "Ingresa la razón social o nombre.",
+                "receiptEmail": "Correo de comprobantes",
+                "receiptEmailError": "Ingresa un correo válido.",
+                "fiscalAddress": "Dirección fiscal",
+                "fiscalAddressError": "Ingresa la dirección fiscal."
+            },
+            "payment": {
+                "registeredCard": "Tarjeta registrada",
+                "cardEnding": "{brand} terminada en {lastFour} - vence {month}/{year}",
+                "selectMethod": "Selecciona un método de pago",
+                "cardEndingShort": "{brand} terminada en {lastFour}",
+                "holderExpiry": "{holder} - vence {month}/{year}",
+                "totalCharge": "Total a cobrar",
+                "cardNumber": "Número de tarjeta",
+                "cardNumberError": "Ingresa un número de tarjeta válido.",
+                "holder": "Titular",
+                "holderError": "Ingresa el nombre del titular.",
+                "expiry": "Vencimiento",
+                "expiryError": "Usa el formato MM/AA.",
+                "cvvError": "Ingresa 3 o 4 dígitos."
+            },
+            "activation": {
+                "readyTitle": "Listo para activar",
+                "readyDescription": "Al confirmar, el Plan Control queda activo y se habilitan productos, lotes, pedidos y caja sin límites del plan gratuito.",
+                "payAndActivate": "Pagar y activar suscripción"
+            },
+            "continue": "Continuar",
+            "back": "Volver"
+        },
+        "billingData": {
+            "title": "Completar datos de facturación",
+            "cancel": "Cancelar",
+            "save": "Guardar datos"
+        },
+        "paymentMethod": {
+            "addTitle": "Agregar método de pago",
+            "holderPlaceholder": "Nombre del titular",
+            "save": "Guardar cambios"
+        },
+        "history": {
+            "title": "Historial de suscripción",
+            "ariaLabel": "Historial de suscripción",
+            "downloaded": "Historial descargado correctamente con la actividad visible de la suscripción.",
+            "downloadAction": "Descargar historial",
+            "paymentMethod": {
+                "title": "Método de pago",
+                "empty": "Sin método de pago registrado.",
+                "detail": "{brand} terminada en {lastFour} registrada para pagos y renovaciones"
+            },
+            "fiscalData": {
+                "title": "Datos fiscales",
+                "empty": "Datos fiscales pendientes de completar.",
+                "detail": "{documentType} {documentNumber} - {businessName}"
+            }
+        }
     },
-    "cash": {
-      "title":     "Ingresos hoy",
-      "cash":      "Efectivo",
-      "digital":   "Digital",
-      "ventas":    "Ventas",
-      "goToSales": "Ir a ventas"
+    "dashboard-home": {
+        "welcomeBack": "Panel de control",
+        "welcome":     "¡Hola, bienvenido!",
+        "quickLinksLabel": "Accesos rápidos",
+        "quickLinksHint":  "Accede rápidamente a las secciones más usadas.",
+        "alertBannerTitle": "Alertas de inventario activas",
+        "alertBanner":      "Tienes {count} alerta(s) de stock que requieren atención.",
+        "alertBannerLink":  "Ver lotes",
+        "stats": {
+            "salesToday":   "ventas hoy",
+            "revenueToday": "ingresos hoy",
+            "botOrders":    "pedidos bot",
+            "alerts":       "alertas stock"
+        },
+        "cash": {
+            "title":     "Ingresos hoy",
+            "cash":      "Efectivo",
+            "digital":   "Digital",
+            "ventas":    "Ventas",
+            "goToSales": "Ir a ventas"
+        },
+        "chatbot": {
+            "title":            "WhatsApp Chatbot",
+            "connected":        "Conectado",
+            "disconnected":     "Desconectado",
+            "chatsToday":       "Conversaciones hoy",
+            "botOrders":        "Pedidos del bot",
+            "number":           "Número vinculado",
+            "pendingOrders_one":   "1 pedido esperando validación",
+            "pendingOrders_other": "{count} pedidos esperando validación",
+            "disconnectedSub":  "Vincula tu WhatsApp para recibir pedidos automáticos.",
+            "connectNow":       "Conectar ahora"
+        },
+        "orders": {
+            "title":          "Pedidos recientes",
+            "viewAll":        "Ver todos",
+            "empty":          "Sin pedidos aún",
+            "emptySub":       "Los pedidos del chatbot aparecerán aquí.",
+            "colClient":      "Cliente",
+            "colStatus":      "Estado",
+            "colTotal":       "Total",
+            "clientFallback": "—",
+            "approved":       "Aprobados",
+            "pending":        "Por validar",
+            "status": {
+                "confirmed":       "Confirmado",
+                "blocked":         "Bloqueado",
+                "cancelled":       "Cancelado",
+                "receiptReceived": "Comprobante recibido",
+                "awaitingReceipt": "Esperando pago"
+            }
+        },
+        "inventory": {
+            "title":   "Inventario",
+            "viewAll": "Ver todo",
+            "empty":   "Sin productos registrados."
+        },
+        "alerts": {
+            "empty":    "Inventario en buen estado",
+            "emptySub": "No hay alertas de stock activas.",
+            "viewMore": "Ver {count} más",
+            "types": {
+                "low_stock":     "Stock bajo: {count} und",
+                "out_of_stock":  "Sin stock",
+                "expired":       "Lote vencido",
+                "expiring_soon": "Por vencer pronto"
+            }
+        },
+        "links": {
+            "products":    "Productos",
+            "productsSub": "Catálogo",
+            "lots":        "Lotes",
+            "lotsSub":     "Trazabilidad",
+            "chatbot":     "Chatbot",
+            "chatbotSub":  "WhatsApp",
+            "orders":      "Pedidos",
+            "ordersSub":   "Conversaciones",
+            "reports":     "Reportes",
+            "reportsSub":  "Ventas",
+            "goTo":        "Ir a {label}"
+        }
     },
     "chatbot": {
-      "title":            "WhatsApp Chatbot",
-      "connected":        "Conectado",
-      "disconnected":     "Desconectado",
-      "chatsToday":       "Conversaciones hoy",
-      "botOrders":        "Pedidos del bot",
-      "number":           "Número vinculado",
-      "pendingOrders_one":   "1 pedido esperando validación",
-      "pendingOrders_other": "{count} pedidos esperando validación",
-      "disconnectedSub":  "Vincula tu WhatsApp para recibir pedidos automáticos.",
-      "connectNow":       "Conectar ahora"
-    },
-    "orders": {
-      "title":          "Pedidos recientes",
-      "viewAll":        "Ver todos",
-      "empty":          "Sin pedidos aún",
-      "emptySub":       "Los pedidos del chatbot aparecerán aquí.",
-      "colClient":      "Cliente",
-      "colStatus":      "Estado",
-      "colTotal":       "Total",
-      "clientFallback": "—",
-      "approved":       "Aprobados",
-      "pending":        "Por validar",
-      "status": {
-        "confirmed":       "Confirmado",
-        "blocked":         "Bloqueado",
-        "cancelled":       "Cancelado",
-        "receiptReceived": "Comprobante recibido",
-        "awaitingReceipt": "Esperando pago"
-      }
-    },
-    "inventory": {
-      "title":   "Inventario",
-      "viewAll": "Ver todo",
-      "empty":   "Sin productos registrados."
-    },
-    "alerts": {
-      "empty":    "Inventario en buen estado",
-      "emptySub": "No hay alertas de stock activas.",
-      "viewMore": "Ver {count} más",
-      "types": {
-        "low_stock":     "Stock bajo: {count} und",
-        "out_of_stock":  "Sin stock",
-        "expired":       "Lote vencido",
-        "expiring_soon": "Por vencer pronto"
-      }
-    },
-    "links": {
-      "products":    "Productos",
-      "productsSub": "Catálogo",
-      "lots":        "Lotes",
-      "lotsSub":     "Trazabilidad",
-      "chatbot":     "Chatbot",
-      "chatbotSub":  "WhatsApp",
-      "orders":      "Pedidos",
-      "ordersSub":   "Conversaciones",
-      "reports":     "Reportes",
-      "reportsSub":  "Ventas",
-      "goTo":        "Ir a {label}"
+        "page": {
+            "title": "Chatbot de WhatsApp",
+            "loading": "Verificando sesión...",
+            "connectPrompt": "Vincula tu cuenta de WhatsApp Business escaneando el código QR.",
+            "connectionStatus": "Tu cuenta de WhatsApp está conectada y activa."
+        },
+        "qr": {
+            "expiredTitle": "El código QR ha expirado",
+            "expiredDetail": "Espera un momento mientras generamos uno nuevo.",
+            "linkTitle": "Vincula tu WhatsApp",
+            "newCode": "Nuevo código QR",
+            "scanInstruction": "Abre WhatsApp en tu celular y escanea el código.",
+            "alt": "Código QR de WhatsApp",
+            "expiresIn": "Expira en {seconds} segundos",
+            "expiresInOne": "Expira en 1 segundo",
+            "generating": "Generando nuevo código...",
+            "simulateScan": "Simular escaneo"
+        },
+        "statusCard": {
+            "cardTitle": "WhatsApp Business",
+            "connectedTitle": "¡Conexión exitosa!",
+            "connectedDetail": "Tu WhatsApp está listo para recibir pedidos de tus clientes.",
+            "expiredTitle": "Sesión expirada",
+            "expiredDetail": "La sesión de WhatsApp ha expirado. Vuelve a vincular tu cuenta.",
+            "activeSince": "activo desde",
+            "lastConnection": "última conexión",
+            "operative": "El chatbot está recibiendo y procesando pedidos.",
+            "viewConversations": "Ver conversaciones",
+            "disconnect": "Desconectar",
+            "reconnect": "Reconectar",
+            "connected": "Conectado",
+            "disconnected": "Desconectado"
+        },
+        "conversationList": {
+            "title": "Conversaciones"
+        },
+        "header": {
+            "online": "En línea"
+        },
+        "message": {
+            "receiptAlt": "Comprobante de pago"
+        },
+        "input": {
+            "placeholder": "Escribe un mensaje...",
+            "emptyError": "Escribe algo antes de enviar",
+            "ariaLabel": "Campo de mensaje",
+            "voiceNote": "Nota de voz",
+            "attach": "Adjuntar archivo",
+            "send": "Enviar mensaje"
+        },
+        "payment": {
+            "pendingBar": "Pago pendiente — Pedido #{orderNumber}",
+            "pendingBarDetail": "Método: {paymentMethod} · S/ {total}",
+            "approve": "Aprobar",
+            "reject": "Rechazar",
+            "rejectTitle": "Motivo del rechazo",
+            "confirmReject": "Confirmar rechazo",
+            "cancelReject": "Cancelar",
+            "reasons": {
+                "illegible": "Imagen ilegible",
+                "wrongAmount": "Monto incorrecto",
+                "fake": "Comprobante falso"
+            }
+        },
+        "conversations": {
+            "empty": "Aún no tienes conversaciones.\nTus clientes te escribirán por WhatsApp.",
+            "placeholder": "Selecciona una conversación para ver los mensajes."
+        },
+        "sys": {
+            "orderRegistered": "Pedido #{orderNumber} registrado a las {time}",
+            "paymentApproved": "Pago aprobado a las {time}",
+            "botPaymentApproved": "¡Tu pedido #{orderNumber} ha sido confirmado! Pronto recibirás tu pedido.",
+            "receiptRejected": "Comprobante rechazado a las {time}",
+            "botReceiptRejected": "El comprobante del pedido #{orderNumber} fue rechazado. Motivo: {reason}. Por favor envía uno nuevo.",
+            "blocked": "Conversación bloqueada a las {time}",
+            "botBlocked": "Lamentablemente tu pedido #{orderNumber} fue cancelado por múltiples intentos fallidos de pago."
+        }
     }
-  },
-  "chatbot": {
-    "page": {
-      "title": "Chatbot de WhatsApp",
-      "loading": "Verificando sesión...",
-      "connectPrompt": "Vincula tu cuenta de WhatsApp Business escaneando el código QR.",
-      "connectionStatus": "Tu cuenta de WhatsApp está conectada y activa."
-    },
-    "qr": {
-      "expiredTitle": "El código QR ha expirado",
-      "expiredDetail": "Espera un momento mientras generamos uno nuevo.",
-      "linkTitle": "Vincula tu WhatsApp",
-      "newCode": "Nuevo código QR",
-      "scanInstruction": "Abre WhatsApp en tu celular y escanea el código.",
-      "alt": "Código QR de WhatsApp",
-      "expiresIn": "Expira en {seconds} segundos",
-      "expiresInOne": "Expira en 1 segundo",
-      "generating": "Generando nuevo código...",
-      "simulateScan": "Simular escaneo"
-    },
-    "statusCard": {
-      "cardTitle": "WhatsApp Business",
-      "connectedTitle": "¡Conexión exitosa!",
-      "connectedDetail": "Tu WhatsApp está listo para recibir pedidos de tus clientes.",
-      "expiredTitle": "Sesión expirada",
-      "expiredDetail": "La sesión de WhatsApp ha expirado. Vuelve a vincular tu cuenta.",
-      "activeSince": "activo desde",
-      "lastConnection": "última conexión",
-      "operative": "El chatbot está recibiendo y procesando pedidos.",
-      "viewConversations": "Ver conversaciones",
-      "disconnect": "Desconectar",
-      "reconnect": "Reconectar",
-      "connected": "Conectado",
-      "disconnected": "Desconectado"
-    },
-    "conversationList": {
-      "title": "Conversaciones"
-    },
-    "header": {
-      "online": "En línea"
-    },
-    "message": {
-      "receiptAlt": "Comprobante de pago"
-    },
-    "input": {
-      "placeholder": "Escribe un mensaje...",
-      "emptyError": "Escribe algo antes de enviar",
-      "ariaLabel": "Campo de mensaje",
-      "voiceNote": "Nota de voz",
-      "attach": "Adjuntar archivo",
-      "send": "Enviar mensaje"
-    },
-    "payment": {
-      "pendingBar": "Pago pendiente — Pedido #{orderNumber}",
-      "pendingBarDetail": "Método: {paymentMethod} · S/ {total}",
-      "approve": "Aprobar",
-      "reject": "Rechazar",
-      "rejectTitle": "Motivo del rechazo",
-      "confirmReject": "Confirmar rechazo",
-      "cancelReject": "Cancelar",
-      "reasons": {
-        "illegible": "Imagen ilegible",
-        "wrongAmount": "Monto incorrecto",
-        "fake": "Comprobante falso"
-      }
-    },
-    "conversations": {
-      "empty": "Aún no tienes conversaciones.\nTus clientes te escribirán por WhatsApp.",
-      "placeholder": "Selecciona una conversación para ver los mensajes."
-    },
-    "sys": {
-      "orderRegistered": "Pedido #{orderNumber} registrado a las {time}",
-      "paymentApproved": "Pago aprobado a las {time}",
-      "botPaymentApproved": "¡Tu pedido #{orderNumber} ha sido confirmado! Pronto recibirás tu pedido.",
-      "receiptRejected": "Comprobante rechazado a las {time}",
-      "botReceiptRejected": "El comprobante del pedido #{orderNumber} fue rechazado. Motivo: {reason}. Por favor envía uno nuevo.",
-      "blocked": "Conversación bloqueada a las {time}",
-      "botBlocked": "Lamentablemente tu pedido #{orderNumber} fue cancelado por múltiples intentos fallidos de pago."
-    }
-  }
 }

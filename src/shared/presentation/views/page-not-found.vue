@@ -1,13 +1,12 @@
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
 </script>
 
 <template>
-  <div class="flex flex-column align-items-center justify-content-center" style="min-height: 60vh;">
-    <i class="pi pi-exclamation-circle text-6xl mb-4" style="color: #ccc;" />
-    <h2 class="mb-2" style="color: #888;">Página no encontrada</h2>
-    <p class="mb-4" style="color: #aaa;">La ruta que buscas no existe.</p>
-    <router-link to="/home">
-      <pv-button label="Volver al inicio" icon="pi pi-home" />
-    </router-link>
-  </div>
+    <div class="flex flex-column align-items-center justify-content-center" style="height: 80vh; gap: 1rem">
+        <i class="pi pi-exclamation-circle text-color-secondary" style="font-size: 4rem"></i>
+        <h2 class="m-0">404 — Page not found</h2>
+        <pv-button label="Go back" icon="pi pi-arrow-left" @click="router.back()" />
+    </div>
 </template>

@@ -1,53 +1,74 @@
 import './assets/main.css'
-import 'primeflex/primeflex.css'
-import 'primeicons/primeicons.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
-import pinia from './pinia.js'
-import router from './router/index.js'
-import i18n from './i18n.js'
-
+import 'primeflex/primeflex.css'
+import 'primeicons/primeicons.css'
+import Material from '@primeuix/themes/material'
 import PrimeVue from 'primevue/config'
-import Aura from '@primeuix/themes/aura'
-import ToastService from 'primevue/toastservice'
-import ConfirmationService from 'primevue/confirmationservice'
+import i18n from '@/i18n.js'
+import {
+    Button,
+    Card,
+    Checkbox,
+    Column,
+    ConfirmationService,
+    ConfirmDialog,
+    DataTable,
+    Dialog,
+    DialogService,
+    Drawer,
+    FileUpload,
+    FloatLabel,
+    IconField,
+    InputIcon,
+    InputNumber,
+    InputText,
+    Menu,
+    Rating,
+    Row,
+    Select,
+    SelectButton,
+    Tag,
+    Textarea,
+    Toast,
+    ToastService,
+    Toolbar,
+    Tooltip
+} from 'primevue'
+import pinia from '@/pinia.js'
+import router from '@/router/index.js'
 
-import Button from 'primevue/button'
-import Card from 'primevue/card'
-import Column from 'primevue/column'
-import ConfirmDialog from 'primevue/confirmdialog'
-import DataTable from 'primevue/datatable'
-import Dialog from 'primevue/dialog'
-import Drawer from 'primevue/drawer'
-import InputText from 'primevue/inputtext'
-import SelectButton from 'primevue/selectbutton'
-import Tag from 'primevue/tag'
-import Textarea from 'primevue/textarea'
-import Toast from 'primevue/toast'
-import Toolbar from 'primevue/toolbar'
-
-const app = createApp(App)
-
-app.use(pinia)
-app.use(router)
-app.use(i18n)
-app.use(PrimeVue, { theme: { preset: Aura }, ripple: true })
-app.use(ToastService)
-app.use(ConfirmationService)
-
-app.component('pv-button',         Button)
-app.component('pv-card',           Card)
-app.component('pv-column',         Column)
-app.component('pv-confirm-dialog', ConfirmDialog)
-app.component('pv-data-table',     DataTable)
-app.component('pv-dialog',         Dialog)
-app.component('pv-drawer',         Drawer)
-app.component('pv-input-text',     InputText)
-app.component('pv-select-button',  SelectButton)
-app.component('pv-tag',            Tag)
-app.component('pv-textarea',       Textarea)
-app.component('pv-toast',          Toast)
-app.component('pv-toolbar',        Toolbar)
-
-app.mount('#app')
+createApp(App)
+    .use(i18n)
+    .use(PrimeVue, { theme: { preset: Material }, ripple: true })
+    .use(ConfirmationService)
+    .use(DialogService)
+    .use(ToastService)
+    .component('pv-button',         Button)
+    .component('pv-card',           Card)
+    .component('pv-column',         Column)
+    .component('pv-confirm-dialog', ConfirmDialog)
+    .component('pv-checkbox',       Checkbox)
+    .component('pv-data-table',     DataTable)
+    .component('pv-dialog',         Dialog)
+    .component('pv-select',         Select)
+    .component('pv-select-button',  SelectButton)
+    .component('pv-file-upload',    FileUpload)
+    .component('pv-float-label',    FloatLabel)
+    .component('pv-icon-field',     IconField)
+    .component('pv-input-icon',     InputIcon)
+    .component('pv-input-text',     InputText)
+    .component('pv-input-number',   InputNumber)
+    .component('pv-menu',           Menu)
+    .component('pv-rating',         Rating)
+    .component('pv-row',            Row)
+    .component('pv-drawer',         Drawer)
+    .component('pv-tag',            Tag)
+    .component('pv-textarea',       Textarea)
+    .component('pv-toolbar',        Toolbar)
+    .component('pv-toast',          Toast)
+    .component('tooltip',           Tooltip)
+    .use(router)
+    .use(pinia)
+    .mount('#app')
