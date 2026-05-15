@@ -90,7 +90,10 @@
         "page": {
             "title": "Subscription",
             "description": "Check your current plan, review available limits, upgrade to Plan Control, and manage billing from the dashboard.",
-            "loading": "Loading subscription dashboard..."
+            "loading": "Loading subscription dashboard...",
+            "errorTitle": "Subscription could not be loaded",
+            "errorDescription": "Check that the local server is running and that .env.development endpoints point to server/db.json.",
+            "retry": "Retry"
         },
         "overview": {
             "eyebrow": "Subscription",

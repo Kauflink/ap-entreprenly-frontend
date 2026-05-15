@@ -1,11 +1,6 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import {
-    addMonthsPreservingMonthEnd,
-    formatPlanDate,
-    toLocalDate
-} from '@/subscription/presentation/subscription-ui.js'
 
 const props = defineProps({
     mode:         { type: String, required: true },
@@ -15,6 +10,39 @@ const props = defineProps({
 
 const emit = defineEmits(['closed', 'cancellation-confirmed', 'keep-plan-confirmed'])
 const { t, locale } = useI18n()
+
+function toLocalDate(dateValue) {
+    const [year, month, day] = String(dateValue ?? '').split('-').map(value => Number(value))
+    if (!year || !month || !day) return null
+    return new Date(year, month - 1, day)
+}
+
+function formatPlanDate(dateValue, currentLocale, fallback) {
+    const date = dateValue instanceof Date ? dateValue : toLocalDate(dateValue)
+
+    if (date === null) return fallback
+
+    return new Intl.DateTimeFormat(String(currentLocale ?? 'en').startsWith('es') ? 'es-PE' : 'en-US', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    }).format(date)
+}
+
+function addMonthsPreservingMonthEnd(date, months) {
+    const targetMonthStart = new Date(date.getFullYear(), date.getMonth() + months, 1)
+    const originalMonthLastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+    const targetMonthLastDay = new Date(
+        targetMonthStart.getFullYear(),
+        targetMonthStart.getMonth() + 1,
+        0
+    ).getDate()
+    const targetDay = date.getDate() === originalMonthLastDay
+        ? targetMonthLastDay
+        : Math.min(date.getDate(), targetMonthLastDay)
+
+    return new Date(targetMonthStart.getFullYear(), targetMonthStart.getMonth(), targetDay)
+}
 
 const titleKey = computed(() => {
     switch (props.mode) {

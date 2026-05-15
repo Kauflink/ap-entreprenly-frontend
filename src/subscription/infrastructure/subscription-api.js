@@ -1,30 +1,23 @@
 import { BaseApi } from '@/shared/infrastructure/base-api.js'
-import { BaseEndpoint } from '@/shared/infrastructure/base-endpoint.js'
 import { SubscriptionAssembler } from '@/subscription/infrastructure/subscription.assembler.js'
-import {
-    ACTIVE_SUBSCRIPTION_DASHBOARD_RESPONSE,
-    SUBSCRIPTION_DASHBOARD_RESPONSE
-} from '@/subscription/infrastructure/subscription-dashboard.mock.js'
 
-const subscriptionDashboardPath = '/subscription-dashboard'
-const subscriptionActivationPath = '/subscription-payment-confirmation'
-const unitProductsPath = '/inventory-unit-products'
-const weightProductsPath = '/inventory-weight-products'
-const unitLotsPath = '/inventory-unit-lots'
-const weightLotsPath = '/inventory-weight-lots'
+const subscriptionDashboardPath =
+    import.meta.env.VITE_SUBSCRIPTION_DASHBOARD_ENDPOINT_PATH ?? '/subscription-dashboard/1'
+const subscriptionActivationPath =
+    import.meta.env.VITE_SUBSCRIPTION_PAYMENT_CONFIRMATION_ENDPOINT_PATH ?? '/subscription-payment-confirmation/1'
+const unitProductsPath =
+    import.meta.env.VITE_UNIT_PRODUCT_ENDPOINT_PATH ?? '/inventory-unit-products'
+const weightProductsPath =
+    import.meta.env.VITE_WEIGHT_PRODUCT_ENDPOINT_PATH ?? '/inventory-weight-products'
+const unitLotsPath =
+    import.meta.env.VITE_UNIT_LOT_ENDPOINT_PATH ?? '/inventory-unit-lots'
+const weightLotsPath =
+    import.meta.env.VITE_WEIGHT_LOT_ENDPOINT_PATH ?? '/inventory-weight-lots'
 
 export class SubscriptionApi extends BaseApi {
-    #subscriptionDashboardEndpoint
-
-    constructor() {
-        super()
-        this.#subscriptionDashboardEndpoint = new BaseEndpoint(this, subscriptionDashboardPath)
-    }
-
     getSubscriptionDashboard() {
-        return this.#subscriptionDashboardEndpoint.getById(1)
+        return this.http.get(subscriptionDashboardPath)
             .then(response => SubscriptionAssembler.toEntityFromResponse(response.data))
-            .catch(() => SubscriptionAssembler.toEntityFromResponse(SUBSCRIPTION_DASHBOARD_RESPONSE))
     }
 
     getInventoryUsage() {
@@ -40,9 +33,8 @@ export class SubscriptionApi extends BaseApi {
     }
 
     activateControlPlan(billingCycle, currentDashboard) {
-        return this.http.get(`${subscriptionActivationPath}/1`)
+        return this.http.get(subscriptionActivationPath)
             .then(response => response.data)
-            .catch(() => ACTIVE_SUBSCRIPTION_DASHBOARD_RESPONSE)
             .then(response => ({
                 ...response,
                 billingSetup: SubscriptionAssembler.toBillingSetupResponseFromEntity(currentDashboard.billingSetup)
@@ -81,9 +73,8 @@ export class SubscriptionApi extends BaseApi {
     }
 
     saveSubscriptionDashboard(response) {
-        return this.#subscriptionDashboardEndpoint.update(1, response)
+        return this.http.put(subscriptionDashboardPath, response)
             .then(saved => saved.data)
-            .catch(() => response)
     }
 
     withNewSubscriptionPeriod(response, billingCycle) {

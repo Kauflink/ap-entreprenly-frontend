@@ -351,6 +351,13 @@
       "totalDigital": 0,
       "saleCount": 0,
       "id": 3
+    },
+    {
+      "date": "2026-05-15",
+      "totalCash": 0,
+      "totalDigital": 0,
+      "saleCount": 0,
+      "id": 4
     }
   ],
   "iot-scale": {
@@ -365,7 +372,7 @@
       "currentPlan": {
         "id": "plan-control",
         "name": "Plan Control",
-        "shortDescription": "Tu plan sigue activo hasta el 12 de junio de 2026. Se renovará automáticamente.",
+        "shortDescription": "Tu plan sigue activo hasta el 12 de junio de 2026. Se renovara automaticamente.",
         "monthlyPrice": 89,
         "annualPrice": 890,
         "status": "active",
@@ -480,12 +487,12 @@
         {
           "id": "current-status",
           "title": "Estado actual",
-          "detail": "Plan Control activo - S/ 89/mes"
+          "detail": "Plan Control activo"
         },
         {
           "id": "billing",
-          "title": "Facturación",
-          "detail": "Próxima renovación: 12 de junio de 2026 - pago mensual"
+          "title": "Facturacion",
+          "detail": "Proxima renovacion: 12 de junio de 2026 - pago mensual"
         }
       ]
     }

@@ -1,7 +1,6 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { formatCurrency, formatPlanDate } from '@/subscription/presentation/subscription-ui.js'
 
 const props = defineProps({
     currentPlan:         { type: Object, required: true },
@@ -19,6 +18,28 @@ const emit = defineEmits([
 ])
 
 const { t, locale } = useI18n()
+
+function formatCurrency(priceInPen) {
+    return `S/ ${Number(priceInPen ?? 0).toFixed(2)}`
+}
+
+function toLocalDate(dateValue) {
+    const [year, month, day] = String(dateValue ?? '').split('-').map(value => Number(value))
+    if (!year || !month || !day) return null
+    return new Date(year, month - 1, day)
+}
+
+function formatPlanDate(dateValue, currentLocale, fallback) {
+    const date = toLocalDate(dateValue)
+
+    if (date === null) return fallback
+
+    return new Intl.DateTimeFormat(String(currentLocale ?? 'en').startsWith('es') ? 'es-PE' : 'en-US', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    }).format(date)
+}
 
 const selectedPrice = computed(() =>
     props.selectedCycle === 'monthly'

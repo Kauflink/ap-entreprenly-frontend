@@ -2,10 +2,6 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { detectCardBrand } from '@/subscription/domain/model/billing-setup-entity.js'
-import {
-    cardBrandLabel,
-    formatCurrency
-} from '@/subscription/presentation/subscription-ui.js'
 import CardBrandBadge from '@/subscription/presentation/components/card-brand-badge.vue'
 
 const props = defineProps({
@@ -23,6 +19,17 @@ const emit = defineEmits([
 ])
 
 const { t } = useI18n()
+
+function formatCurrency(priceInPen) {
+    return `S/ ${Number(priceInPen ?? 0).toFixed(2)}`
+}
+
+function cardBrandLabel(cardBrand) {
+    const normalizedBrand = String(cardBrand ?? '').trim().toLowerCase()
+    return ['tarjeta', 'card'].includes(normalizedBrand)
+        ? t('subscription.cardBrand.generic')
+        : cardBrand
+}
 const activeStep = ref('plan')
 const activated = ref(false)
 const selectedPaymentMethodId = ref('')
@@ -197,7 +204,7 @@ function hasPaymentFieldError(fieldName) {
 }
 
 function displayCardBrand(cardBrand) {
-    return cardBrandLabel(cardBrand, t('subscription.cardBrand.generic'))
+    return cardBrandLabel(cardBrand)
 }
 
 function continueFromBilling() {

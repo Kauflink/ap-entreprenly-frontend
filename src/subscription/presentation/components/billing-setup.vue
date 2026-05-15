@@ -1,7 +1,6 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { cardBrandLabel } from '@/subscription/presentation/subscription-ui.js'
 
 const props = defineProps({
     billingSetup: { type: Object, required: true }
@@ -34,7 +33,10 @@ const extraPaymentMethodLabelKey = computed(() =>
 )
 
 function displayCardBrand(cardBrand) {
-    return cardBrandLabel(cardBrand, t('subscription.cardBrand.generic'))
+    const normalizedBrand = String(cardBrand ?? '').trim().toLowerCase()
+    return ['tarjeta', 'card'].includes(normalizedBrand)
+        ? t('subscription.cardBrand.generic')
+        : cardBrand
 }
 </script>
 

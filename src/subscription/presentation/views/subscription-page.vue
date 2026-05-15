@@ -20,7 +20,8 @@ const {
     loading,
     selectedCycle,
     controlPlanSelected,
-    feedback
+    feedback,
+    error
 } = storeToRefs(subscriptionApp)
 
 const upgradeModalOpen = ref(false)
@@ -129,6 +130,10 @@ function downloadActivityHistory() {
     subscriptionApp.downloadActivityHistory()
     historyDownloaded.value = true
 }
+
+function reloadDashboard() {
+    subscriptionApp.loadDashboard()
+}
 </script>
 
 <template>
@@ -141,6 +146,15 @@ function downloadActivityHistory() {
         <p v-if="loading" class="loading-message" role="status">
             {{ t('subscription.page.loading') }}
         </p>
+
+        <section v-else-if="error" class="error-message" role="alert">
+            <strong>{{ t('subscription.page.errorTitle') }}</strong>
+            <span>{{ t('subscription.page.errorDescription') }}</span>
+            <small>{{ error }}</small>
+            <button type="button" @click="reloadDashboard">
+                {{ t('subscription.page.retry') }}
+            </button>
+        </section>
 
         <template v-else>
             <p v-if="feedback" class="feedback-message" role="status" aria-live="polite">
@@ -263,7 +277,8 @@ function downloadActivityHistory() {
 }
 
 .loading-message,
-.feedback-message {
+.feedback-message,
+.error-message {
     border: 1px solid var(--color-inner-bg);
     border-radius: 14px;
     margin: 0;
@@ -279,6 +294,45 @@ function downloadActivityHistory() {
     background: #fff8e9;
     color: var(--color-label-accent);
     font-weight: 700;
+}
+
+.error-message {
+    display: grid;
+    gap: 10px;
+    border-color: #f1beb8;
+    background: #fff7f5;
+    color: #5d1d16;
+}
+
+.error-message strong {
+    font-size: 16px;
+}
+
+.error-message span,
+.error-message small {
+    line-height: 1.5;
+}
+
+.error-message small {
+    color: #8a3b33;
+}
+
+.error-message button {
+    justify-self: start;
+    min-height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-primary);
+    color: #ffffff;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+    padding: 0 22px;
+}
+
+.error-message button:focus-visible {
+    outline: 3px solid rgb(243 131 19 / 32%);
+    outline-offset: 3px;
 }
 
 @media (max-width: 1040px) {

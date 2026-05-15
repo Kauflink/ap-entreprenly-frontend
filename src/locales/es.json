@@ -90,7 +90,10 @@
         "page": {
             "title": "Suscripción",
             "description": "Consulta tu plan actual, revisa límites disponibles, actualiza a Plan Control y gestiona facturación desde el dashboard.",
-            "loading": "Cargando panel de suscripción..."
+            "loading": "Cargando panel de suscripción...",
+            "errorTitle": "No se pudo cargar la suscripción",
+            "errorDescription": "Revisa que el servidor local esté activo y que los endpoints de .env.development apunten a server/db.json.",
+            "retry": "Reintentar"
         },
         "overview": {
             "eyebrow": "Suscripción",

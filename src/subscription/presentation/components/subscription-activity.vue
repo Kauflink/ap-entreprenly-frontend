@@ -1,7 +1,6 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { buildActivityRows } from '@/subscription/presentation/subscription-ui.js'
 
 const props = defineProps({
     activity:     { type: Array, required: true },
@@ -14,15 +13,132 @@ const emit = defineEmits(['history-download-requested'])
 const { t, locale } = useI18n()
 
 const activityRows = computed(() =>
-    buildActivityRows({
-        activity: props.activity,
-        billingSetup: props.billingSetup,
-        currentPlan: props.currentPlan,
-        billingCycle: props.billingCycle,
-        t,
-        locale: locale.value
-    })
+    [
+        ...props.activity.map(item => toActivityRow(item)),
+        {
+            id: 'payment-method',
+            title: t('subscription.history.paymentMethod.title'),
+            detail: paymentMethodDetail()
+        },
+        {
+            id: 'fiscal-data',
+            title: t('subscription.history.fiscalData.title'),
+            detail: fiscalDataDetail()
+        }
+    ]
 )
+
+function formatCurrency(priceInPen) {
+    return `S/ ${Number(priceInPen ?? 0).toFixed(2)}`
+}
+
+function toLocalDate(dateValue) {
+    const [year, month, day] = String(dateValue ?? '').split('-').map(value => Number(value))
+    if (!year || !month || !day) return null
+    return new Date(year, month - 1, day)
+}
+
+function formatPlanDate(dateValue) {
+    const date = toLocalDate(dateValue)
+
+    if (date === null) return t('subscription.planAction.fallbackDate')
+
+    return new Intl.DateTimeFormat(locale.value.startsWith('es') ? 'es-PE' : 'en-US', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    }).format(date)
+}
+
+function toActivityRow(item) {
+    if (item.id === 'created-account') {
+        return {
+            id: item.id,
+            title: t('subscription.activity.created-account.title'),
+            detail: t('subscription.activity.created-account.detail')
+        }
+    }
+
+    if (item.id === 'current-status') {
+        return {
+            id: item.id,
+            title: t('subscription.activity.current-status.title'),
+            detail: t(`subscription.activity.current-status.detail.${props.currentPlan.status}`, {
+                price: formatCurrency(props.currentPlan.monthlyPrice)
+            })
+        }
+    }
+
+    if (item.id === 'billing') return toBillingActivityRow(item)
+
+    return {
+        id: item.id,
+        title: item.title,
+        detail: item.detail
+    }
+}
+
+function toBillingActivityRow(item) {
+    if (props.currentPlan.status === 'free') {
+        return {
+            id: item.id,
+            title: t('subscription.activity.billing.title'),
+            detail: t('subscription.activity.billing.detail.free')
+        }
+    }
+
+    const cancellationScheduled = props.currentPlan.status === 'scheduled-cancellation'
+
+    return {
+        id: item.id,
+        title: t('subscription.activity.billing.title'),
+        detail: t(cancellationScheduled
+            ? 'subscription.activity.billing.detail.accessUntil'
+            : 'subscription.activity.billing.detail.renewalWithDate',
+        {
+            date: formatPlanDate(props.currentPlan.currentPeriodEndDate),
+            cycle: props.billingCycle === 'annual'
+                ? t('subscription.overview.priceLabel.annual')
+                : t('subscription.overview.priceLabel.monthly')
+        })
+    }
+}
+
+function selectedPaymentMethod() {
+    return props.billingSetup.paymentMethods.find(method => method.isDefault)
+        ?? props.billingSetup.paymentMethods.at(-1)
+        ?? null
+}
+
+function cardBrandLabel(cardBrand) {
+    const normalizedBrand = String(cardBrand ?? '').trim().toLowerCase()
+    return ['tarjeta', 'card'].includes(normalizedBrand)
+        ? t('subscription.cardBrand.generic')
+        : cardBrand
+}
+
+function paymentMethodDetail() {
+    const paymentMethod = selectedPaymentMethod()
+
+    if (!paymentMethod) return t('subscription.history.paymentMethod.empty')
+
+    return t('subscription.history.paymentMethod.detail', {
+        brand: cardBrandLabel(paymentMethod.cardBrand),
+        lastFour: paymentMethod.lastFour
+    })
+}
+
+function fiscalDataDetail() {
+    const fiscalData = props.billingSetup.fiscalData
+
+    if (fiscalData === null) return t('subscription.history.fiscalData.empty')
+
+    return t('subscription.history.fiscalData.detail', {
+        documentType: fiscalData.documentType,
+        documentNumber: fiscalData.documentNumber,
+        businessName: fiscalData.businessName
+    })
+}
 </script>
 
 <template>
