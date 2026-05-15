@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import salesRoutes from '@/sales/presentation/sales-routes.js'
+import subscriptionRoutes from '@/subscription/presentation/subscription-routes.js'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,7 +12,10 @@ const router = createRouter({
         {
             path: '/',
             component: () => import('@/shared/presentation/components/dashboard-layout.vue'),
-            children: salesRoutes
+            children: [
+                ...salesRoutes,
+                ...subscriptionRoutes
+            ]
         },
         {
             path: '/:pathMatch(.*)*',
