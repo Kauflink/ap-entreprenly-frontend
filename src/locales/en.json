@@ -5,6 +5,7 @@
     },
     "dashboard": {
         "welcome": "Welcome, user",
+        "currentUserLabel": "Open profile settings",
         "role": "Administrator",
         "sidebarLabel": "Main navigation",
         "logout": "Log out",
@@ -16,7 +17,6 @@
             "subscription": "Subscription",
             "orders":       "Orders",
             "chatbot":      "Chatbot",
-            "profile":      "Profile",
             "help":         "Help"
         }
     },
