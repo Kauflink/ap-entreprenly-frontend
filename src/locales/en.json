@@ -2,6 +2,7 @@
     "dashboard": {
         "welcome": "Welcome, user",
         "role": "Administrator",
+        "sidebarLabel": "Main navigation",
         "logout": "Log out",
         "nav": {
             "home":         "Home",
@@ -83,6 +84,263 @@
             "waiting":           "Waiting for scale response...",
             "confirm":           "Confirm Weight",
             "insufficientStock": "Insufficient stock"
+        }
+    },
+    "subscription": {
+        "page": {
+            "title": "Subscription",
+            "description": "Check your current plan, review available limits, upgrade to Plan Control, and manage billing from the dashboard.",
+            "loading": "Loading subscription dashboard...",
+            "errorTitle": "Subscription could not be loaded",
+            "errorDescription": "Check that the local server is running and that .env.development endpoints point to server/db.json.",
+            "retry": "Retry"
+        },
+        "overview": {
+            "eyebrow": "Subscription",
+            "title": "Current plan and billing",
+            "description": "Manage your business plan, review available limits, and upgrade to Plan Control when you need to operate without restrictions.",
+            "billingFrequencyLabel": "Billing frequency",
+            "monthly": "Monthly",
+            "annual": "Annual",
+            "upgradeAction": "Upgrade to Plan Control",
+            "renewAction": "Renew subscription",
+            "keepPlanAction": "Keep plan",
+            "cancelAction": "Request cancellation",
+            "priceLabel": {
+                "monthly": "monthly payment",
+                "annual": "annual payment",
+                "free": "per month"
+            },
+            "priceAriaLabel": "Current cost {price} {label}"
+        },
+        "usage": {
+            "eyebrow": "Plan usage",
+            "title": "Available limits",
+            "status": {
+                "control": "Control",
+                "free": "Free"
+            },
+            "counter": "{used} of {max}",
+            "limitValue": {
+                "products": "{count} products",
+                "active-batches": "{count} lots",
+                "users-singular": "1 user",
+                "users-plural": "{count} users",
+                "generic": "{count}"
+            }
+        },
+        "limits": {
+            "products": {
+                "label": "Products",
+                "ariaLabel": "Usage of Products"
+            },
+            "active-batches": {
+                "label": "Active lots",
+                "ariaLabel": "Usage of Active lots"
+            },
+            "users": {
+                "label": "Users",
+                "ariaLabel": "Usage of Users"
+            }
+        },
+        "billing": {
+            "eyebrow": "Billing",
+            "title": "Payment method and tax data",
+            "paymentMethod": {
+                "title": "Payment method",
+                "emptyDescription": "No payment method registered yet.",
+                "addAction": "Add payment methods",
+                "available": "Available for payments and renewals",
+                "additionalMethod": "+{count} additional method",
+                "additionalMethods": "+{count} additional methods",
+                "cardEnding": "{brand} ending in {lastFour} - expires {month}/{year}"
+            },
+            "fiscalData": {
+                "title": "Billing information",
+                "emptyDescription": "Complete your tax ID, business name, and receipt email.",
+                "addAction": "Complete information",
+                "editAction": "Edit fiscal data",
+                "complete": "Fiscal information complete"
+            }
+        },
+        "activity": {
+            "eyebrow": "History",
+            "title": "Subscription activity",
+            "downloadAction": "Download history",
+            "created-account": {
+                "title": "Account created",
+                "detail": "April 16, 2026 - Plan Free automatically assigned"
+            },
+            "current-status": {
+                "title": "Current status",
+                "detail": {
+                    "free": "Free Plan active - No charges recorded",
+                    "active": "Control Plan active - {price}/month",
+                    "scheduled-cancellation": "Cancellation scheduled - {price}/month"
+                }
+            },
+            "billing": {
+                "title": "Billing",
+                "detail": {
+                    "free": "Pending completion to upgrade to Plan Control",
+                    "renewalWithDate": "Next renewal: {date} - {cycle}",
+                    "accessUntil": "Access valid until {date} - no next charge"
+                }
+            }
+        },
+        "plans": {
+            "free": {
+                "name": "Free Plan",
+                "status": "Free Plan active",
+                "badge": "Current plan",
+                "shortDescription": "Automatically included when creating your account. No card required and no charges generated.",
+                "features": {
+                    "basicInventory": "Basic inventory with limited products and lots.",
+                    "manualMovements": "Manual recording of main movements.",
+                    "noChatbot": "No WhatsApp chatbot or advanced automations."
+                }
+            },
+            "current": {
+                "badgeLabel": "Current plan"
+            },
+            "control": {
+                "name": "Control Plan",
+                "badgeLabel": "Recommended",
+                "statusLabel": {
+                    "active": "Control Plan active",
+                    "recommended": "Recommended",
+                    "scheduled-cancellation": "Cancellation scheduled"
+                },
+                "shortDescription": {
+                    "active": "Your plan remains active until {date}. It will renew automatically.",
+                    "recommended": "Operate without restrictions with automations, alerts, and full traceability.",
+                    "scheduled-cancellation": "Your plan remains active until {date}. It will not renew automatically."
+                },
+                "features": {
+                    "unlimitedProducts": "Unlimited products and lots",
+                    "salesOperations": "Sales, orders, cash register, and traceability in one flow.",
+                    "chatbot": "WhatsApp chatbot and operational alerts included."
+                }
+            }
+        },
+        "modal": {
+            "close": "Close modal",
+            "eyebrow": "Subscription"
+        },
+        "cardBrand": {
+            "generic": "Card"
+        },
+        "planAction": {
+            "renew": {
+                "title": "Renew subscription",
+                "cardTitle": "Renewal ready",
+                "cardDescription": "The new period will extend until {date}."
+            },
+            "cancel": {
+                "title": "Request cancellation",
+                "cardTitle": "Confirm cancellation",
+                "cardDescription": "Your access to Control Plan will remain until {date}. The next charge will not be made."
+            },
+            "cancelSuccess": {
+                "title": "Cancellation scheduled",
+                "cardTitle": "Cancellation scheduled",
+                "cardDescription": "Your request was recorded. Your premium access continues until {date}."
+            },
+            "keep": {
+                "title": "Keep Control Plan",
+                "cardTitle": "Keep renewal active",
+                "cardDescription": "The cancellation request will be cancelled and the plan will continue renewing at the end of the current period: {date}."
+            },
+            "understood": "Understood",
+            "confirmCancellation": "Confirm cancellation",
+            "keepPlan": "Keep Control Plan",
+            "fallbackDate": "the registered date in your subscription"
+        },
+        "upgrade": {
+            "title": "Upgrade to Control Plan",
+            "navAriaLabel": "Upgrade steps",
+            "steps": {
+                "plan": "Plan",
+                "billing": "Billing",
+                "payment": "Payment",
+                "activation": "Activation"
+            },
+            "activated": {
+                "title": "Subscription activated",
+                "cardTitle": "Control Plan activated",
+                "cardDescription": "Your subscription is now active. You can close this popup and continue operating.",
+                "understood": "Understood"
+            },
+            "plan": {
+                "helper": "You chose Control Plan. Review the billing cycle before continuing with the subscription.",
+                "billingLabel": {
+                    "monthly": "Monthly billing",
+                    "annual": "Annual billing"
+                },
+                "priceLabel": {
+                    "monthly": "/month",
+                    "annual": "/year"
+                }
+            },
+            "billing": {
+                "documentType": "Document type",
+                "documentNumber": "Document number",
+                "documentNumberError": "Enter a valid document.",
+                "businessName": "Business name",
+                "businessNameError": "Enter the business name.",
+                "receiptEmail": "Receipt email",
+                "receiptEmailError": "Enter a valid email.",
+                "fiscalAddress": "Fiscal address",
+                "fiscalAddressError": "Enter the fiscal address."
+            },
+            "payment": {
+                "registeredCard": "Registered card",
+                "cardEnding": "{brand} ending in {lastFour} - expires {month}/{year}",
+                "selectMethod": "Select a payment method",
+                "cardEndingShort": "{brand} ending in {lastFour}",
+                "holderExpiry": "{holder} - expires {month}/{year}",
+                "totalCharge": "Total to charge",
+                "cardNumber": "Card number",
+                "cardNumberError": "Enter a valid card number.",
+                "holder": "Cardholder",
+                "holderError": "Enter the cardholder name.",
+                "expiry": "Expiry",
+                "expiryError": "Use MM/YY format.",
+                "cvvError": "Enter 3 or 4 digits."
+            },
+            "activation": {
+                "readyTitle": "Ready to activate",
+                "readyDescription": "When confirmed, Control Plan becomes active and products, lots, orders, and cash register are enabled without free plan limits.",
+                "payAndActivate": "Pay and activate subscription"
+            },
+            "continue": "Continue",
+            "back": "Back"
+        },
+        "billingData": {
+            "title": "Complete billing information",
+            "cancel": "Cancel",
+            "save": "Save data"
+        },
+        "paymentMethod": {
+            "addTitle": "Add payment method",
+            "holderPlaceholder": "Cardholder name",
+            "save": "Save changes"
+        },
+        "history": {
+            "title": "Subscription history",
+            "ariaLabel": "Subscription history",
+            "downloaded": "History downloaded successfully with the visible subscription activity.",
+            "downloadAction": "Download history",
+            "paymentMethod": {
+                "title": "Payment method",
+                "empty": "No payment method registered.",
+                "detail": "{brand} ending in {lastFour} registered for payments and renewals"
+            },
+            "fiscalData": {
+                "title": "Fiscal data",
+                "empty": "Fiscal data pending completion.",
+                "detail": "{documentType} {documentNumber} - {businessName}"
+            }
         }
     }
 }

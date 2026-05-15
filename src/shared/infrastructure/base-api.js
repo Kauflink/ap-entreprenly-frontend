@@ -5,7 +5,7 @@ export class BaseApi {
 
     constructor() {
         this.#http = axios.create({
-            baseURL: 'http://localhost:3000/api/v1',
+            baseURL: import.meta.env.VITE_ENTREPENLY_PLATFORM_API_URL ?? 'http://localhost:3000/api/v1',
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
