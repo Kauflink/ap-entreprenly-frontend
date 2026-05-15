@@ -9,10 +9,12 @@ import PaymentMethod from './payment-method.vue'
 import CashSummary from './cash-summary.vue'
 import QuantityModal from '../components/quantity-modal.vue'
 import WeightModal from '../components/weight-modal.vue'
+import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js'
 
 const { t } = useI18n()
 const store = useSalesStore()
 const { loading } = storeToRefs(store)
+const { format } = useCurrencyFormatter()
 
 const cartItems        = ref([])
 const pendingProduct   = ref(null)
@@ -128,7 +130,7 @@ function onCloseSuccessModal() {
                     </h2>
                     <div class="summary-row">
                         <span>{{ t('sales.summary.subtotal') }}</span>
-                        <span>S/ {{ subtotal.toFixed(2) }}</span>
+                        <span>{{ format(subtotal) }}</span>
                     </div>
                     <div class="summary-row">
                         <span>{{ t('sales.summary.itemsLabel') }}</span>
@@ -137,7 +139,7 @@ function onCloseSuccessModal() {
                     <hr />
                     <div class="summary-total">
                         <span>{{ t('sales.summary.total') }}</span>
-                        <span class="total-value">S/ {{ subtotal.toFixed(2) }}</span>
+                        <span class="total-value">{{ format(subtotal) }}</span>
                     </div>
                 </section>
 

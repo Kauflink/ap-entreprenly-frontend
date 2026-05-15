@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { detectCardBrand } from '@/subscription/domain/model/billing-setup-entity.js'
 import CardBrandBadge from '@/subscription/presentation/components/card-brand-badge.vue'
+import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js'
 
 const props = defineProps({
     plan:         { type: Object, required: true },
@@ -19,10 +20,7 @@ const emit = defineEmits([
 ])
 
 const { t } = useI18n()
-
-function formatCurrency(priceInPen) {
-    return `S/ ${Number(priceInPen ?? 0).toFixed(2)}`
-}
+const { format: formatCurrency } = useCurrencyFormatter()
 
 function cardBrandLabel(cardBrand) {
     const normalizedBrand = String(cardBrand ?? '').trim().toLowerCase()

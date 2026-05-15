@@ -1,25 +1,23 @@
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
+import useProfileStore from '@/profile/application/profile.store.js'
 
 const { t } = useI18n()
-const router = useRouter()
-const route  = useRoute()
+
+const profileStore = useProfileStore()
+const { profile, fullName } = storeToRefs(profileStore)
 
 const navItems = [
     { labelKey: 'dashboard.nav.home',         icon: 'dashboard',     path: '/home' },
-    { labelKey: 'dashboard.nav.products',     icon: 'inventory_2',   path: '/sales' },
-    { labelKey: 'dashboard.nav.lots',         icon: 'category',      path: '/sales' },
+    { labelKey: 'dashboard.nav.products',     icon: 'inventory_2',   path: '/products' },
+    { labelKey: 'dashboard.nav.lots',         icon: 'category',      path: '/lots' },
     { labelKey: 'dashboard.nav.sales',        icon: 'receipt_long',  path: '/sales' },
     { labelKey: 'dashboard.nav.subscription', icon: 'credit_card',   path: '/subscription' },
     { labelKey: 'dashboard.nav.orders',       icon: 'shopping_cart', path: '/chatbot/orders' },
     { labelKey: 'dashboard.nav.chatbot',      icon: 'smart_toy',     path: '/chatbot' },
     { labelKey: 'dashboard.nav.help',         icon: 'help_outline',  path: '/help' },
 ]
-
-function isActive(path) {
-    return route.path === path || route.path.startsWith(path + '/')
-}
 </script>
 
 <template>
@@ -29,19 +27,32 @@ function isActive(path) {
                 <span class="brand-text">Entreprenly</span>
             </div>
 
-            <a class="profile" href="#" @click.prevent>
+            <router-link
+                class="profile"
+                active-class=""
+                exact-active-class="profile--active"
+                to="/profile"
+                :aria-label="t('dashboard.currentUserLabel')"
+            >
                 <span class="profile__avatar" aria-hidden="true">
-                    <span class="material-icons">person</span>
+                    <img
+                        v-if="profile.avatarUrl"
+                        :src="profile.avatarUrl"
+                        :alt="t('profile.userInfo.avatarAlt')"
+                        class="profile__avatar-img"
+                    />
+                    <span v-else class="material-icons">person</span>
                 </span>
-                <strong>{{ t('dashboard.welcome') }}</strong>
-            </a>
+                <strong>{{ fullName || t('dashboard.welcome') }}</strong>
+            </router-link>
 
             <nav>
                 <ul class="navigation-list">
-                    <li v-for="item in navItems" :key="item.path">
+                    <li v-for="item in navItems" :key="item.labelKey">
                         <router-link
                             class="navigation-link"
-                            :class="{ 'navigation-link--active': isActive(item.path) }"
+                            active-class=""
+                            exact-active-class="navigation-link--active"
                             :to="item.path"
                             :aria-label="t(item.labelKey)"
                         >
@@ -125,6 +136,16 @@ function isActive(path) {
     height: clamp(32px, 4.76dvh, 51px);
     color: #2b2927;
     font-size: clamp(32px, 4.76dvh, 51px);
+}
+.profile__avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+}
+.profile--active .profile__avatar {
+    outline: 3px solid var(--color-sidebar-item-active-bg);
+    outline-offset: 3px;
 }
 .profile strong {
     font-size: clamp(16px, 2.22dvh, 24px);

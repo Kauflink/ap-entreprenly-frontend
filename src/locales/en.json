@@ -1,6 +1,23 @@
 {
+    "pages": {
+        "home":                 "Home",
+        "help":                 "Help",
+        "products":             "Products",
+        "lots":                 "Lots",
+        "sales":                "Sales",
+        "subscription":         "Subscription",
+        "chatbot":              "Chatbot",
+        "chatbotConversations": "Conversations",
+        "chatbotOrders":        "Orders",
+        "profile":              "Profile"
+    },
+    "comingSoon": {
+        "title": "Coming soon",
+        "subtitle": "This section is under development."
+    },
     "dashboard": {
         "welcome": "Welcome, user",
+        "currentUserLabel": "Open profile settings",
         "role": "Administrator",
         "sidebarLabel": "Main navigation",
         "logout": "Log out",
@@ -757,6 +774,117 @@
                 "cancelled":       "Cancelled",
                 "receiptReceived": "Receipt received",
                 "awaitingReceipt": "Awaiting payment"
+            }
+        }
+    },
+    "profile": {
+        "page": {
+            "ariaLabel":           "Profile configuration",
+            "leftSectionLabel":    "Profile photo",
+            "centerSectionLabel":  "Profile data",
+            "rightSectionLabel":   "Preferences and email"
+        },
+        "userInfo": {
+            "avatarAlt": "User avatar"
+        },
+        "uploadPhoto": {
+            "title":           "Upload photo",
+            "previewAlt":      "Photo preview",
+            "fileInputLabel":  "Select profile photo",
+            "selectAction":    "Select photo"
+        },
+        "updateProfile": {
+            "title":      "Update profile",
+            "saveAction": "Save changes",
+            "fields": {
+                "firstName": {
+                    "label":       "First name",
+                    "placeholder": "Enter your first name"
+                },
+                "lastName": {
+                    "label":       "Last name",
+                    "placeholder": "Enter your last name"
+                }
+            }
+        },
+        "phoneVerify": {
+            "title":         "Verify phone",
+            "verifyAction":  "Verify",
+            "fields": {
+                "phone": {
+                    "label":       "Phone number",
+                    "placeholder": "+51 999 999 999"
+                }
+            }
+        },
+        "preferences": {
+            "title": "Preferences",
+            "fields": {
+                "language": { "label": "Language" },
+                "timezone": { "label": "Time zone" },
+                "currency": { "label": "Currency" }
+            },
+            "theme": {
+                "label": "Theme",
+                "light": "Light",
+                "dark":  "Dark"
+            }
+        },
+        "emailChange": {
+            "title":        "Change email",
+            "verifyAction": "Verify",
+            "fields": {
+                "email": {
+                    "label":       "New email",
+                    "placeholder": "name{'@'}example.com"
+                }
+            }
+        },
+        "notifications": {
+            "title": "Notifications",
+            "items": {
+                "stock": {
+                    "name":        "Stock alerts",
+                    "desc":        "Get notified when products run low",
+                    "toggleLabel": "Toggle stock alerts"
+                },
+                "payment": {
+                    "name":        "Payment alerts",
+                    "desc":        "Get notified about new payments",
+                    "toggleLabel": "Toggle payment alerts"
+                },
+                "chatbot": {
+                    "name":        "Chatbot messages",
+                    "desc":        "Get notified about chatbot conversations",
+                    "toggleLabel": "Toggle chatbot messages"
+                }
+            }
+        },
+        "changePassword": {
+            "title":        "Change password",
+            "updateAction": "Update password",
+            "fields": {
+                "current": {
+                    "label":       "Current password",
+                    "placeholder": "Enter your current password",
+                    "showLabel":   "Show current password",
+                    "hideLabel":   "Hide current password"
+                },
+                "new": {
+                    "label":       "New password",
+                    "placeholder": "Enter your new password",
+                    "showLabel":   "Show new password",
+                    "hideLabel":   "Hide new password"
+                },
+                "confirm": {
+                    "label":       "Confirm password",
+                    "placeholder": "Confirm your new password",
+                    "showLabel":   "Show confirmation password",
+                    "hideLabel":   "Hide confirmation password"
+                }
+            },
+            "errors": {
+                "mismatch": "Passwords do not match"
             }
         }
     }

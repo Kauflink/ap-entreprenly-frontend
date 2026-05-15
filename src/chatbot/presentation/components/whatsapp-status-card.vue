@@ -136,6 +136,7 @@ const router = useRouter()
   cursor: pointer;
   border: none;
   text-decoration: none;
+  white-space: nowrap;
   transition: background 0.2s, opacity 0.2s;
 }
 .btn--orange {
