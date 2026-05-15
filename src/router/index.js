@@ -14,6 +14,8 @@ const router = createRouter({
             path: '/',
             component: () => import('@/shared/presentation/components/dashboard-layout.vue'),
             children: [
+                { path: 'home', name: 'home', component: () => import('@/shared/presentation/views/home.vue'), meta: { title: 'Inicio' } },
+                { path: 'help', name: 'help', component: () => import('@/shared/presentation/views/ayuda.vue'), meta: { title: 'Ayuda' } },
                 ...salesRoutes,
                 ...subscriptionRoutes,
                 ...chatbotRoutes
