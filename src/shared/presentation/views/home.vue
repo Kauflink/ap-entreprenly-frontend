@@ -666,13 +666,48 @@ onMounted(async () => {
 
 /* ── Responsive ───────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .main-grid { grid-template-columns: 1fr 1fr; }
-  .ql-grid   { grid-template-columns: repeat(3, 1fr); }
+  /* Grid: columna izquierda + pedidos en fila, inventario abajo full */
+  .main-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .inventory-col {
+    grid-column: 1 / -1; /* inventario ocupa toda la fila */
+  }
+  .ql-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+@media (max-width: 768px) {
+  .home-inner { padding: 1rem; gap: 1rem; }
+  .banner { padding: 1.25rem 1.5rem; }
+  .banner__content { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .banner__stats { width: 100%; justify-content: space-between; }
+  /* Alert banner apilado */
+  .alert-banner { flex-wrap: wrap; gap: 0.5rem; }
+  .alert-banner__link { margin-left: 0; }
+}
+
 @media (max-width: 640px) {
+  .home-inner { padding: 0.75rem; }
   .main-grid { grid-template-columns: 1fr; }
-  .ql-grid   { grid-template-columns: repeat(2, 1fr); }
-  .banner__stats { gap: 1rem; }
+  .inventory-col { grid-column: auto; }
+  .ql-grid { grid-template-columns: repeat(2, 1fr); }
+  .banner__stats { gap: 0.75rem; }
   .stat-divider  { display: none; }
+  .stat__value   { font-size: 1.25rem; }
+  /* Orders table → cards en mobile */
+  .orders-table thead { display: none; }
+  .orders-table, .orders-table tbody, .orders-table tr, .orders-table td {
+    display: block; width: 100%;
+  }
+  .orders-table__row {
+    border: 1px solid #f3f4f6; border-radius: 0.5rem;
+    margin-bottom: 0.5rem; padding: 0.5rem 0.75rem;
+  }
+  .orders-table__num   { font-size: 0.625rem; padding: 0; }
+  .orders-table__total { text-align: left; padding: 0; }
+  .orders-table__client { padding: 0.25rem 0; }
+  /* Banner compacto */
+  .banner { padding: 1rem; }
+  .banner__title { font-size: 1rem; }
 }
 </style>

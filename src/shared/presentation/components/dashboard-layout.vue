@@ -217,10 +217,13 @@ function isActive(path) {
     .sidebar { position: relative; height: auto; padding: 22px; }
     .profile { margin-block: 8px; }
     .navigation-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .dashboard-content { padding: 30px 22px 42px; }
+    .dashboard-content { padding: 24px 20px 36px; }
+}
+@media (max-width: 768px) {
+    .dashboard-content { padding: 16px 14px 28px; }
 }
 @media (max-width: 620px) {
     .navigation-list { grid-template-columns: 1fr; }
-    .dashboard-content { padding-inline: 14px; }
+    .dashboard-content { padding: 12px 10px 24px; }
 }
 </style>
