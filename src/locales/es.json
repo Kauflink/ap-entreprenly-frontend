@@ -16,6 +16,7 @@
             "subscription": "Suscripción",
             "orders":       "Pedidos",
             "chatbot":      "Chatbot",
+            "profile":      "Perfil",
             "help":         "Ayuda"
         }
     },
@@ -761,6 +762,117 @@
                 "cancelled":       "Cancelado",
                 "receiptReceived": "Comprobante recibido",
                 "awaitingReceipt": "Esperando pago"
+            }
+        }
+    },
+    "profile": {
+        "page": {
+            "ariaLabel":           "Configuración de perfil",
+            "leftSectionLabel":    "Foto de perfil",
+            "centerSectionLabel":  "Datos del perfil",
+            "rightSectionLabel":   "Preferencias y email"
+        },
+        "userInfo": {
+            "avatarAlt": "Avatar del usuario"
+        },
+        "uploadPhoto": {
+            "title":           "Subir foto",
+            "previewAlt":      "Vista previa de la foto",
+            "fileInputLabel":  "Seleccionar foto de perfil",
+            "selectAction":    "Seleccionar foto"
+        },
+        "updateProfile": {
+            "title":      "Actualizar perfil",
+            "saveAction": "Guardar cambios",
+            "fields": {
+                "firstName": {
+                    "label":       "Nombre",
+                    "placeholder": "Ingresa tu nombre"
+                },
+                "lastName": {
+                    "label":       "Apellido",
+                    "placeholder": "Ingresa tu apellido"
+                }
+            }
+        },
+        "phoneVerify": {
+            "title":         "Verificar teléfono",
+            "verifyAction":  "Verificar",
+            "fields": {
+                "phone": {
+                    "label":       "Número de teléfono",
+                    "placeholder": "+51 999 999 999"
+                }
+            }
+        },
+        "preferences": {
+            "title": "Preferencias",
+            "fields": {
+                "language": { "label": "Idioma" },
+                "timezone": { "label": "Zona horaria" },
+                "currency": { "label": "Moneda" }
+            },
+            "theme": {
+                "label": "Tema",
+                "light": "Claro",
+                "dark":  "Oscuro"
+            }
+        },
+        "emailChange": {
+            "title":        "Cambiar email",
+            "verifyAction": "Verificar",
+            "fields": {
+                "email": {
+                    "label":       "Nuevo email",
+                    "placeholder": "nombre@ejemplo.com"
+                }
+            }
+        },
+        "notifications": {
+            "title": "Notificaciones",
+            "items": {
+                "stock": {
+                    "name":        "Alertas de stock",
+                    "desc":        "Recibe avisos cuando los productos se agoten",
+                    "toggleLabel": "Activar alertas de stock"
+                },
+                "payment": {
+                    "name":        "Alertas de pago",
+                    "desc":        "Recibe avisos de nuevos pagos",
+                    "toggleLabel": "Activar alertas de pago"
+                },
+                "chatbot": {
+                    "name":        "Mensajes del chatbot",
+                    "desc":        "Recibe avisos de conversaciones del chatbot",
+                    "toggleLabel": "Activar mensajes del chatbot"
+                }
+            }
+        },
+        "changePassword": {
+            "title":        "Cambiar contraseña",
+            "updateAction": "Actualizar contraseña",
+            "fields": {
+                "current": {
+                    "label":       "Contraseña actual",
+                    "placeholder": "Ingresa tu contraseña actual",
+                    "showLabel":   "Mostrar contraseña actual",
+                    "hideLabel":   "Ocultar contraseña actual"
+                },
+                "new": {
+                    "label":       "Nueva contraseña",
+                    "placeholder": "Ingresa la nueva contraseña",
+                    "showLabel":   "Mostrar nueva contraseña",
+                    "hideLabel":   "Ocultar nueva contraseña"
+                },
+                "confirm": {
+                    "label":       "Confirmar contraseña",
+                    "placeholder": "Confirma la nueva contraseña",
+                    "showLabel":   "Mostrar confirmación",
+                    "hideLabel":   "Ocultar confirmación"
+                }
+            },
+            "errors": {
+                "mismatch": "Las contraseñas no coinciden"
             }
         }
     }

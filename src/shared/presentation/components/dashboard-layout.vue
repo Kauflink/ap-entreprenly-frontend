@@ -13,6 +13,7 @@ const navItems = [
     { labelKey: 'dashboard.nav.subscription', icon: 'credit_card',   path: '/subscription' },
     { labelKey: 'dashboard.nav.orders',       icon: 'shopping_cart', path: '/chatbot/orders' },
     { labelKey: 'dashboard.nav.chatbot',      icon: 'smart_toy',     path: '/chatbot' },
+    { labelKey: 'dashboard.nav.profile',      icon: 'person',        path: '/profile' },
     { labelKey: 'dashboard.nav.help',         icon: 'help_outline',  path: '/help' },
 ]
 
