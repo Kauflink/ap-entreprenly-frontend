@@ -5,7 +5,7 @@ import salesRoutes from '@/sales/presentation/sales-routes.js'
 import subscriptionRoutes from '@/subscription/presentation/subscription-routes.js'
 import chatbotRoutes from '@/chatbot/presentation/chatbot-routes.js'
 import profileRoutes from '@/profile/presentation/profile-routes.js'
-
+import inventoryRoutes from "@/inventory/presentation/inventory-routes.js";
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -24,6 +24,7 @@ const router = createRouter({
                 ...salesRoutes,
                 ...subscriptionRoutes,
                 ...chatbotRoutes,
+                ...inventoryRoutes,
                 ...profileRoutes
             ]
         },
