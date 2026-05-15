@@ -741,7 +741,8 @@
       "phone": "+51 999 888 777",
       "businessName": "Bodega El Huerto",
       "status": "connected",
-      "connectedAt": "11/5/2026, 9:55:04 p. m."
+      "connectedAt": "15/5/2026, 12:59:29 a. m.",
+      "qrCode": null
     }
   ],
   "conversations": [
