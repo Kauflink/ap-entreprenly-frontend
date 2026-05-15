@@ -109,7 +109,7 @@ const receiptOrder = computed(() => {
   color: #fff;
 }
 .client-msg__bubble {
-  max-width: 20rem;
+  max-width: min(20rem, calc(100vw - 7rem));
   border-radius: 1rem;
   border-bottom-left-radius: 0.125rem;
   background: #fb923c;
@@ -136,7 +136,7 @@ const receiptOrder = computed(() => {
   gap: 0.5rem;
 }
 .bot-msg__bubble {
-  max-width: 20rem;
+  max-width: min(20rem, calc(100vw - 7rem));
   border-radius: 1rem;
   border-bottom-right-radius: 0.125rem;
   border: 1px solid #e5e7eb;

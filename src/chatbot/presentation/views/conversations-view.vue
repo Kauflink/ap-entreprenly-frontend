@@ -448,33 +448,48 @@ function onCancelReject() {
 
 /* ── Responsive ──────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .conversations-page { padding: 1rem; }
+  .conversations-page    { padding: 1rem; }
   .conversations-sidebar { width: 13rem; }
 }
 
 @media (max-width: 768px) {
-  .conversations-layout { flex-direction: column; border-radius: 0.75rem; }
+  .conversations-page    { padding: 0.75rem; padding-top: 0.75rem; }
+  .conversations-layout  { flex-direction: column; border-radius: 0.75rem; }
+
+  /* sidebar: banda horizontal con scroll lateral */
   .conversations-sidebar {
     width: 100%;
-    height: 10rem;
-    overflow-y: auto;
+    height: 5.5rem;       /* suficiente para los chips compactos */
+    overflow-x: auto;
+    overflow-y: hidden;
     border-left: none;
     border-bottom: 1px solid #e5e7eb;
     flex-shrink: 0;
   }
-  .conversations-chat { border-left: none; min-height: 0; }
-  .conversations-messages { padding: 1rem; }
+  .conversations-chat    { border-left: none; flex: 1; min-height: 0; }
+  .conversations-messages { padding: 0.75rem; gap: 0.5rem; }
 }
 
 @media (max-width: 640px) {
-  .conversations-page { padding: 0.5rem; padding-top: 0.5rem; }
-  .conversations-layout { height: calc(100dvh - 4rem); }
-  .conversations-sidebar { height: 8rem; }
+  .conversations-page    { padding: 0.5rem; }
+  .conversations-layout  { border-radius: 0.5rem; }
+  .conversations-sidebar { height: 5rem; }
+
+  /* bubbles: no exceden el ancho del chat */
+  .conversations-messages { padding: 0.5rem; }
+
+  /* payment bar apilada */
   .payment-bar {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.75rem;
+    gap: 0.5rem;
+    padding: 0.625rem 0.875rem;
   }
   .payment-bar__actions { width: 100%; justify-content: flex-end; }
+
+  /* reject reasons: columna en móvil muy pequeño */
+  .payment-reject__reasons { flex-direction: column; }
+  .payment-reject__actions { flex-direction: column; }
+  .action-btn { width: 100%; text-align: center; }
 }
 </style>

@@ -1,4 +1,16 @@
 {
+    "pages": {
+        "home":                 "Home",
+        "help":                 "Help",
+        "products":             "Products",
+        "lots":                 "Lots",
+        "sales":                "Sales",
+        "subscription":         "Subscription",
+        "chatbot":              "Chatbot",
+        "chatbotConversations": "Conversations",
+        "chatbotOrders":        "Orders",
+        "profile":              "Profile"
+    },
     "comingSoon": {
         "title": "Coming soon",
         "subtitle": "This section is under development."

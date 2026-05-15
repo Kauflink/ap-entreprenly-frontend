@@ -884,8 +884,8 @@ function highlightQuery(titleKey) {
 </template>
 
 <style scoped>
-.help-page  { height: 100%; overflow-y: auto; background: #f9fafb; padding: 1.5rem; }
-.help-inner { max-width: 80rem; margin: 0 auto; display: flex; flex-direction: column; gap: 1.25rem; }
+.help-page  { height: 100%; overflow-y: auto; background: #f9fafb; padding: clamp(1rem, 2.5vw, 2rem); }
+.help-inner { width: 100%; display: flex; flex-direction: column; gap: 1.25rem; }
 
 .page-title { font-size: 1.5rem; font-weight: 700; color: #111827; }
 .page-meta  { margin-top: 0.25rem; font-size: 0.75rem; color: #9ca3af; }
@@ -899,7 +899,7 @@ function highlightQuery(titleKey) {
 .search-bar__input:focus { border-color: #fb923c; box-shadow: 0 0 0 2px rgb(251 146 60 / 0.15); }
 
 /* ── Grid layout ─────────────────────────────────────────────────── */
-.two-col       { display: grid; grid-template-columns: 1fr 18rem; gap: 1.25rem; align-items: start; }
+.two-col       { display: grid; grid-template-columns: 1fr clamp(16rem, 22vw, 22rem); gap: 1.25rem; align-items: start; }
 .two-col__main { display: flex; flex-direction: column; gap: 1.25rem; }
 .two-col__side { display: flex; flex-direction: column; gap: 1rem; }
 
@@ -1134,6 +1134,12 @@ function highlightQuery(titleKey) {
 :deep(.hl) { background: transparent; color: #f97316; font-weight: 600; font-style: normal; }
 
 /* ── Responsive ──────────────────────────────────────────────────── */
+@media (min-width: 1440px) {
+  .page-title   { font-size: clamp(1.5rem, 2vw, 2rem); }
+  .card__title  { font-size: clamp(0.875rem, 1vw, 1.125rem); }
+  .cat-grid     { grid-template-columns: repeat(4, 1fr); }
+  .article-btn__title { font-size: clamp(0.875rem, 1vw, 1rem); }
+}
 @media (max-width: 1024px) {
   .two-col { grid-template-columns: 1fr; }
   .cat-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1141,5 +1147,12 @@ function highlightQuery(titleKey) {
 @media (max-width: 640px) {
   .cat-grid { grid-template-columns: 1fr 1fr; }
   .form-row { grid-template-columns: 1fr; }
+  .search-bar { flex-direction: column; }
+  .btn-primary { width: 100%; }
+  .art-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+}
+@media (max-width: 480px) {
+  .cat-grid { grid-template-columns: 1fr; }
+  .feedback__btns { flex-direction: column; }
 }
 </style>
