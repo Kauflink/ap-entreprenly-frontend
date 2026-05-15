@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="f86d113d-579d-4282-b287-3158d95c6f20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/src/.env.development" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/chatbot-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/infrastructure/chatbot-api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/presentation/views/home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/views/home.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sales/presentation/components/quantity-modal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/sales/presentation/components/quantity-modal.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sales/presentation/components/weight-modal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/sales/presentation/components/weight-modal.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +36,10 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
   </component>
@@ -56,7 +60,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feature/chatbot",
+    "git-widget-placeholder": "develop",
     "javascript.preferred.runtime.type.id": "node",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
