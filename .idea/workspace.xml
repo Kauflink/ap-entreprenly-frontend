@@ -5,25 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f86d113d-579d-4282-b287-3158d95c6f20" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/application/chatbot.store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/application/chatbot.store.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/domain/model/cliente-entity.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/domain/model/cliente-entity.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/domain/model/item-pedido-entity.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/domain/model/item-pedido-entity.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/domain/model/pago-entity.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/domain/model/pago-entity.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/domain/model/pedido-entity.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/domain/model/pedido-entity.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/domain/model/producto-entity.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/domain/model/producto-entity.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/chatbot-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/infrastructure/chatbot-api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/cliente-assembler.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/infrastructure/cliente-assembler.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/pago-assembler.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/infrastructure/pago-assembler.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/pedido-assembler.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/infrastructure/pedido-assembler.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/producto-assembler.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/infrastructure/producto-assembler.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/presentation/chatbot-routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/chatbot-routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/presentation/components/chat-bubble.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/components/chat-bubble.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/presentation/components/pedido-card.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/components/pedido-card.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/presentation/components/product-card.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/components/product-card.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/presentation/views/catalogo-view.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/views/catalogo-view.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/presentation/views/chat-view.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/views/chat-view.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/presentation/views/pago-view.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/views/pago-view.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot-bc-aplicaciones-web/src/chatbot/presentation/views/pedido-view.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/views/pedido-view.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/application/chatbot.store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/application/chatbot.store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/domain/model/cliente-entity.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/domain/model/item-pedido-entity.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/domain/model/pago-entity.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/domain/model/pedido-entity.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/domain/model/producto-entity.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/chatbot-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/infrastructure/chatbot-api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/cliente-assembler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/pago-assembler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/pedido-assembler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/infrastructure/producto-assembler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/chatbot-routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/chatbot/presentation/chatbot-routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/chat-bubble.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/pedido-card.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/components/product-card.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/views/catalogo-view.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/views/chat-view.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/views/pago-view.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/chatbot/presentation/views/pedido-view.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/locales/es.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/es.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/presentation/components/layout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/components/layout.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/presentation/views/ayuda.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/views/ayuda.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/presentation/views/home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/presentation/views/home.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,26 +65,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/chatbot&quot;,
-    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "feature/chatbot",
+    "javascript.preferred.runtime.type.id": "node",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2026.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\elymi\Desktop\Aplicaciones Web\chatbot-bc-aplicaciones-web\src" />
+      <recent name="C:\Users\elymi\Desktop\Aplicaciones Web\src" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

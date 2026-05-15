@@ -1,172 +1,263 @@
-// Sigue el patrón de inventory.store.js del compañero: defineStore con composition API
-// Implementa: timeout 60 min, validación manual de pagos, caché catálogo 30 seg, alerta rechazos
-import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { ChatbotApi } from 'chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/chatbot-api.js'
-import { PedidoAssembler } from 'chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/pedido-assembler.js'
-import { ProductoAssembler } from 'chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/producto-assembler.js'
-import { ClienteAssembler } from 'chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/cliente-assembler.js'
-import { PagoAssembler } from 'chatbot-bc-aplicaciones-web/src/chatbot/infrastructure/pago-assembler.js'
-import { Pedido } from 'chatbot-bc-aplicaciones-web/src/chatbot/domain/model/pedido-entity.js'
-import { Pago } from 'chatbot-bc-aplicaciones-web/src/chatbot/domain/model/pago-entity.js'
+import { defineStore } from 'pinia'
+import { ChatbotApi } from '../infrastructure/chatbot-api.js'
+import { ConversationAssembler } from '../infrastructure/conversation-assembler.js'
+import { ChatMessageAssembler } from '../infrastructure/chat-message-assembler.js'
+import { ChatOrderAssembler } from '../infrastructure/chat-order-assembler.js'
+import { WhatsappSessionAssembler } from '../infrastructure/whatsapp-session-assembler.js'
+import { Conversation } from '../domain/model/conversation-entity.js'
+import { ChatMessage } from '../domain/model/chat-message-entity.js'
+import { ChatOrder } from '../domain/model/chat-order-entity.js'
+import { WhatsappSession } from '../domain/model/whatsapp-session-entity.js'
 
-const chatbotApi = new ChatbotApi()
-
-// Timestamp del último fetch del catálogo para respetar el límite de 30 seg
-let ultimoFetchCatalogo = 0
-const CACHE_CATALOGO_MS = 30 * 1000
+const api = new ChatbotApi()
 
 const useChatbotStore = defineStore('chatbot', () => {
-  const pedidos  = ref([])
-  const productos = ref([])
-  const clientes = ref([])
-  const pagos    = ref([])
+  const session                = ref(null)
+  const isSessionLoaded        = ref(false)
+  const conversations          = ref([])
+  const selectedConversationId = ref(null)
+  const messages               = ref([])
+  const isClientTyping         = ref(false)
+  const botInputText           = ref('')
+  const orders                 = ref([])
+  const inventoryProducts      = ref([])
 
-  const pedidosLoaded   = ref(false)
-  const productosLoaded = ref(false)
-  const clientesLoaded  = ref(false)
-  const pagosLoaded     = ref(false)
+  let _playId = 0
 
-  const errors = ref([])
-
-  const pedidosPendientes = computed(() =>
-    pedidos.value.filter(p => p.estado === Pedido.Estado.PENDIENTE_PAGO)
+  const selectedConversation = computed(() =>
+    conversations.value.find(c => c.id === selectedConversationId.value) ?? null
   )
 
-  const pedidosPorValidar = computed(() =>
-    pedidos.value.filter(p => p.estado === Pedido.Estado.PAGO_REPORTADO)
+  const pendingOrder = computed(() =>
+    orders.value.find(o =>
+      o.conversationId === selectedConversationId.value &&
+      o.status === ChatOrder.Status.WAITING_PAYMENT &&
+      o.hasReceipt === true
+    ) ?? null
   )
 
-  const clientesConAlertas = computed(() =>
-    clientes.value.filter(c => c.rechazos >= 2)
+  const isConnected = computed(() =>
+    session.value?.status === WhatsappSession.Status.CONNECTED
   )
 
-  // --- PEDIDOS ---
-
-  function fetchPedidos() {
-    chatbotApi.getPedidos().then(response => {
-      pedidos.value = PedidoAssembler.toEntitiesFromResponse(response)
-      pedidosLoaded.value = true
-      // registrar timeout para cada pedido pendiente que aún no venció
-      pedidos.value
-        .filter(p => p.estado === Pedido.Estado.PENDIENTE_PAGO && !p.estaVencido)
-        .forEach(p => _programarTimeout(p))
-    }).catch(error => errors.value.push(error))
+  function loadSession() {
+    api.whatsappSessions.getAll().then(res => {
+      const all = WhatsappSessionAssembler.toEntitiesFromResponse(res)
+      session.value       = all[0] ?? null
+      isSessionLoaded.value = true
+    })
   }
 
-  function getPedidoById(id) {
-    return pedidos.value.find(p => p.id === parseInt(id))
+  function loadConversations() {
+    api.conversations.getAll().then(res => {
+      conversations.value = ConversationAssembler.toEntitiesFromResponse(res)
+    })
   }
 
-  // Regla: aprobación manual del comerciante → descuenta stock y cierra el pedido
-  function aprobarPago(pedidoId) {
-    const pedido = getPedidoById(pedidoId)
-    if (!pedido) return Promise.reject(new Error('Pedido no encontrado'))
-
-    const pedidoActualizado = { ...pedido, estado: Pedido.Estado.APROBADO }
-    return chatbotApi.updatePedido(pedidoActualizado).then(response => {
-      const idx = pedidos.value.findIndex(p => p.id === pedidoId)
-      if (idx !== -1) pedidos.value[idx] = PedidoAssembler.toEntityFromResource(response.data)
-      _actualizarPago(pedidoId, Pago.Estado.APROBADO)
-    }).catch(error => errors.value.push(error))
+  function loadOrders() {
+    api.chatOrders.getAll().then(res => {
+      orders.value = ChatOrderAssembler.toEntitiesFromResponse(res)
+    })
   }
 
-  // Regla: rechazo incrementa el contador del cliente; al llegar a 2 se activa alerta
-  function rechazarPago(pedidoId) {
-    const pedido = getPedidoById(pedidoId)
-    if (!pedido) return Promise.reject(new Error('Pedido no encontrado'))
-
-    const pedidoCancelado = { ...pedido, estado: Pedido.Estado.CANCELADO }
-    return chatbotApi.updatePedido(pedidoCancelado).then(response => {
-      const idx = pedidos.value.findIndex(p => p.id === pedidoId)
-      if (idx !== -1) pedidos.value[idx] = PedidoAssembler.toEntityFromResource(response.data)
-
-      _incrementarRechazos(pedido.clienteId)
-      _actualizarPago(pedidoId, Pago.Estado.RECHAZADO)
-    }).catch(error => errors.value.push(error))
+  function loadInventoryProducts() {
+    api.inventoryProducts.getAll().then(res => {
+      inventoryProducts.value = res.data
+    })
   }
 
-  // Timeout de 60 min: cancela el pedido automáticamente si no se paga a tiempo
-  function _programarTimeout(pedido) {
-    const msRestantes = new Date(pedido.fechaExpiracion) - new Date()
-    if (msRestantes <= 0) return
+  function selectConversation(id) {
+    _playId++
+    const playId = _playId
+
+    selectedConversationId.value = id
+    messages.value               = []
+    isClientTyping.value         = false
+    botInputText.value           = ''
+
+    api.chatMessages.getAll().then(res => {
+      if (_playId !== playId) return
+      const all  = ChatMessageAssembler.toEntitiesFromResponse(res)
+      const msgs = all.filter(m => m.conversationId === id)
+      const conv = conversations.value.find(c => c.id === id)
+      const isLive = conv?.status === Conversation.Status.ACTIVE ||
+                     conv?.status === Conversation.Status.WAITING_PAYMENT
+
+      if (isLive) {
+        _playConversation(msgs, playId)
+      } else {
+        messages.value = msgs
+      }
+    })
+  }
+
+  function _playConversation(msgs, playId) {
+    let t = 0
+    for (const msg of msgs) {
+      if (msg.sender === ChatMessage.Sender.BOT) {
+        const words     = msg.content.split(' ')
+        const msPerWord = 70
+        const startAt   = t
+
+        words.forEach((_, i) => {
+          setTimeout(() => {
+            if (_playId !== playId) return
+            botInputText.value = words.slice(0, i + 1).join(' ')
+          }, startAt + i * msPerWord)
+        })
+
+        const sendAt = startAt + words.length * msPerWord + 250
+        setTimeout(() => {
+          if (_playId !== playId) return
+          botInputText.value = ''
+          messages.value = [...messages.value, msg]
+        }, sendAt)
+        t = sendAt + 400
+
+      } else if (msg.sender === ChatMessage.Sender.CLIENT) {
+        setTimeout(() => {
+          if (_playId !== playId) return
+          isClientTyping.value = true
+        }, t)
+
+        const showAt = t + 900
+        setTimeout(() => {
+          if (_playId !== playId) return
+          isClientTyping.value = false
+          messages.value = [...messages.value, msg]
+        }, showAt)
+        t = showAt + 400
+
+      } else {
+        setTimeout(() => {
+          if (_playId !== playId) return
+          messages.value = [...messages.value, msg]
+        }, t)
+        t += 400
+      }
+    }
+  }
+
+  function _typewriteAndSend(msg) {
+    const words     = msg.content.split(' ')
+    const msPerWord = 70
+
+    words.forEach((_, i) => {
+      setTimeout(() => {
+        botInputText.value = words.slice(0, i + 1).join(' ')
+      }, i * msPerWord)
+    })
 
     setTimeout(() => {
-      const p = getPedidoById(pedido.id)
-      if (p && p.estado === Pedido.Estado.PENDIENTE_PAGO) {
-        const cancelado = { ...p, estado: Pedido.Estado.CANCELADO }
-        chatbotApi.updatePedido(cancelado).then(r => {
-          const idx = pedidos.value.findIndex(pp => pp.id === p.id)
-          if (idx !== -1) pedidos.value[idx] = PedidoAssembler.toEntityFromResource(r.data)
-        }).catch(err => errors.value.push(err))
-      }
-    }, msRestantes)
+      botInputText.value = ''
+      api.chatMessages.create(msg).then(res => {
+        messages.value = [...messages.value, ChatMessageAssembler.toEntityFromResource(res.data)]
+      })
+    }, words.length * msPerWord + 250)
   }
 
-  function _actualizarPago(pedidoId, nuevoEstado) {
-    const pago = pagos.value.find(p => p.pedidoId === pedidoId)
-    if (!pago) return
-    const pagoActualizado = { ...pago, estado: nuevoEstado }
-    chatbotApi.updatePago(pagoActualizado).then(r => {
-      const pi = pagos.value.findIndex(p => p.id === pago.id)
-      if (pi !== -1) pagos.value[pi] = PagoAssembler.toEntityFromResource(r.data)
-    }).catch(err => errors.value.push(err))
+  function sendMessage(content) {
+    const convId = selectedConversationId.value
+    if (!convId) return
+
+    const msg = new ChatMessage({
+      id: 0, conversationId: convId,
+      content, sender: ChatMessage.Sender.BOT,
+      type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString()
+    })
+
+    api.chatMessages.create(msg).then(res => {
+      messages.value = [...messages.value, ChatMessageAssembler.toEntityFromResource(res.data)]
+    })
   }
 
-  function _incrementarRechazos(clienteId) {
-    const cliente = clientes.value.find(c => c.id === clienteId)
-    if (!cliente) return
-    const clienteActualizado = { ...cliente, rechazos: cliente.rechazos + 1 }
-    chatbotApi.updateCliente(clienteActualizado).then(r => {
-      const ci = clientes.value.findIndex(c => c.id === clienteId)
-      if (ci !== -1) clientes.value[ci] = ClienteAssembler.toEntityFromResource(r.data)
-    }).catch(err => errors.value.push(err))
+  function simulateScan() {
+    const current = session.value
+    if (!current) return
+    const updated = { ...current, status: WhatsappSession.Status.CONNECTED, connectedAt: new Date().toLocaleString('es-PE') }
+    api.whatsappSessions.update(current.id, updated).then(res => {
+      session.value = WhatsappSessionAssembler.toEntityFromResource(res.data)
+    })
   }
 
-  // --- PRODUCTOS (catálogo con caché de 30 seg) ---
-
-  function fetchProductos() {
-    const ahora = Date.now()
-    if (productosLoaded.value && ahora - ultimoFetchCatalogo < CACHE_CATALOGO_MS) return
-
-    chatbotApi.getProductos().then(response => {
-      productos.value = ProductoAssembler.toEntitiesFromResponse(response)
-      productosLoaded.value = true
-      ultimoFetchCatalogo = Date.now()
-    }).catch(error => errors.value.push(error))
+  function simulateDisconnect() {
+    const current = session.value
+    if (!current) return
+    const updated = { ...current, status: WhatsappSession.Status.DISCONNECTED, connectedAt: null }
+    api.whatsappSessions.update(current.id, updated).then(res => {
+      session.value = WhatsappSessionAssembler.toEntityFromResource(res.data)
+    })
   }
 
-  // --- CLIENTES ---
+  function approveOrder(orderId) {
+    const order = orders.value.find(o => o.id === orderId)
+    if (!order) return
 
-  function fetchClientes() {
-    chatbotApi.getClientes().then(response => {
-      clientes.value = ClienteAssembler.toEntitiesFromResponse(response)
-      clientesLoaded.value = true
-    }).catch(error => errors.value.push(error))
+    api.chatOrders.update(orderId, { ...order, status: ChatOrder.Status.CONFIRMED }).then(res => {
+      const confirmed = ChatOrderAssembler.toEntityFromResource(res.data)
+      orders.value = orders.value.map(o => o.id === orderId ? confirmed : o)
+      _updateConversationStatus(order.conversationId, Conversation.Status.COMPLETED)
+
+      const time   = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })
+      const sysMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: `chatbot.sys.paymentApproved|${time}`, sender: ChatMessage.Sender.SYSTEM, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
+      const botMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: `chatbot.sys.botPaymentApproved|${order.orderNumber}`, sender: ChatMessage.Sender.BOT, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
+
+      api.chatMessages.create(sysMsg).then(r => {
+        messages.value = [...messages.value, ChatMessageAssembler.toEntityFromResource(r.data)]
+        setTimeout(() => _typewriteAndSend(botMsg), 400)
+      })
+    })
   }
 
-  // --- PAGOS ---
+  function rejectOrder(orderId, reason = 'Imagen ilegible') {
+    const order = orders.value.find(o => o.id === orderId)
+    if (!order) return
 
-  function fetchPagos() {
-    chatbotApi.getPagos().then(response => {
-      pagos.value = PagoAssembler.toEntitiesFromResponse(response)
-      pagosLoaded.value = true
-    }).catch(error => errors.value.push(error))
+    const newCount  = (order.rejectionCount ?? 0) + 1
+    const isBlocked = newCount >= 2
+    const newStatus = isBlocked ? ChatOrder.Status.BLOCKED : ChatOrder.Status.WAITING_PAYMENT
+
+    api.chatOrders.update(orderId, { ...order, status: newStatus, hasReceipt: false, rejectionCount: newCount }).then(res => {
+      const rejected = ChatOrderAssembler.toEntityFromResource(res.data)
+      orders.value = orders.value.map(o => o.id === orderId ? rejected : o)
+
+      if (isBlocked) _updateConversationStatus(order.conversationId, Conversation.Status.CLOSED)
+
+      const time       = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })
+      const sysContent = isBlocked
+        ? `chatbot.sys.blocked|${time}`
+        : `chatbot.sys.receiptRejected|${time}`
+      const botContent = isBlocked
+        ? `chatbot.sys.botBlocked|${order.orderNumber}`
+        : `chatbot.sys.botReceiptRejected|${order.orderNumber}|${reason}`
+
+      const sysMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: sysContent, sender: ChatMessage.Sender.SYSTEM, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
+      const botMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: botContent, sender: ChatMessage.Sender.BOT, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
+
+      api.chatMessages.create(sysMsg).then(r => {
+        messages.value = [...messages.value, ChatMessageAssembler.toEntityFromResource(r.data)]
+        setTimeout(() => _typewriteAndSend(botMsg), 400)
+      })
+    })
   }
 
-  function getPagoByPedidoId(pedidoId) {
-    return pagos.value.find(p => p.pedidoId === pedidoId)
+  function _updateConversationStatus(conversationId, status) {
+    const conv = conversations.value.find(c => c.id === conversationId)
+    if (!conv) return
+    api.conversations.update(conv.id, { ...conv, status }).then(res => {
+      const updated = ConversationAssembler.toEntityFromResource(res.data)
+      conversations.value = conversations.value.map(c => c.id === conv.id ? updated : c)
+    })
   }
 
   return {
-    pedidos, productos, clientes, pagos,
-    pedidosLoaded, productosLoaded, clientesLoaded, pagosLoaded,
-    errors,
-    pedidosPendientes, pedidosPorValidar, clientesConAlertas,
-    fetchPedidos, getPedidoById, aprobarPago, rechazarPago,
-    fetchProductos,
-    fetchClientes,
-    fetchPagos, getPagoByPedidoId
+    session, isSessionLoaded, conversations, selectedConversationId,
+    messages, isClientTyping, botInputText, orders, inventoryProducts,
+    selectedConversation, pendingOrder, isConnected,
+    loadSession, loadConversations, loadOrders, loadInventoryProducts,
+    selectConversation, sendMessage, simulateScan, simulateDisconnect,
+    approveOrder, rejectOrder
   }
 })
 

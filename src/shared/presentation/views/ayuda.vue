@@ -33,7 +33,7 @@ const faqs = ref([
 </script>
 
 <template>
-  <div>
+  <div class="ayuda-page">
     <h1 class="mb-4" style="color: #F38313;">{{ t('ayuda.title') }}</h1>
 
     <!-- Preguntas frecuentes -->
@@ -122,3 +122,11 @@ const faqs = ref([
     </pv-card>
   </div>
 </template>
+
+<style scoped>
+.ayuda-page {
+  height: 100%;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+</style>

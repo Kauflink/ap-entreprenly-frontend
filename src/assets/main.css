@@ -1,0 +1,41 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --color-bg-page:               #f9fafb;
+  --color-text-primary:          #111827;
+  --color-text-strong:           #1a1a1a;
+  --color-sidebar-bg:            #ffffff;
+  --color-sidebar-shadow:        2px 0 8px rgb(0 0 0 / 0.06);
+  --color-sidebar-item-bg:       #f3f4f6;
+  --color-sidebar-item-text:     #374151;
+  --color-sidebar-item-active-bg:  #f97316;
+  --color-sidebar-item-active-text: #ffffff;
+  --color-card-border:           #e5e7eb;
+  --color-logout-bg:             #fff1f2;
+  --color-logout-text:           #ef4444;
+}
+
+html, body, #app {
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--color-bg-page);
+  color: var(--color-text-primary);
+}
+
+@keyframes msgSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+.msg-animate { animation: msgSlideIn 0.25s ease both; }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+.animate-pulse { animation: pulse 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+
+@keyframes msgSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+.msg-animate {
+  animation: msgSlideIn 0.25s ease both;
+}

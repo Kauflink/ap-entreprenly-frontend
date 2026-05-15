@@ -91,5 +91,182 @@
     "volver": "Volver",
     "cancelar": "Cancelar",
     "confirmar": "Confirmar"
+  },
+  "dashboard": {
+    "sidebarLabel": "Menú principal",
+    "currentUserLabel": "Tu perfil",
+    "welcome": "Bienvenido",
+    "logout": "Cerrar sesión",
+    "nav": {
+      "home":         "Inicio",
+      "products":     "Productos",
+      "lots":         "Lotes",
+      "sales":        "Ventas",
+      "subscription": "Suscripción",
+      "orders":       "Pedidos",
+      "chatbot":      "Chatbot",
+      "help":         "Ayuda"
+    }
+  },
+  "dashboard-home": {
+    "welcomeBack": "Panel de control",
+    "welcome":     "¡Hola, bienvenido!",
+    "quickLinksLabel": "Accesos rápidos",
+    "quickLinksHint":  "Accede rápidamente a las secciones más usadas.",
+    "alertBannerTitle": "Alertas de inventario activas",
+    "alertBanner":      "Tienes {count} alerta(s) de stock que requieren atención.",
+    "alertBannerLink":  "Ver lotes",
+    "stats": {
+      "salesToday":   "ventas hoy",
+      "revenueToday": "ingresos hoy",
+      "botOrders":    "pedidos bot",
+      "alerts":       "alertas stock"
+    },
+    "cash": {
+      "title":     "Ingresos hoy",
+      "cash":      "Efectivo",
+      "digital":   "Digital",
+      "ventas":    "Ventas",
+      "goToSales": "Ir a ventas"
+    },
+    "chatbot": {
+      "title":            "WhatsApp Chatbot",
+      "connected":        "Conectado",
+      "disconnected":     "Desconectado",
+      "chatsToday":       "Conversaciones hoy",
+      "botOrders":        "Pedidos del bot",
+      "number":           "Número vinculado",
+      "pendingOrders_one":   "1 pedido esperando validación",
+      "pendingOrders_other": "{count} pedidos esperando validación",
+      "disconnectedSub":  "Vincula tu WhatsApp para recibir pedidos automáticos.",
+      "connectNow":       "Conectar ahora"
+    },
+    "orders": {
+      "title":          "Pedidos recientes",
+      "viewAll":        "Ver todos",
+      "empty":          "Sin pedidos aún",
+      "emptySub":       "Los pedidos del chatbot aparecerán aquí.",
+      "colClient":      "Cliente",
+      "colStatus":      "Estado",
+      "colTotal":       "Total",
+      "clientFallback": "—",
+      "approved":       "Aprobados",
+      "pending":        "Por validar",
+      "status": {
+        "confirmed":       "Confirmado",
+        "blocked":         "Bloqueado",
+        "cancelled":       "Cancelado",
+        "receiptReceived": "Comprobante recibido",
+        "awaitingReceipt": "Esperando pago"
+      }
+    },
+    "inventory": {
+      "title":   "Inventario",
+      "viewAll": "Ver todo",
+      "empty":   "Sin productos registrados."
+    },
+    "alerts": {
+      "empty":    "Inventario en buen estado",
+      "emptySub": "No hay alertas de stock activas.",
+      "viewMore": "Ver {count} más",
+      "types": {
+        "low_stock":     "Stock bajo: {count} und",
+        "out_of_stock":  "Sin stock",
+        "expired":       "Lote vencido",
+        "expiring_soon": "Por vencer pronto"
+      }
+    },
+    "links": {
+      "products":    "Productos",
+      "productsSub": "Catálogo",
+      "lots":        "Lotes",
+      "lotsSub":     "Trazabilidad",
+      "chatbot":     "Chatbot",
+      "chatbotSub":  "WhatsApp",
+      "orders":      "Pedidos",
+      "ordersSub":   "Conversaciones",
+      "reports":     "Reportes",
+      "reportsSub":  "Ventas",
+      "goTo":        "Ir a {label}"
+    }
+  },
+  "chatbot": {
+    "page": {
+      "title": "Chatbot de WhatsApp",
+      "loading": "Verificando sesión...",
+      "connectPrompt": "Vincula tu cuenta de WhatsApp Business escaneando el código QR.",
+      "connectionStatus": "Tu cuenta de WhatsApp está conectada y activa."
+    },
+    "qr": {
+      "expiredTitle": "El código QR ha expirado",
+      "expiredDetail": "Espera un momento mientras generamos uno nuevo.",
+      "linkTitle": "Vincula tu WhatsApp",
+      "newCode": "Nuevo código QR",
+      "scanInstruction": "Abre WhatsApp en tu celular y escanea el código.",
+      "alt": "Código QR de WhatsApp",
+      "expiresIn": "Expira en {seconds} segundos",
+      "expiresInOne": "Expira en 1 segundo",
+      "generating": "Generando nuevo código...",
+      "simulateScan": "Simular escaneo"
+    },
+    "statusCard": {
+      "cardTitle": "WhatsApp Business",
+      "connectedTitle": "¡Conexión exitosa!",
+      "connectedDetail": "Tu WhatsApp está listo para recibir pedidos de tus clientes.",
+      "expiredTitle": "Sesión expirada",
+      "expiredDetail": "La sesión de WhatsApp ha expirado. Vuelve a vincular tu cuenta.",
+      "activeSince": "activo desde",
+      "lastConnection": "última conexión",
+      "operative": "El chatbot está recibiendo y procesando pedidos.",
+      "viewConversations": "Ver conversaciones",
+      "disconnect": "Desconectar",
+      "reconnect": "Reconectar",
+      "connected": "Conectado",
+      "disconnected": "Desconectado"
+    },
+    "conversationList": {
+      "title": "Conversaciones"
+    },
+    "header": {
+      "online": "En línea"
+    },
+    "message": {
+      "receiptAlt": "Comprobante de pago"
+    },
+    "input": {
+      "placeholder": "Escribe un mensaje...",
+      "emptyError": "Escribe algo antes de enviar",
+      "ariaLabel": "Campo de mensaje",
+      "voiceNote": "Nota de voz",
+      "attach": "Adjuntar archivo",
+      "send": "Enviar mensaje"
+    },
+    "payment": {
+      "pendingBar": "Pago pendiente — Pedido #{orderNumber}",
+      "pendingBarDetail": "Método: {paymentMethod} · S/ {total}",
+      "approve": "Aprobar",
+      "reject": "Rechazar",
+      "rejectTitle": "Motivo del rechazo",
+      "confirmReject": "Confirmar rechazo",
+      "cancelReject": "Cancelar",
+      "reasons": {
+        "illegible": "Imagen ilegible",
+        "wrongAmount": "Monto incorrecto",
+        "fake": "Comprobante falso"
+      }
+    },
+    "conversations": {
+      "empty": "Aún no tienes conversaciones.\nTus clientes te escribirán por WhatsApp.",
+      "placeholder": "Selecciona una conversación para ver los mensajes."
+    },
+    "sys": {
+      "orderRegistered": "Pedido #{orderNumber} registrado a las {time}",
+      "paymentApproved": "Pago aprobado a las {time}",
+      "botPaymentApproved": "¡Tu pedido #{orderNumber} ha sido confirmado! Pronto recibirás tu pedido.",
+      "receiptRejected": "Comprobante rechazado a las {time}",
+      "botReceiptRejected": "El comprobante del pedido #{orderNumber} fue rechazado. Motivo: {reason}. Por favor envía uno nuevo.",
+      "blocked": "Conversación bloqueada a las {time}",
+      "botBlocked": "Lamentablemente tu pedido #{orderNumber} fue cancelado por múltiples intentos fallidos de pago."
+    }
   }
 }
