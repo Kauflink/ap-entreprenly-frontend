@@ -6,9 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="f86d113d-579d-4282-b287-3158d95c6f20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sales/presentation/components/quantity-modal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/sales/presentation/components/quantity-modal.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sales/presentation/components/weight-modal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/sales/presentation/components/weight-modal.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/presentation/components/preferences-card.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/presentation/components/preferences-card.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/presentation/components/update-profile-card.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/presentation/components/update-profile-card.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/presentation/views/profile-page.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/presentation/views/profile-page.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +61,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "feature/profile-configuration",
     "javascript.preferred.runtime.type.id": "node",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
@@ -69,7 +70,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2026.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "ts.external.directory.path": "C:\\Users\\josep\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>

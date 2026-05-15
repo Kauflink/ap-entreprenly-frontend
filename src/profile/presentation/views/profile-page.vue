@@ -49,6 +49,7 @@ onMounted(() => {
 .page {
     background: var(--color-bg-page);
     box-sizing: border-box;
+    height: calc(100dvh - 98px);
     display: flex;
     min-height: 0;
 }
@@ -66,6 +67,7 @@ onMounted(() => {
     max-width: 1510px;
     width: 100%;
     margin: 0 auto;
+    height: 100%;
     align-items: stretch;
     min-height: 0;
 }
@@ -115,7 +117,12 @@ onMounted(() => {
 }
 
 @media (max-width: 1200px) {
+    .page {
+        height: auto;
+    }
+
     .grid {
+        height: auto;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto auto;
         grid-template-areas:

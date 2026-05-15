@@ -77,37 +77,42 @@ function onSubmit() {
     border: 1px solid var(--color-card-border);
     box-shadow: var(--color-card-shadow);
     border-radius: 25px;
-    padding: clamp(8px, 1.11dvh, 12px) 24px;
+    padding: clamp(6px, 0.74dvh, 10px) 24px;
     display: flex;
     flex-direction: column;
-    gap: clamp(6px, 0.93dvh, 10px);
+    gap: clamp(4px, 0.55dvh, 8px);
     height: 100%;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .card__title {
+    font-family: 'Reddit Sans', sans-serif;
     font-weight: 800;
     font-size: clamp(13px, 1.48dvh, 16px);
-    line-height: 1.3;
+    line-height: 1;
     color: var(--color-text-primary);
     margin: 0;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(5px, 0.74dvh, 8px);
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 0;
     flex: 1;
-    justify-content: center;
+    min-height: 0;
+    align-content: space-between;
 }
 
 .field {
     display: flex;
     flex-direction: column;
-    gap: clamp(3px, 0.55dvh, 6px);
+    gap: 2px;
+    min-height: 0;
 }
 
 .field__label {
+    font-family: 'Reddit Sans', sans-serif;
     font-weight: 800;
     font-size: clamp(10px, 1.11dvh, 12px);
     line-height: 1.3;
@@ -118,7 +123,8 @@ form {
     background: var(--color-card-bg);
     border: 1px solid var(--color-card-border);
     border-radius: 25px;
-    padding: clamp(5px, 0.65dvh, 7px) 20px;
+    padding: clamp(3px, 0.46dvh, 6px) 20px;
+    font-family: 'Reddit Sans', sans-serif;
     font-weight: 500;
     font-size: clamp(10px, 1.11dvh, 12px);
     line-height: 1.3;
@@ -138,12 +144,13 @@ form {
 }
 
 .btn-primary {
-    margin-top: clamp(5px, 0.93dvh, 10px);
+    align-self: end;
     background: var(--color-primary);
     border: 1px solid var(--color-card-border);
     box-shadow: var(--color-card-shadow);
     border-radius: 25px;
-    padding: clamp(5px, 0.74dvh, 8px) 24px;
+    padding: clamp(4px, 0.55dvh, 7px) 24px;
+    font-family: 'Reddit Sans', sans-serif;
     font-weight: 800;
     font-size: clamp(10px, 1.11dvh, 12px);
     line-height: 1.3;
@@ -160,5 +167,10 @@ form {
 .btn-primary:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.btn-primary:focus-visible {
+    outline: 2px solid var(--color-label-accent);
+    outline-offset: 2px;
 }
 </style>

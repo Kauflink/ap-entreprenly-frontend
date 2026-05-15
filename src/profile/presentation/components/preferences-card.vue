@@ -208,11 +208,13 @@ form {
 .theme-btn {
     flex: 1;
     background: var(--color-card-bg);
-    border: 1px solid var(--color-card-border);
+    border: 1px solid var(--color-theme-btn-border);
     border-radius: 25px;
     padding: clamp(5px, 0.74dvh, 8px) 12px;
+    font-family: 'Reddit Sans', sans-serif;
     font-weight: 800;
     font-size: clamp(10px, 1.11dvh, 12px);
+    line-height: 1.3;
     color: var(--color-label-accent);
     cursor: pointer;
     transition: background-color 0.2s, border-color 0.2s;
@@ -220,9 +222,13 @@ form {
 }
 
 .theme-btn--active {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: var(--color-primary-text);
+    background: var(--color-theme-btn-active-bg);
+    border-color: var(--color-theme-btn-active-border);
+}
+
+.theme-btn--inactive {
+    background: var(--color-card-bg);
+    border-color: var(--color-theme-btn-border);
 }
 
 .theme-btn:focus-visible {
