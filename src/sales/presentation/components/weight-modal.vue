@@ -12,14 +12,16 @@ const props = defineProps({
 
 const emit = defineEmits(['confirm', 'cancel'])
 
-const isScaleConnected = ref(false)
-const displayValue     = ref('')
+const isScaleConnected  = ref(false)
+const displayValue      = ref('')
+const lastPressedWeight = ref(null)
 
-let scaleTimer = null
+let scaleTimer       = null
+let autoConfirmTimer = null
 
 const hasInsufficientStock = computed(() => {
     if (!props.product || !displayValue.value) return false
-    return parseFloat(displayValue.value) > props.product.stockKg
+    return parseFloat(displayValue.value) > props.product.availableStock
 })
 
 onMounted(() => {
@@ -28,17 +30,20 @@ onMounted(() => {
 
 onUnmounted(() => {
     clearTimeout(scaleTimer)
+    clearTimeout(autoConfirmTimer)
 })
 
 function checkScaleConnection() {
     store.getScaleStatus().then(scale => {
+        console.log('[scale] status:', scale)
         if (scale && scale.connected) {
             isScaleConnected.value = true
             simulateScaleReading()
         } else {
             isScaleConnected.value = false
         }
-    }).catch(() => {
+    }).catch((err) => {
+        console.warn('[scale] error:', err)
         isScaleConnected.value = false
     })
 }
@@ -46,21 +51,27 @@ function checkScaleConnection() {
 function simulateScaleReading() {
     scaleTimer = setTimeout(() => {
         displayValue.value = (Math.random() * 4 + 0.1).toFixed(3)
-    }, 2000)
+        if (!hasInsufficientStock.value) {
+            autoConfirmTimer = setTimeout(() => onConfirm(), 800)
+        }
+    }, 1500)
 }
 
 function pressDigit(digit) {
     displayValue.value += String(digit)
+    lastPressedWeight.value = digit
 }
 
 function pressDecimal() {
     if (!displayValue.value.includes('.')) {
         displayValue.value = (displayValue.value || '0') + '.'
+        lastPressedWeight.value = '.'
     }
 }
 
 function pressBackspace() {
     displayValue.value = displayValue.value.slice(0, -1)
+    lastPressedWeight.value = null
 }
 
 function onConfirm() {
@@ -88,38 +99,35 @@ function onCancel() {
                 <button class="close-btn" @click="onCancel">✕</button>
             </header>
 
-            <!-- Scale connected: show waiting state -->
-            <template v-if="isScaleConnected && !displayValue">
-                <div class="scale-waiting">
-                    <span class="material-icons scale-icon">scale</span>
-                    <p class="waiting-text">{{ t('sales.weight-modal.waiting') }}</p>
+            <div class="input-group">
+                <label class="input-label">{{ t('sales.weight-modal.label') }}</label>
+                <div class="display-field">
+                    <span v-if="displayValue" class="display-value">{{ displayValue }}</span>
+                    <span v-else-if="isScaleConnected" class="display-placeholder">
+                        {{ t('sales.weight-modal.waiting') }}
+                    </span>
+                    <span v-else class="display-value display-value--empty">0.000</span>
                 </div>
-            </template>
+            </div>
 
-            <!-- Manual numpad (or scale result) -->
-            <template v-else>
-                <div class="input-group">
-                    <label class="input-label">{{ t('sales.weight-modal.label') }}</label>
-                    <div class="display-field">
-                        <span class="display-value">{{ displayValue || '0.000' }}</span>
-                    </div>
-                </div>
-
-                <div v-if="hasInsufficientStock" class="stock-error">
-                    <span class="error-icon">⊘</span>
-                    {{ t('sales.weight-modal.insufficientStock') }}
-                </div>
-
+            <!-- Manual keypad: only when scale is not connected -->
+            <template v-if="!isScaleConnected">
                 <div class="keypad">
                     <button
                         v-for="n in [1,2,3,4,5,6,7,8,9]"
                         :key="n"
-                        class="keypad-btn"
+                        :class="['keypad-btn', { 'keypad-btn--active': lastPressedWeight === n }]"
                         @click="pressDigit(n)"
                     >{{ n }}</button>
 
-                    <button class="keypad-btn" @click="pressDecimal">.</button>
-                    <button class="keypad-btn" @click="pressDigit(0)">0</button>
+                    <button
+                        :class="['keypad-btn', { 'keypad-btn--active': lastPressedWeight === '.' }]"
+                        @click="pressDecimal"
+                    >.</button>
+                    <button
+                        :class="['keypad-btn', { 'keypad-btn--active': lastPressedWeight === 0 }]"
+                        @click="pressDigit(0)"
+                    >0</button>
                     <button class="keypad-btn keypad-backspace" @click="pressBackspace">◀</button>
                 </div>
 
@@ -130,6 +138,11 @@ function onCancel() {
                 >
                     {{ t('sales.weight-modal.confirm') }}
                 </button>
+
+                <div v-if="hasInsufficientStock" class="stock-error">
+                    <span class="error-icon">⊘</span>
+                    {{ t('sales.weight-modal.insufficientStock') }}
+                </div>
             </template>
         </div>
     </div>
@@ -201,28 +214,15 @@ function onCancel() {
 }
 .close-btn:hover { background: var(--color-card-border); }
 
-/* Scale waiting */
-.scale-waiting {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    padding: 24px 0;
-}
-.scale-icon {
-    font-size: 48px;
-    color: var(--color-primary);
-    animation: pulse 1.5s ease-in-out infinite;
-}
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.4; }
-}
-.waiting-text {
-    margin: 0;
+/* Display placeholder (waiting for scale) */
+.display-placeholder {
     font-size: 14px;
     color: var(--color-text-muted);
     font-style: italic;
+    letter-spacing: 0;
+}
+.display-value--empty {
+    color: var(--color-text-muted);
 }
 
 /* Manual mode */
@@ -282,6 +282,11 @@ function onCancel() {
 }
 .keypad-btn:hover { background: var(--color-theme-btn-active-bg); }
 .keypad-btn:active { background: var(--color-card-border); }
+.keypad-btn--active {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+}
 
 .keypad-backspace {
     background: rgba(243, 131, 19, 0.12);

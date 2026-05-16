@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js'
 
 const props = defineProps({
     currentPlan:         { type: Object, required: true },
@@ -18,10 +19,7 @@ const emit = defineEmits([
 ])
 
 const { t, locale } = useI18n()
-
-function formatCurrency(priceInPen) {
-    return `S/ ${Number(priceInPen ?? 0).toFixed(2)}`
-}
+const { format: formatCurrency } = useCurrencyFormatter()
 
 function toLocalDate(dateValue) {
     const [year, month, day] = String(dateValue ?? '').split('-').map(value => Number(value))

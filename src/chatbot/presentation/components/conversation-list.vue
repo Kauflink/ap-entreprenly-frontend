@@ -39,6 +39,7 @@ const { t } = useI18n()
 .conv-list__header {
   border-bottom: 1px solid #e5e7eb;
   padding: 1rem;
+  flex-shrink: 0;
 }
 .conv-list__title {
   font-weight: 700;
@@ -48,5 +49,22 @@ const { t } = useI18n()
 .conv-list__body {
   flex: 1;
   overflow-y: auto;
+}
+
+/* ── Móvil: scroll horizontal ───────────────────────── */
+@media (max-width: 768px) {
+  .conv-list {
+    flex-direction: column;
+    height: 100%;
+  }
+  .conv-list__header { padding: 0.5rem 0.75rem; }
+  .conv-list__title  { font-size: 0.75rem; }
+  .conv-list__body {
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
 }
 </style>

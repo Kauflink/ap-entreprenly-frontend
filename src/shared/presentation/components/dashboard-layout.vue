@@ -1,49 +1,117 @@
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
+import { useRoute, useRouter } from 'vue-router'
+import brandLogo from '@/assets/brand/brand-logo-light-transparent.png'
+import useProfileStore from '@/profile/application/profile.store.js'
 
 const { t } = useI18n()
+const route = useRoute()
 const router = useRouter()
-const route  = useRoute()
+
+const profileStore = useProfileStore()
+const { profile, fullName } = storeToRefs(profileStore)
+const mobileMenuOpen = ref(false)
 
 const navItems = [
-    { labelKey: 'dashboard.nav.home',         icon: 'dashboard',     path: '/home' },
-    { labelKey: 'dashboard.nav.products',     icon: 'inventory_2',   path: '/sales' },
-    { labelKey: 'dashboard.nav.lots',         icon: 'category',      path: '/sales' },
-    { labelKey: 'dashboard.nav.sales',        icon: 'receipt_long',  path: '/sales' },
-    { labelKey: 'dashboard.nav.subscription', icon: 'credit_card',   path: '/subscription' },
-    { labelKey: 'dashboard.nav.orders',       icon: 'shopping_cart', path: '/chatbot/orders' },
-    { labelKey: 'dashboard.nav.chatbot',      icon: 'smart_toy',     path: '/chatbot' },
-    { labelKey: 'dashboard.nav.help',         icon: 'help_outline',  path: '/help' },
+    { labelKey: 'dashboard.nav.home',         icon: 'dashboard',          path: '/home' },
+    { labelKey: 'dashboard.nav.products',     icon: 'inventory_2',        path: '/inventory-products' },
+    { labelKey: 'dashboard.nav.lots',         icon: 'category',           path: '/inventory-lots' },
+    { labelKey: 'dashboard.nav.sales',        icon: 'receipt_long',       path: '/sales' },
+    { labelKey: 'dashboard.nav.subscription', icon: 'credit_card',        path: '/subscription' },
+    { labelKey: 'dashboard.nav.orders',       icon: 'shopping_cart',      path: '/chatbot/orders' },
+    { labelKey: 'dashboard.nav.chatbot',      icon: 'smart_toy',          path: '/chatbot' },
+    { labelKey: 'dashboard.nav.help',         icon: 'help_outline',       path: '/help' },
 ]
 
-function isActive(path) {
-    return route.path === path || route.path.startsWith(path + '/')
+function toggleMobileMenu() {
+    mobileMenuOpen.value = !mobileMenuOpen.value
 }
+
+function closeMobileMenu() {
+    mobileMenuOpen.value = false
+}
+
+function logout() {
+    closeMobileMenu()
+    try {
+        localStorage.removeItem('entreprenly-demo-session')
+    } catch {
+        // Demo-only session. Ignore storage failures.
+    }
+    router.push('/login')
+}
+
+watch(() => route.fullPath, () => closeMobileMenu())
 </script>
 
 <template>
-    <div class="dashboard-shell">
-        <aside class="sidebar" :aria-label="t('dashboard.sidebarLabel')">
+    <div class="dashboard-shell" :class="{ 'dashboard-shell--menu-open': mobileMenuOpen }">
+        <header class="mobile-topbar">
+            <img class="brand-logo brand-logo--mobile" :src="brandLogo" alt="Entreprenly" />
+            <button
+                class="mobile-menu-button"
+                type="button"
+                aria-controls="dashboard-sidebar"
+                :aria-expanded="mobileMenuOpen"
+                :aria-label="mobileMenuOpen ? t('dashboard.menu.close') : t('dashboard.menu.open')"
+                @click="toggleMobileMenu"
+            >
+                <span class="material-icons" aria-hidden="true">
+                    {{ mobileMenuOpen ? 'close' : 'menu' }}
+                </span>
+            </button>
+        </header>
+
+        <button
+            v-if="mobileMenuOpen"
+            class="sidebar-backdrop"
+            type="button"
+            :aria-label="t('dashboard.menu.close')"
+            @click="closeMobileMenu"
+        ></button>
+
+        <aside
+            id="dashboard-sidebar"
+            class="sidebar"
+            :class="{ 'sidebar--open': mobileMenuOpen }"
+            :aria-label="t('dashboard.sidebarLabel')"
+        >
             <div class="brand">
-                <span class="brand-text">Entreprenly</span>
+                <img class="brand-logo" :src="brandLogo" alt="Entreprenly" />
             </div>
 
-            <a class="profile" href="#" @click.prevent>
+            <router-link
+                class="profile"
+                active-class=""
+                exact-active-class="profile--active"
+                to="/profile"
+                :aria-label="t('dashboard.currentUserLabel')"
+                @click="closeMobileMenu"
+            >
                 <span class="profile__avatar" aria-hidden="true">
-                    <span class="material-icons">person</span>
+                    <img
+                        v-if="profile.avatarUrl"
+                        :src="profile.avatarUrl"
+                        :alt="t('profile.userInfo.avatarAlt')"
+                        class="profile__avatar-img"
+                    />
+                    <span v-else class="material-icons">person</span>
                 </span>
-                <strong>{{ t('dashboard.welcome') }}</strong>
-            </a>
+                <strong>{{ fullName || t('dashboard.welcome') }}</strong>
+            </router-link>
 
             <nav>
                 <ul class="navigation-list">
-                    <li v-for="item in navItems" :key="item.path">
+                    <li v-for="item in navItems" :key="item.labelKey">
                         <router-link
                             class="navigation-link"
-                            :class="{ 'navigation-link--active': isActive(item.path) }"
+                            active-class=""
+                            exact-active-class="navigation-link--active"
                             :to="item.path"
                             :aria-label="t(item.labelKey)"
+                            @click="closeMobileMenu"
                         >
                             <span class="material-icons" aria-hidden="true">{{ item.icon }}</span>
                             <span>{{ t(item.labelKey) }}</span>
@@ -52,7 +120,7 @@ function isActive(path) {
                 </ul>
             </nav>
 
-            <button class="logout-button" type="button">
+            <button class="logout-button" type="button" @click="logout">
                 <span class="material-icons" aria-hidden="true">logout</span>
                 <span>{{ t('dashboard.logout') }}</span>
             </button>
@@ -71,6 +139,11 @@ function isActive(path) {
     grid-template-columns: 217px minmax(0, 1fr);
     background: var(--color-bg-page);
     color: var(--color-text-primary);
+}
+
+.mobile-topbar,
+.sidebar-backdrop {
+    display: none;
 }
 
 /* ── Sidebar ── */
@@ -92,14 +165,27 @@ function isActive(path) {
 /* Brand */
 .brand {
     display: flex;
+    width: 100%;
+    min-height: clamp(40px, 5.19dvh, 56px);
+    align-items: center;
     justify-content: center;
+    border: 1px solid var(--color-card-border);
+    border-radius: 999px;
+    background: var(--color-logout-bg);
     margin-bottom: clamp(12px, 2dvh, 24px);
+    padding: 0 16px;
 }
-.brand-text {
-    font-size: clamp(18px, 2dvh, 22px);
-    font-weight: 700;
-    color: var(--color-text-on-dark);
-    letter-spacing: 0.5px;
+
+.brand-logo {
+    display: block;
+    width: min(100%, 132px);
+    height: auto;
+    object-fit: contain;
+}
+
+.brand-logo--mobile {
+    width: 156px;
+    max-height: 38px;
 }
 
 /* Profile */
@@ -125,6 +211,16 @@ function isActive(path) {
     height: clamp(32px, 4.76dvh, 51px);
     color: #2b2927;
     font-size: clamp(32px, 4.76dvh, 51px);
+}
+.profile__avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px;
+}
+.profile--active .profile__avatar {
+    outline: 3px solid var(--color-sidebar-item-active-bg);
+    outline-offset: 3px;
 }
 .profile strong {
     font-size: clamp(16px, 2.22dvh, 24px);
@@ -220,6 +316,86 @@ function isActive(path) {
     .dashboard-content { padding: 24px 20px 36px; }
 }
 @media (max-width: 768px) {
+    .dashboard-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .mobile-topbar {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        display: flex;
+        min-height: 64px;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--color-sidebar-bg);
+        padding: 0 16px;
+        box-shadow: 0 8px 24px rgb(0 0 0 / 14%);
+    }
+
+    .mobile-menu-button {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        border: 1px solid rgb(255 255 255 / 34%);
+        border-radius: 12px;
+        background: var(--color-sidebar-item-bg);
+        color: var(--color-sidebar-item-text);
+        cursor: pointer;
+    }
+
+    .mobile-menu-button .material-icons {
+        width: 24px;
+        height: 24px;
+        font-size: 24px;
+    }
+
+    .mobile-menu-button:focus-visible {
+        outline: 3px solid rgb(12 15 18 / 28%);
+        outline-offset: 3px;
+    }
+
+    .sidebar-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 35;
+        display: block;
+        border: 0;
+        background: rgb(0 0 0 / 42%);
+        cursor: pointer;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 40;
+        width: min(312px, 86vw);
+        height: 100dvh;
+        padding: 22px;
+        transform: translateX(-104%);
+        transition: transform 180ms ease;
+    }
+
+    .sidebar--open {
+        transform: translateX(0);
+    }
+
+    .brand {
+        justify-content: flex-start;
+    }
+
+    .profile {
+        justify-items: start;
+        text-align: left;
+    }
+
+    .navigation-list {
+        grid-template-columns: 1fr;
+    }
+
     .dashboard-content { padding: 16px 14px 28px; }
 }
 @media (max-width: 620px) {
