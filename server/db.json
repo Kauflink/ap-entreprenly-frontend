@@ -358,6 +358,13 @@
       "totalDigital": 0,
       "saleCount": 0,
       "id": 4
+    },
+    {
+      "date": "2026-05-16",
+      "totalCash": 0,
+      "totalDigital": 0,
+      "saleCount": 0,
+      "id": 5
     }
   ],
   "iot-scale": {

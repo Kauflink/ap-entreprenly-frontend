@@ -2,27 +2,42 @@
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useConfirm } from 'primevue/useconfirm';
 import useInventoryStore from '@/inventory/application/inventory.store.js';
 import WeightProductItem from '@/inventory/presentation/views/weight-product-item.vue';
 
 const { t } = useI18n();
-const store  = useInventoryStore();
-const router = useRouter();
+const store   = useInventoryStore();
+const router  = useRouter();
+const confirm = useConfirm();
 
 onMounted(() => { if (!store.weight_productsLoaded) store.fetchWeightProducts(); });
 
 function onEdit(product)   { router.push({ name: 'inventory-weight-products-edit', params: { id: product.id } }); }
-function onDelete(product) { if (confirm(`Delete "${product.name}"?`)) store.deleteWeightProduct(product); }
+function onDelete(product) {
+  confirm.require({
+    message:     t('common.deleteMessage', { name: product.name }),
+    header:      t('common.deleteHeader'),
+    icon:        'pi pi-exclamation-triangle',
+    acceptLabel: t('common.delete'),
+    rejectLabel: t('common.cancel'),
+    acceptClass: 'p-button-danger',
+    accept:      () => store.deleteWeightProduct(product),
+  });
+}
 </script>
 
 <template>
   <div class="inventory-page">
-    <div class="header">
-      <h1>{{ t('products.weightTitle') }}</h1>
+    <header class="page-header">
+      <div>
+        <h1>{{ t('products.weightTitle') }}</h1>
+        <p class="subtitle">{{ t('products.subtitle') }}</p>
+      </div>
       <button class="btn-add" @click="router.push({ name: 'inventory-weight-products-new' })">
         + {{ t('products.add') }}
       </button>
-    </div>
+    </header>
 
     <div class="table-container">
       <div v-if="!store.weight_productsLoaded" class="loading">{{ t('chatbot.page.loading') }}</div>
@@ -40,29 +55,34 @@ function onDelete(product) { if (confirm(`Delete "${product.name}"?`)) store.del
       </template>
     </div>
   </div>
-
 </template>
 
 <style scoped>
-.mat-table {
+.inventory-page {
   width: 100%;
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.inventory-page { width: 100%; }
-
-.header {
+.page-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+  align-items: flex-start;
+  gap: 16px;
 }
 
-.header h1 {
+.page-header h1 {
+  margin: 0;
   font-size: 26px;
   font-weight: 700;
   color: var(--color-text-strong);
-  margin: 0;
+}
+
+.page-header .subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--color-text-muted);
 }
 
 .btn-add {
@@ -74,16 +94,20 @@ function onDelete(product) { if (confirm(`Delete "${product.name}"?`)) store.del
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  flex-shrink: 0;
 }
+
+.btn-add:hover { background: var(--color-primary-hover); }
 
 .table-container {
   background: var(--color-card-bg);
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
 }
 
-.loading, .empty-state {
+.loading,
+.empty-state {
   text-align: center;
   padding: 40px;
   color: var(--color-text-muted);
