@@ -1,12 +1,18 @@
 <script setup>
-import { onMounted } from 'vue'
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
 import useProfileStore from '@/profile/application/profile.store.js'
 
 const profileStore = useProfileStore()
+const route = useRoute()
 
-onMounted(() => {
-    profileStore.loadProfile()
-})
+watch(
+    () => route.meta.publicOnly,
+    publicOnly => {
+        if (!publicOnly) profileStore.loadProfile()
+    },
+    { immediate: true }
+)
 </script>
 
 <template>

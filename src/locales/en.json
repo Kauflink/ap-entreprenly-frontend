@@ -17,7 +17,9 @@
         "chatbot":              "Chatbot",
         "chatbotConversations": "Conversations",
         "chatbotOrders":        "Orders",
-        "profile":              "Profile"
+        "profile":              "Profile",
+        "login":                "Login",
+        "register":             "Register"
     },
     "comingSoon": {
         "title": "Coming soon",
@@ -29,6 +31,10 @@
         "role": "Administrator",
         "sidebarLabel": "Main navigation",
         "logout": "Log out",
+        "menu": {
+            "open": "Open menu",
+            "close": "Close menu"
+        },
         "nav": {
             "home":         "Home",
             "products":     "Products",
