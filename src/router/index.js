@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { watch } from 'vue'
 import i18n from '@/i18n.js'
+import loginRoutes from '@/login/presentation/login-routes.js'
+import registerRoutes from '@/register/presentation/register-routes.js'
 import salesRoutes from '@/sales/presentation/sales-routes.js'
 import subscriptionRoutes from '@/subscription/presentation/subscription-routes.js'
 import chatbotRoutes from '@/chatbot/presentation/chatbot-routes.js'
@@ -9,9 +11,11 @@ import profileRoutes from '@/profile/presentation/profile-routes.js'
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        ...loginRoutes,
+        ...registerRoutes,
         {
             path: '/',
-            redirect: '/sales'
+            redirect: '/login'
         },
         {
             path: '/',
