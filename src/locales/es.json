@@ -3,7 +3,15 @@
         "home":                 "Inicio",
         "help":                 "Ayuda",
         "products":             "Productos",
+        "unitProducts":         "Productos por unidad",
+        "weightProducts":       "Productos por peso",
+        "newProduct":           "Nuevo producto",
+        "editProduct":          "Editar producto",
         "lots":                 "Lotes",
+        "unitLots":             "Lotes por unidad",
+        "weightLots":           "Lotes por peso",
+        "newLot":               "Nuevo lote",
+        "editLot":              "Editar lote",
         "sales":                "Ventas",
         "subscription":         "Suscripción",
         "chatbot":              "Chatbot",
@@ -892,6 +900,129 @@
             "errors": {
                 "mismatch": "Las contraseñas no coinciden"
             }
+        }
+    },
+    "form": {
+        "required":   "Campo requerido",
+        "incomplete": "Formulario incompleto"
+    },
+    "common": {
+        "delete":         "Eliminar",
+        "cancel":         "Cancelar",
+        "confirm":        "Confirmar",
+        "deleteHeader":   "Confirmar eliminación",
+        "deleteMessage":  "¿Eliminar \"{name}\"? Esta acción no se puede deshacer."
+    },
+    "products": {
+        "title":        "Productos",
+        "weightTitle":  "Productos por peso",
+        "subtitle":     "Administra el catálogo de productos del inventario",
+        "add":          "Agregar",
+        "empty":        "No hay productos registrados",
+        "col": {
+            "type":        "Tipo",
+            "byUnit":      "Por unidad",
+            "byWeight":    "Por peso",
+            "name":        "Nombre",
+            "description": "Descripción",
+            "qrCode":      "Código QR",
+            "price":       "Precio",
+            "stock":       "Stock",
+            "edit":        "Editar"
+        },
+        "form": {
+            "type":                       "Tipo de producto",
+            "byUnit":                     "Por unidad",
+            "byWeight":                   "Por peso",
+            "name":                       "Nombre",
+            "namePlaceholder":            "Ingresa el nombre del producto",
+            "description":                "Descripción",
+            "descriptionPlaceholder":     "Ingresa una breve descripción",
+            "qrCode":                     "Código QR",
+            "qrPlaceholder":              "Escanea o ingresa el código QR",
+            "qrHint":                     "Escanea con la cámara o ingresa el código manualmente",
+            "scanQr":                     "Escanear QR",
+            "orManual":                   "o ingrésalo manualmente",
+            "price":                      "Precio",
+            "pricePerKg":                 "Precio por kg",
+            "weight":                     "Peso (g)",
+            "brand":                      "Marca",
+            "brandPlaceholder":           "Ingresa la marca",
+            "save":                       "Guardar",
+            "ok":                         "Aceptar",
+            "addTitle":                   "Nuevo producto",
+            "addSubtitle":                "Registra un nuevo producto en el inventario",
+            "editTitle":                  "Editar producto",
+            "editSubtitle":               "Actualiza los datos del producto",
+            "scannerPermissionDenied":    "Permiso de cámara denegado",
+            "scannerCameraUnavailable":   "Cámara no disponible"
+        }
+    },
+    "lots": {
+        "title":          "Lotes",
+        "subtitle":       "Gestiona los lotes de tus productos",
+        "prefix":         "Lote",
+        "search":         "Buscar por nombre o marca...",
+        "add":            "Agregar lote",
+        "create":         "Nuevo lote",
+        "back":           "Volver",
+        "empty":          "No hay lotes registrados",
+        "viewDetails":    "Ver detalles",
+        "totalLots":      "Lotes totales",
+        "totalLotCount":  "{count} lotes",
+        "totalUnits":     "Unidades totales",
+        "expiredLots":    "Lotes vencidos",
+        "outOfStock":     "Sin stock",
+        "status": {
+            "expired": "Vencido"
+        },
+        "form": {
+            "addTitle":     "Nuevo lote",
+            "addSubtitle":  "Registra un nuevo lote",
+            "editTitle":    "Editar lote",
+            "editSubtitle": "Actualiza los datos del lote",
+            "product":      "Producto",
+            "quantity":     "Cantidad",
+            "qrCode":       "Código QR",
+            "qrHint":       "Escanea o ingresa manualmente el código",
+            "entryDate":    "Fecha de ingreso",
+            "expiryDate":   "Fecha de vencimiento",
+            "select":       "Selecciona un producto",
+            "byWeight":     "Peso (kg)",
+            "save":         "Guardar"
+        },
+        "alerts": {
+            "title": {
+                "lowStock":     "{count} producto(s) con stock bajo",
+                "outOfStock":   "{count} producto(s) sin stock",
+                "expiringSoon": "{count} lote(s) próximos a vencer",
+                "expired":      "{count} lote(s) vencidos"
+            },
+            "detail": {
+                "lowStock":         "{productName} {lotId} tiene poco stock",
+                "lowStockNoLot":    "{productName} tiene poco stock",
+                "outOfStock":       "{productName} {lotId} está sin stock",
+                "outOfStockNoLot":  "{productName} está sin stock",
+                "expiringSoon":     "{productName} {lotId} vence en {days} día(s) ({expiryDate})",
+                "expired":          "{productName} {lotId} venció el {expiryDate}"
+            }
+        }
+    },
+    "stock-alerts": {
+        "title":    "Alertas de stock",
+        "subtitle": "Notificaciones del inventario",
+        "empty":    "No hay alertas registradas",
+        "expired":  "Vencido"
+    },
+    "inventory": {
+        "nav": {
+            "products":       "Productos",
+            "unitProducts":   "Productos por unidad",
+            "weightProducts": "Productos por peso",
+            "lots":           "Lotes",
+            "unitLots":       "Lotes por unidad",
+            "weightLots":     "Lotes por peso",
+            "stockAlerts":    "Alertas de stock"
         }
     }
 }

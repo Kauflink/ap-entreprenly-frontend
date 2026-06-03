@@ -3,7 +3,15 @@
         "home":                 "Home",
         "help":                 "Help",
         "products":             "Products",
+        "unitProducts":         "Unit products",
+        "weightProducts":       "Weight products",
+        "newProduct":           "New product",
+        "editProduct":          "Edit product",
         "lots":                 "Lots",
+        "unitLots":             "Unit lots",
+        "weightLots":           "Weight lots",
+        "newLot":               "New lot",
+        "editLot":              "Edit lot",
         "sales":                "Sales",
         "subscription":         "Subscription",
         "chatbot":              "Chatbot",
@@ -892,6 +900,129 @@
             "errors": {
                 "mismatch": "Passwords do not match"
             }
+        }
+    },
+    "form": {
+        "required":   "Required field",
+        "incomplete": "Form incomplete"
+    },
+    "common": {
+        "delete":         "Delete",
+        "cancel":         "Cancel",
+        "confirm":        "Confirm",
+        "deleteHeader":   "Confirm deletion",
+        "deleteMessage":  "Delete \"{name}\"? This action cannot be undone."
+    },
+    "products": {
+        "title":        "Products",
+        "weightTitle":  "Weight products",
+        "subtitle":     "Manage your inventory product catalog",
+        "add":          "Add",
+        "empty":        "No products registered",
+        "col": {
+            "type":        "Type",
+            "byUnit":      "By unit",
+            "byWeight":    "By weight",
+            "name":        "Name",
+            "description": "Description",
+            "qrCode":      "QR code",
+            "price":       "Price",
+            "stock":       "Stock",
+            "edit":        "Edit"
+        },
+        "form": {
+            "type":                       "Product type",
+            "byUnit":                     "By unit",
+            "byWeight":                   "By weight",
+            "name":                       "Name",
+            "namePlaceholder":            "Enter the product name",
+            "description":                "Description",
+            "descriptionPlaceholder":     "Enter a short description",
+            "qrCode":                     "QR code",
+            "qrPlaceholder":              "Scan or enter the QR code",
+            "qrHint":                     "Scan with the camera or enter the code manually",
+            "scanQr":                     "Scan QR",
+            "orManual":                   "or enter it manually",
+            "price":                      "Price",
+            "pricePerKg":                 "Price per kg",
+            "weight":                     "Weight (g)",
+            "brand":                      "Brand",
+            "brandPlaceholder":           "Enter the brand",
+            "save":                       "Save",
+            "ok":                         "OK",
+            "addTitle":                   "New product",
+            "addSubtitle":                "Register a new product in inventory",
+            "editTitle":                  "Edit product",
+            "editSubtitle":               "Update product data",
+            "scannerPermissionDenied":    "Camera permission denied",
+            "scannerCameraUnavailable":   "Camera not available"
+        }
+    },
+    "lots": {
+        "title":          "Lots",
+        "subtitle":       "Manage your product lots",
+        "prefix":         "Lot",
+        "search":         "Search by name or brand...",
+        "add":            "Add lot",
+        "create":         "New lot",
+        "back":           "Back",
+        "empty":          "No lots registered",
+        "viewDetails":    "View details",
+        "totalLots":      "Total lots",
+        "totalLotCount":  "{count} lots",
+        "totalUnits":     "Total units",
+        "expiredLots":    "Expired lots",
+        "outOfStock":     "Out of stock",
+        "status": {
+            "expired": "Expired"
+        },
+        "form": {
+            "addTitle":     "New lot",
+            "addSubtitle":  "Register a new lot",
+            "editTitle":    "Edit lot",
+            "editSubtitle": "Update lot data",
+            "product":      "Product",
+            "quantity":     "Quantity",
+            "qrCode":       "QR code",
+            "qrHint":       "Scan or enter the code manually",
+            "entryDate":    "Entry date",
+            "expiryDate":   "Expiry date",
+            "select":       "Select a product",
+            "byWeight":     "Weight (kg)",
+            "save":         "Save"
+        },
+        "alerts": {
+            "title": {
+                "lowStock":     "{count} product(s) low on stock",
+                "outOfStock":   "{count} product(s) out of stock",
+                "expiringSoon": "{count} lot(s) expiring soon",
+                "expired":      "{count} lot(s) expired"
+            },
+            "detail": {
+                "lowStock":         "{productName} {lotId} is low on stock",
+                "lowStockNoLot":    "{productName} is low on stock",
+                "outOfStock":       "{productName} {lotId} is out of stock",
+                "outOfStockNoLot":  "{productName} is out of stock",
+                "expiringSoon":     "{productName} {lotId} expires in {days} day(s) ({expiryDate})",
+                "expired":          "{productName} {lotId} expired on {expiryDate}"
+            }
+        }
+    },
+    "stock-alerts": {
+        "title":    "Stock alerts",
+        "subtitle": "Inventory notifications",
+        "empty":    "No alerts registered",
+        "expired":  "Expired"
+    },
+    "inventory": {
+        "nav": {
+            "products":       "Products",
+            "unitProducts":   "Unit products",
+            "weightProducts": "Weight products",
+            "lots":           "Lots",
+            "unitLots":       "Unit lots",
+            "weightLots":     "Weight lots",
+            "stockAlerts":    "Stock alerts"
         }
     }
 }
