@@ -10,9 +10,8 @@ const store  = useInventoryStore();
 const router = useRouter();
 
 const searchTerm          = ref('');
-const alertIndex          = ref(0);
-const cardsGrid           = ref(null);
 const showProductSelector = ref(false);
+const alertsMenuOpen = ref(false);
 
 onMounted(() => {
   if (!store.unit_productsLoaded)  store.fetchUnitProducts();
@@ -68,7 +67,7 @@ const rawAlerts = computed(() =>
   )
 );
 
-const alertSummaries = computed(() => StockAlert.summarize(rawAlerts.value));
+const totalAlertCount = computed(() => rawAlerts.value.length);
 
 const expiredAlertsCount = computed(() =>
   rawAlerts.value.filter(a => a.alertType === 'expired').length
@@ -78,27 +77,54 @@ const outOfStockAlertsCount = computed(() =>
   rawAlerts.value.filter(a => a.alertType === 'out_of_stock').length
 );
 
-const activeAlertSummary = computed(() => alertSummaries.value[alertIndex.value] ?? null);
 
-function previousAlert() { if (alertIndex.value > 0) alertIndex.value--; }
-function nextAlert()     { if (alertIndex.value < alertSummaries.value.length - 1) alertIndex.value++; }
-
-function navigateToDetails(productId, lotType) {
+function navigateToDetails(productId, lotType, lotId = null) {
   const name = lotType === 'unit' ? 'inventory-unit-lots' : 'inventory-weight-lots';
-  router.push({ name, query: { productId } });
+  const query = { productId };
+  if (lotId !== null && lotId !== undefined) query.lotId = lotId;
+  router.push({ name, query });
 }
 
-function scrollLeft() {
-  const card   = cardsGrid.value?.querySelector('.lot-card');
-  const amount = card ? (card.offsetWidth + 24) * 3 : 300;
-  cardsGrid.value?.scrollBy({ left: -amount, behavior: 'smooth' });
+function toggleAlertsMenu() {
+  alertsMenuOpen.value = !alertsMenuOpen.value;
 }
 
-function scrollRight() {
-  const card   = cardsGrid.value?.querySelector('.lot-card');
-  const amount = card ? (card.offsetWidth + 24) * 3 : 300;
-  cardsGrid.value?.scrollBy({ left: amount, behavior: 'smooth' });
+function alertIcon(alert) {
+  switch (alert.alertType) {
+    case 'expired':       return 'error_outline';
+    case 'out_of_stock':  return 'priority_high';
+    case 'expiring_soon': return 'warning_amber';
+    case 'low_stock':     return 'trending_down';
+    default:              return 'notifications';
+  }
 }
+
+function alertTitleKey(alert) {
+  switch (alert.alertType) {
+    case 'low_stock':     return 'lots.alerts.title.lowStock';
+    case 'out_of_stock':  return 'lots.alerts.title.outOfStock';
+    case 'expiring_soon': return 'lots.alerts.title.expiringSoon';
+    case 'expired':       return 'lots.alerts.title.expired';
+    default:              return 'lots.alerts.title.lowStock';
+  }
+}
+
+function alertTitleParams(alert) {
+  const count = rawAlerts.value.filter(item =>
+    item.alertType === alert.alertType &&
+    item.productId === alert.productId &&
+    item.productType === alert.productType
+  ).length;
+
+  return { count };
+}
+
+function navigateToAlert(alert) {
+  if (!alert.productType) return;
+  alertsMenuOpen.value = false;
+  navigateToDetails(alert.productId, alert.productType, alert.lotId);
+}
+
 
 function navigateToCreate() {
   showProductSelector.value = true;
@@ -137,6 +163,48 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
         </p>
       </div>
       <div class="header-actions">
+        <div class="alert-menu">
+          <button
+              type="button"
+              class="alert-icon-btn"
+              :aria-label="t('lots.alerts.buttonLabel')"
+              :aria-expanded="alertsMenuOpen"
+              @click="toggleAlertsMenu">
+            <span class="material-icons" aria-hidden="true">notifications</span>
+            <span v-if="totalAlertCount > 0" class="alert-badge">{{ totalAlertCount }}</span>
+          </button>
+
+          <section v-if="alertsMenuOpen" class="alert-dropdown" aria-live="polite">
+            <div class="alert-dropdown-header">
+              <strong>{{ t('lots.alerts.dropdownTitle') }}</strong>
+              <span>{{ totalAlertCount }} {{ t('lots.alerts.totalLabel') }}</span>
+            </div>
+
+            <div v-if="rawAlerts.length > 0" class="alert-dropdown-list">
+              <button
+                  v-for="(alert, idx) in rawAlerts"
+                  :key="`${alert.productType}-${alert.productId}-${alert.lotId}-${alert.alertType}-${idx}`"
+                  type="button"
+                  class="lot-alert"
+                  :class="{
+                    'lot-alert--danger':  alert.tone === 'danger',
+                    'lot-alert--warning': alert.tone === 'warning',
+                    'lot-alert--low':     alert.tone === 'low'
+                  }"
+                  @click="navigateToAlert(alert)">
+                <span class="lot-alert-icon" aria-hidden="true">
+                  <span class="material-icons">{{ alertIcon(alert) }}</span>
+                </span>
+                <span class="lot-alert-copy">
+                  <strong>{{ t(alertTitleKey(alert), alertTitleParams(alert)) }}</strong>
+                  <span>{{ t(alert.detailKey, alert.detailParams) }}</span>
+                </span>
+              </button>
+            </div>
+            <p v-else class="alert-empty">{{ t('lots.alerts.empty') }}</p>
+          </section>
+        </div>
+
         <input
             class="search-input"
             type="text"
@@ -199,61 +267,7 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
         </p>
       </div>
     </div>
-
-    <template v-if="activeAlertSummary">
-      <div class="lot-alert-slider">
-        <button
-            type="button"
-            class="alert-slide-btn"
-            :disabled="alertSummaries.length <= 1"
-            @click="previousAlert">
-          ❮
-        </button>
-
-        <div
-            class="lot-alert"
-            :class="{
-              'lot-alert--danger':  activeAlertSummary.tone === 'danger',
-              'lot-alert--warning': activeAlertSummary.tone === 'warning',
-              'lot-alert--low':     activeAlertSummary.tone === 'low'
-            }">
-          <svg v-if="activeAlertSummary.tone === 'warning'" class="lot-alert-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-            <line x1="12" y1="9" x2="12" y2="13"/>
-            <circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/>
-          </svg>
-          <svg v-else-if="activeAlertSummary.tone === 'low'" class="lot-alert-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/>
-            <polyline points="17 18 23 18 23 12"/>
-          </svg>
-          <svg v-else class="lot-alert-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <circle cx="12" cy="16.5" r="1" fill="currentColor" stroke="none"/>
-          </svg>
-          <div class="lot-alert-copy">
-            <strong>{{ t(activeAlertSummary.titleKey, activeAlertSummary.titleParams) }}</strong>
-            <span>{{ t(activeAlertSummary.detailKey, activeAlertSummary.detailParams) }}</span>
-          </div>
-        </div>
-
-        <button
-            type="button"
-            class="alert-slide-btn"
-            :disabled="alertSummaries.length <= 1"
-            @click="nextAlert">
-          ❯
-        </button>
-      </div>
-    </template>
-
-    <div class="cards-wrapper">
-      <button
-          class="scroll-btn scroll-btn-left"
-          @click="scrollLeft">
-        ❮
-      </button>
-      <div class="cards-grid" ref="cardsGrid">
+    <div class="cards-grid">
         <p v-if="cards.length === 0" class="empty">
           {{ t('lots.empty') }}
         </p>
@@ -305,12 +319,6 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
             </button>
           </div>
         </div>
-      </div>
-      <button
-          class="scroll-btn scroll-btn-right"
-          @click="scrollRight">
-        ❯
-      </button>
     </div>
   </div>
 
@@ -320,7 +328,7 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
     <div v-if="showProductSelector" class="ps-overlay" @click.self="closeSelector">
       <div class="ps-card">
 
-        <button type="button" class="ps-close" @click="closeSelector">✕</button>
+        <button type="button" class="ps-close" @click="closeSelector">Ã¢Å“â€¢</button>
 
         <h2 class="ps-title">{{ t('lots.form.addTitle') }}</h2>
         <p class="ps-subtitle">{{ t('lots.form.addSubtitle') }}</p>
@@ -335,7 +343,7 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
                   v-for="p in allProducts.filter(x => x.type === 'unit')"
                   :key="'unit-' + p.id"
                   :value="p.id + '-unit'">
-                  {{ p.name }}{{ p.brand ? ' · ' + p.brand : '' }}
+                  {{ p.name }}{{ p.brand ? ' Ã‚Â· ' + p.brand : '' }}
                 </option>
               </optgroup>
               <optgroup :label="t('products.col.byWeight')">
@@ -386,6 +394,98 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.alert-menu {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.alert-icon-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-card-border);
+  border-radius: 14px;
+  background: var(--color-card-bg);
+  color: var(--color-text-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.alert-icon-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.alert-icon-btn:focus-visible {
+  outline: 3px solid rgba(243, 131, 19, 0.35);
+  outline-offset: 2px;
+}
+
+.alert-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border: 2px solid var(--color-card-bg);
+  border-radius: 999px;
+  background: #c51616;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 15px;
+  text-align: center;
+  box-sizing: border-box;
+}
+.alert-dropdown {
+  position: absolute;
+  top: 54px;
+  right: 0;
+  z-index: 30;
+  width: min(420px, 86vw);
+  max-height: 430px;
+  overflow: auto;
+  padding: 14px;
+  border: 1px solid var(--color-card-border);
+  border-radius: 16px;
+  background: var(--color-card-bg);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.18);
+}
+
+.alert-dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+  color: var(--color-text-strong);
+}
+
+.alert-dropdown-header strong {
+  font-size: 15px;
+}
+
+.alert-dropdown-header span {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.alert-dropdown-list {
+  display: grid;
+  gap: 10px;
+}
+
+.alert-empty {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
 }
 
 .search-input {
@@ -452,45 +552,48 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
   color: var(--color-text-muted);
 }
 
-.lot-alert-slider {
-  display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) 42px;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 28px;
-}
-
 .lot-alert {
+  width: 100%;
+  appearance: none;
   display: flex;
-  align-items: center;
-  gap: 18px;
-  min-height: 62px;
-  padding: 12px 24px;
-  border: 2px solid;
-  border-radius: 16px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-}
-
-.alert-slide-btn {
-  width: 32px;
-  height: 48px;
-  border: none;
-  border-radius: 12px;
-  background: var(--color-text-muted);
-  color: #fff;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 72px;
+  padding: 14px;
+  border: 1px solid;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  font: inherit;
+  text-align: left;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: transform 140ms ease, box-shadow 140ms ease;
 }
 
-.alert-slide-btn:disabled {
-  opacity: 0;
+.lot-alert:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.10);
+}
+
+.lot-alert:focus-visible {
+  outline: 3px solid rgba(243, 131, 19, 0.35);
+  outline-offset: 2px;
 }
 
 .lot-alert-icon {
-  font-size: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.72);
+}
+
+.lot-alert-icon .material-icons {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
 }
 
 .lot-alert-copy {
@@ -501,12 +604,17 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
 }
 
 .lot-alert-copy strong {
+  line-height: 1.25;
   font-weight: 700;
+}
+
+.lot-alert-copy span {
+  line-height: 1.35;
 }
 
 .lot-alert--danger {
   background: #fff1f1;
-  border-color: #ff5a5f;
+  border-color: #f1b8b8;
   color: #7f1111;
 }
 
@@ -516,47 +624,37 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
 }
 
 .lot-alert--warning {
-  background: var(--color-theme-btn-active-bg);
-  border-color: #d9a900;
-  color: #c58b00;
+  background: #fff8e6;
+  border-color: #f2d28a;
+  color: #6f4700;
+}
+
+.lot-alert--warning .lot-alert-copy strong,
+.lot-alert--warning .lot-alert-copy span {
+  color: #6f4700;
 }
 
 .lot-alert--low {
-  background: #cbd4ff;
-  border-color: #7687ff;
-  color: #6872db;
+  background: #edf3ff;
+  border-color: #b8c9ff;
+  color: #263f91;
 }
 
-.cards-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  width: 100%;
-  overflow: hidden;
+.lot-alert--low .lot-alert-copy strong,
+.lot-alert--low .lot-alert-copy span {
+  color: #263f91;
 }
 
 .cards-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 16px;
-
-  flex: 1;
-  min-width: 0;
-
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  padding: 10px 0;
-}
-
-.cards-grid::-webkit-scrollbar {
-  display: none;
+  width: 100%;
+  padding: 10px 0 0;
 }
 
 .lot-card {
-  min-width: calc((100% - 16px * 2) / 3);
-  width: calc((100% - 16px * 2) / 3);
   min-height: 220px;
-
   background: var(--color-card-bg);
   border-radius: 18px;
   padding: 18px;
@@ -565,7 +663,6 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex-shrink: 0;
 }
 
 .lot-card-top {
@@ -669,23 +766,8 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
 
 .btn-add { display: none; }
 
-.scroll-btn {
-  width: 48px;
-  height: 90px;
 
-  border: none;
-  border-radius: 14px;
-
-  background: var(--color-text-muted);
-  color: #fff;
-
-  font-size: 28px;
-  cursor: pointer;
-
-  flex-shrink: 0;
-}
-
-/* ── Product Selector Modal ──────────────────────────────────── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ Product Selector Modal Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 .ps-overlay {
   position: fixed;
   inset: 0;
@@ -769,7 +851,7 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
   color: var(--color-text-muted);
 }
 
-/* ── Responsive ──────────────────────────────────────────────── */
+/* Ã¢â€â‚¬Ã¢â€â‚¬ Responsive Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 @media (max-width: 768px) {
   .page-header {
     flex-direction: column;
@@ -777,15 +859,29 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
   }
   .header-actions {
     width: 100%;
-    flex-direction: column;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 10px;
+  }
+  .alert-menu {
+    grid-column: 1;
+    grid-row: 1;
   }
   .search-input {
+    grid-column: 2;
+    grid-row: 1;
     width: 100%;
+    box-sizing: border-box;
   }
   .btn-create {
+    grid-column: 1 / -1;
     width: 100%;
     text-align: center;
+  }
+  .alert-dropdown {
+    left: 0;
+    right: auto;
+    width: calc(100vw - 48px);
   }
   .stats-row {
     gap: 10px;
@@ -795,23 +891,16 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
   }
   .stat-number { font-size: 24px; }
   .stat-label  { font-size: 12px; }
-  .lot-alert-slider {
-    grid-template-columns: 32px minmax(0, 1fr) 32px;
-    gap: 6px;
-  }
   .lot-alert { padding: 10px 14px; gap: 12px; }
-  .scroll-btn { display: none; }
-  .cards-wrapper { gap: 0; }
-  .lot-card {
-    min-width: 80vw;
-    width: 80vw;
-  }
 }
 
 @media (max-width: 480px) {
   .page-title { font-size: 22px; }
   .stats-row { flex-wrap: wrap; }
   .stat-card { flex: 1 1 calc(50% - 8px); min-width: 120px; }
-  .lot-card { min-width: 88vw; width: 88vw; }
 }
 </style>
+
+
+
+
