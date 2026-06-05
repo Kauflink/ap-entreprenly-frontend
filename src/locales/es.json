@@ -13,34 +13,34 @@
         "newLot":               "Nuevo lote",
         "editLot":              "Editar lote",
         "sales":                "Ventas",
-        "subscription":         "Suscripción",
+        "subscription":         "SuscripciÃ³n",
         "chatbot":              "Chatbot",
         "chatbotConversations": "Conversaciones",
         "chatbotOrders":        "Pedidos",
         "profile":              "Perfil",
-        "login":                "Iniciar sesión",
+        "login":                "Iniciar sesiÃ³n",
         "register":             "Crear cuenta"
     },
     "comingSoon": {
-        "title": "Próximamente",
-        "subtitle": "Esta sección está en desarrollo."
+        "title": "PrÃ³ximamente",
+        "subtitle": "Esta secciÃ³n estÃ¡ en desarrollo."
     },
     "dashboard": {
         "welcome": "Bienvenido, usuario",
-        "currentUserLabel": "Abrir configuración del perfil",
+        "currentUserLabel": "Abrir configuraciÃ³n del perfil",
         "role": "Administrador",
-        "sidebarLabel": "Navegación principal",
-        "logout": "Cerrar sesión",
+        "sidebarLabel": "NavegaciÃ³n principal",
+        "logout": "Cerrar sesiÃ³n",
         "menu": {
-            "open": "Abrir menú",
-            "close": "Cerrar menú"
+            "open": "Abrir menÃº",
+            "close": "Cerrar menÃº"
         },
         "nav": {
             "home":         "Inicio",
             "products":     "Productos",
             "lots":         "Lotes",
             "sales":        "Ventas",
-            "subscription": "Suscripción",
+            "subscription": "SuscripciÃ³n",
             "orders":       "Pedidos",
             "chatbot":      "Chatbot",
             "help":         "Ayuda"
@@ -49,7 +49,7 @@
     "sales": {
         "page": {
             "title": "Ventas",
-            "subtitle": "Registra y procesa las ventas del día"
+            "subtitle": "Registra y procesa las ventas del dÃ­a"
         },
         "detail": {
             "title": "Detalle de venta"
@@ -67,7 +67,7 @@
                 "unitPrice": "P. Unit.",
                 "subtotal":  "Subtotal"
             },
-            "empty": "Aún no se han añadido productos al ticket",
+            "empty": "AÃºn no se han aÃ±adido productos al ticket",
             "badge": {
                 "unit":   "Unidad",
                 "weight": "Peso"
@@ -77,8 +77,8 @@
         },
         "register": {
             "title":    "Resumen de Caja",
-            "subtitle": "Ingresos acumulados por método de pago",
-            "totalDay": "Total del Día",
+            "subtitle": "Ingresos acumulados por mÃ©todo de pago",
+            "totalDay": "Total del DÃ­a",
             "cash":     "Efectivo",
             "digital":  "Tarjeta - Yape/Plin"
         },
@@ -90,10 +90,10 @@
             "total":       "Total"
         },
         "payment": {
-            "title":   "Método de Pago",
+            "title":   "MÃ©todo de Pago",
             "cash":    "Efectivo",
             "digital": "Tarjeta yape/plin",
-            "error":   "Por favor, seleccione un método de pago"
+            "error":   "Por favor, seleccione un mÃ©todo de pago"
         },
         "finalize": "Finalizar Venta y Emitir Boleta",
         "cancel":   "Cancelar Venta",
@@ -119,24 +119,24 @@
     },
     "subscription": {
         "page": {
-            "title": "Suscripción",
-            "description": "Consulta tu plan actual, revisa límites disponibles, actualiza a Plan Control y gestiona facturación desde el dashboard.",
-            "loading": "Cargando panel de suscripción...",
-            "errorTitle": "No se pudo cargar la suscripción",
-            "errorDescription": "Revisa que el servidor local esté activo y que los endpoints de .env.development apunten a server/db.json.",
+            "title": "SuscripciÃ³n",
+            "description": "Consulta tu plan actual, revisa lÃ­mites disponibles, actualiza a Plan Control y gestiona facturaciÃ³n desde el dashboard.",
+            "loading": "Cargando panel de suscripciÃ³n...",
+            "errorTitle": "No se pudo cargar la suscripciÃ³n",
+            "errorDescription": "Revisa que el servidor local estÃ© activo y que los endpoints de .env.development apunten a server/db.json.",
             "retry": "Reintentar"
         },
         "overview": {
-            "eyebrow": "Suscripción",
-            "title": "Plan actual y facturación",
-            "description": "Administra el plan de tu negocio, revisa los límites disponibles y actualiza a Plan Control cuando necesites operar sin restricciones.",
-            "billingFrequencyLabel": "Frecuencia de facturación",
+            "eyebrow": "SuscripciÃ³n",
+            "title": "Plan actual y facturaciÃ³n",
+            "description": "Administra el plan de tu negocio, revisa los lÃ­mites disponibles y actualiza a Plan Control cuando necesites operar sin restricciones.",
+            "billingFrequencyLabel": "Frecuencia de facturaciÃ³n",
             "monthly": "Mensual",
             "annual": "Anual",
             "upgradeAction": "Actualizar a Plan Control",
-            "renewAction": "Renovar suscripción",
+            "renewAction": "Renovar suscripciÃ³n",
             "keepPlanAction": "Mantener plan",
-            "cancelAction": "Solicitar cancelación",
+            "cancelAction": "Solicitar cancelaciÃ³n",
             "priceLabel": {
                 "monthly": "pago mensual",
                 "annual": "pago anual",
@@ -146,7 +146,7 @@
         },
         "usage": {
             "eyebrow": "Uso del plan",
-            "title": "Límites disponibles",
+            "title": "LÃ­mites disponibles",
             "status": {
                 "control": "Control",
                 "free": "Free"
@@ -175,46 +175,46 @@
             }
         },
         "billing": {
-            "eyebrow": "Facturación",
-            "title": "Método de pago y datos fiscales",
+            "eyebrow": "FacturaciÃ³n",
+            "title": "MÃ©todo de pago y datos fiscales",
             "paymentMethod": {
-                "title": "Método de pago",
-                "emptyDescription": "Aún no hay tarjeta o medio de pago registrado.",
-                "addAction": "Agregar métodos de pago",
+                "title": "MÃ©todo de pago",
+                "emptyDescription": "AÃºn no hay tarjeta o medio de pago registrado.",
+                "addAction": "Agregar mÃ©todos de pago",
                 "available": "Disponible para pagos y renovaciones",
-                "additionalMethod": "+{count} método adicional",
-                "additionalMethods": "+{count} métodos adicionales",
+                "additionalMethod": "+{count} mÃ©todo adicional",
+                "additionalMethods": "+{count} mÃ©todos adicionales",
                 "cardEnding": "{brand} terminada en {lastFour} - vence {month}/{year}"
             },
             "fiscalData": {
-                "title": "Datos de facturación",
-                "emptyDescription": "Completa RUC, razón social y correo de comprobantes.",
+                "title": "Datos de facturaciÃ³n",
+                "emptyDescription": "Completa RUC, razÃ³n social y correo de comprobantes.",
                 "addAction": "Completar datos",
                 "editAction": "Editar datos fiscales",
-                "complete": "Información fiscal completa"
+                "complete": "InformaciÃ³n fiscal completa"
             }
         },
         "activity": {
             "eyebrow": "Historial",
-            "title": "Actividad de la suscripción",
+            "title": "Actividad de la suscripciÃ³n",
             "downloadAction": "Descargar historial",
             "created-account": {
                 "title": "Cuenta creada",
-                "detail": "16 abril 2026 - Plan Free asignado automáticamente"
+                "detail": "16 abril 2026 - Plan Free asignado automÃ¡ticamente"
             },
             "current-status": {
                 "title": "Estado actual",
                 "detail": {
                     "free": "Plan Free activo - Sin cargos registrados",
                     "active": "Plan Control activo - {price}/mes",
-                    "scheduled-cancellation": "Cancelación programada - {price}/mes"
+                    "scheduled-cancellation": "CancelaciÃ³n programada - {price}/mes"
                 }
             },
             "billing": {
-                "title": "Facturación",
+                "title": "FacturaciÃ³n",
                 "detail": {
                     "free": "Pendiente de completar para actualizar a Plan Control",
-                    "renewalWithDate": "Próxima renovación: {date} - {cycle}",
+                    "renewalWithDate": "PrÃ³xima renovaciÃ³n: {date} - {cycle}",
                     "accessUntil": "Acceso vigente hasta el {date} - sin siguiente cobro"
                 }
             }
@@ -224,9 +224,9 @@
                 "name": "Plan Free",
                 "status": "Plan Free activo",
                 "badge": "Plan actual",
-                "shortDescription": "Incluido automáticamente al crear la cuenta. No requiere tarjeta ni genera cargos.",
+                "shortDescription": "Incluido automÃ¡ticamente al crear la cuenta. No requiere tarjeta ni genera cargos.",
                 "features": {
-                    "basicInventory": "Inventario básico con productos y lotes limitados.",
+                    "basicInventory": "Inventario bÃ¡sico con productos y lotes limitados.",
                     "manualMovements": "Registro manual de movimientos principales.",
                     "noChatbot": "Sin chatbot de WhatsApp ni automatizaciones avanzadas."
                 }
@@ -240,12 +240,12 @@
                 "statusLabel": {
                     "active": "Plan Control activo",
                     "recommended": "Recomendado",
-                    "scheduled-cancellation": "Cancelación programada"
+                    "scheduled-cancellation": "CancelaciÃ³n programada"
                 },
                 "shortDescription": {
-                    "active": "Tu plan sigue activo hasta el {date}. Se renovará automáticamente.",
+                    "active": "Tu plan sigue activo hasta el {date}. Se renovarÃ¡ automÃ¡ticamente.",
                     "recommended": "Opera sin restricciones con automatizaciones, alertas y trazabilidad completa.",
-                    "scheduled-cancellation": "Tu plan sigue activo hasta el {date}. No se renovará automáticamente."
+                    "scheduled-cancellation": "Tu plan sigue activo hasta el {date}. No se renovarÃ¡ automÃ¡ticamente."
                 },
                 "features": {
                     "unlimitedProducts": "Productos y lotes ilimitados",
@@ -256,115 +256,115 @@
         },
         "modal": {
             "close": "Cerrar modal",
-            "eyebrow": "Suscripción"
+            "eyebrow": "SuscripciÃ³n"
         },
         "cardBrand": {
             "generic": "Tarjeta"
         },
         "planAction": {
             "renew": {
-                "title": "Renovar suscripción",
-                "cardTitle": "Renovación preparada",
-                "cardDescription": "La nueva vigencia se extenderá hasta el {date}."
+                "title": "Renovar suscripciÃ³n",
+                "cardTitle": "RenovaciÃ³n preparada",
+                "cardDescription": "La nueva vigencia se extenderÃ¡ hasta el {date}."
             },
             "cancel": {
-                "title": "Solicitar cancelación",
-                "cardTitle": "Confirma la cancelación",
-                "cardDescription": "Tu acceso al Plan Control se mantendrá hasta el {date}. No se realizará el siguiente cobro."
+                "title": "Solicitar cancelaciÃ³n",
+                "cardTitle": "Confirma la cancelaciÃ³n",
+                "cardDescription": "Tu acceso al Plan Control se mantendrÃ¡ hasta el {date}. No se realizarÃ¡ el siguiente cobro."
             },
             "cancelSuccess": {
-                "title": "Cancelación programada",
-                "cardTitle": "Cancelación programada",
-                "cardDescription": "La solicitud fue registrada. Tu acceso premium continúa hasta el {date}."
+                "title": "CancelaciÃ³n programada",
+                "cardTitle": "CancelaciÃ³n programada",
+                "cardDescription": "La solicitud fue registrada. Tu acceso premium continÃºa hasta el {date}."
             },
             "keep": {
                 "title": "Mantener Plan Control",
-                "cardTitle": "Mantener renovación activa",
-                "cardDescription": "Se cancelará la solicitud de baja y el plan seguirá renovándose al finalizar la vigencia actual: {date}."
+                "cardTitle": "Mantener renovaciÃ³n activa",
+                "cardDescription": "Se cancelarÃ¡ la solicitud de baja y el plan seguirÃ¡ renovÃ¡ndose al finalizar la vigencia actual: {date}."
             },
             "understood": "Entendido",
-            "confirmCancellation": "Confirmar cancelación",
+            "confirmCancellation": "Confirmar cancelaciÃ³n",
             "keepPlan": "Mantener Plan Control",
-            "fallbackDate": "la fecha registrada en tu suscripción"
+            "fallbackDate": "la fecha registrada en tu suscripciÃ³n"
         },
         "upgrade": {
             "title": "Actualizar a Plan Control",
-            "navAriaLabel": "Pasos de actualización",
+            "navAriaLabel": "Pasos de actualizaciÃ³n",
             "steps": {
                 "plan": "Plan",
-                "billing": "Facturación",
+                "billing": "FacturaciÃ³n",
                 "payment": "Pago",
-                "activation": "Activación"
+                "activation": "ActivaciÃ³n"
             },
             "activated": {
-                "title": "Suscripción activada",
+                "title": "SuscripciÃ³n activada",
                 "cardTitle": "Plan Control activado",
-                "cardDescription": "Tu suscripción ya está activa. Puedes cerrar este popup y continuar operando.",
+                "cardDescription": "Tu suscripciÃ³n ya estÃ¡ activa. Puedes cerrar este popup y continuar operando.",
                 "understood": "Entendido"
             },
             "plan": {
-                "helper": "Elegiste Plan Control. Revisa el ciclo de cobro antes de continuar con la suscripción.",
+                "helper": "Elegiste Plan Control. Revisa el ciclo de cobro antes de continuar con la suscripciÃ³n.",
                 "billingLabel": {
-                    "monthly": "Facturación mensual",
-                    "annual": "Facturación anual"
+                    "monthly": "FacturaciÃ³n mensual",
+                    "annual": "FacturaciÃ³n anual"
                 },
                 "priceLabel": {
                     "monthly": "/mes",
-                    "annual": "/año"
+                    "annual": "/aÃ±o"
                 }
             },
             "billing": {
                 "documentType": "Tipo de documento",
-                "documentNumber": "Número de documento",
-                "documentNumberError": "Ingresa un documento válido.",
-                "businessName": "Razón social o nombre",
-                "businessNameError": "Ingresa la razón social o nombre.",
+                "documentNumber": "NÃºmero de documento",
+                "documentNumberError": "Ingresa un documento vÃ¡lido.",
+                "businessName": "RazÃ³n social o nombre",
+                "businessNameError": "Ingresa la razÃ³n social o nombre.",
                 "receiptEmail": "Correo de comprobantes",
-                "receiptEmailError": "Ingresa un correo válido.",
-                "fiscalAddress": "Dirección fiscal",
-                "fiscalAddressError": "Ingresa la dirección fiscal."
+                "receiptEmailError": "Ingresa un correo vÃ¡lido.",
+                "fiscalAddress": "DirecciÃ³n fiscal",
+                "fiscalAddressError": "Ingresa la direcciÃ³n fiscal."
             },
             "payment": {
                 "registeredCard": "Tarjeta registrada",
                 "cardEnding": "{brand} terminada en {lastFour} - vence {month}/{year}",
-                "selectMethod": "Selecciona un método de pago",
+                "selectMethod": "Selecciona un mÃ©todo de pago",
                 "cardEndingShort": "{brand} terminada en {lastFour}",
                 "holderExpiry": "{holder} - vence {month}/{year}",
                 "totalCharge": "Total a cobrar",
-                "cardNumber": "Número de tarjeta",
-                "cardNumberError": "Ingresa un número de tarjeta válido.",
+                "cardNumber": "NÃºmero de tarjeta",
+                "cardNumberError": "Ingresa un nÃºmero de tarjeta vÃ¡lido.",
                 "holder": "Titular",
                 "holderError": "Ingresa el nombre del titular.",
                 "expiry": "Vencimiento",
                 "expiryError": "Usa el formato MM/AA.",
-                "cvvError": "Ingresa 3 o 4 dígitos."
+                "cvvError": "Ingresa 3 o 4 dÃ­gitos."
             },
             "activation": {
                 "readyTitle": "Listo para activar",
-                "readyDescription": "Al confirmar, el Plan Control queda activo y se habilitan productos, lotes, pedidos y caja sin límites del plan gratuito.",
-                "payAndActivate": "Pagar y activar suscripción"
+                "readyDescription": "Al confirmar, el Plan Control queda activo y se habilitan productos, lotes, pedidos y caja sin lÃ­mites del plan gratuito.",
+                "payAndActivate": "Pagar y activar suscripciÃ³n"
             },
             "continue": "Continuar",
             "back": "Volver"
         },
         "billingData": {
-            "title": "Completar datos de facturación",
+            "title": "Completar datos de facturaciÃ³n",
             "cancel": "Cancelar",
             "save": "Guardar datos"
         },
         "paymentMethod": {
-            "addTitle": "Agregar método de pago",
+            "addTitle": "Agregar mÃ©todo de pago",
             "holderPlaceholder": "Nombre del titular",
             "save": "Guardar cambios"
         },
         "history": {
-            "title": "Historial de suscripción",
-            "ariaLabel": "Historial de suscripción",
-            "downloaded": "Historial descargado correctamente con la actividad visible de la suscripción.",
+            "title": "Historial de suscripciÃ³n",
+            "ariaLabel": "Historial de suscripciÃ³n",
+            "downloaded": "Historial descargado correctamente con la actividad visible de la suscripciÃ³n.",
             "downloadAction": "Descargar historial",
             "paymentMethod": {
-                "title": "Método de pago",
-                "empty": "Sin método de pago registrado.",
+                "title": "MÃ©todo de pago",
+                "empty": "Sin mÃ©todo de pago registrado.",
                 "detail": "{brand} terminada en {lastFour} registrada para pagos y renovaciones"
             },
             "fiscalData": {
@@ -376,11 +376,11 @@
     },
     "dashboard-home": {
         "welcomeBack": "Panel de control",
-        "welcome":     "¡Hola, bienvenido!",
-        "quickLinksLabel": "Accesos rápidos",
-        "quickLinksHint":  "Accede rápidamente a las secciones más usadas.",
+        "welcome":     "Â¡Hola, bienvenido!",
+        "quickLinksLabel": "Accesos rÃ¡pidos",
+        "quickLinksHint":  "Accede rÃ¡pidamente a las secciones mÃ¡s usadas.",
         "alertBannerTitle": "Alertas de inventario activas",
-        "alertBanner":      "Tienes {count} alerta(s) de stock que requieren atención.",
+        "alertBanner":      "Tienes {count} alerta(s) de stock que requieren atenciÃ³n.",
         "alertBannerLink":  "Ver lotes",
         "stats": {
             "salesToday":   "ventas hoy",
@@ -401,21 +401,21 @@
             "disconnected":     "Desconectado",
             "chatsToday":       "Conversaciones hoy",
             "botOrders":        "Pedidos del bot",
-            "number":           "Número vinculado",
-            "pendingOrders_one":   "1 pedido esperando validación",
-            "pendingOrders_other": "{count} pedidos esperando validación",
-            "disconnectedSub":  "Vincula tu WhatsApp para recibir pedidos automáticos.",
+            "number":           "NÃºmero vinculado",
+            "pendingOrders_one":   "1 pedido esperando validaciÃ³n",
+            "pendingOrders_other": "{count} pedidos esperando validaciÃ³n",
+            "disconnectedSub":  "Vincula tu WhatsApp para recibir pedidos automÃ¡ticos.",
             "connectNow":       "Conectar ahora"
         },
         "orders": {
             "title":          "Pedidos recientes",
             "viewAll":        "Ver todos",
-            "empty":          "Sin pedidos aún",
-            "emptySub":       "Los pedidos del chatbot aparecerán aquí.",
+            "empty":          "Sin pedidos aÃºn",
+            "emptySub":       "Los pedidos del chatbot aparecerÃ¡n aquÃ­.",
             "colClient":      "Cliente",
             "colStatus":      "Estado",
             "colTotal":       "Total",
-            "clientFallback": "—",
+            "clientFallback": "â€”",
             "approved":       "Aprobados",
             "pending":        "Por validar",
             "status": {
@@ -434,7 +434,7 @@
         "alerts": {
             "empty":    "Inventario en buen estado",
             "emptySub": "No hay alertas de stock activas.",
-            "viewMore": "Ver {count} más",
+            "viewMore": "Ver {count} mÃ¡s",
             "types": {
                 "low_stock":     "Stock bajo: {count} und",
                 "out_of_stock":  "Sin stock",
@@ -444,7 +444,7 @@
         },
         "links": {
             "products":    "Productos",
-            "productsSub": "Catálogo",
+            "productsSub": "CatÃ¡logo",
             "lots":        "Lotes",
             "lotsSub":     "Trazabilidad",
             "chatbot":     "Chatbot",
@@ -458,16 +458,16 @@
     },
     "dashboard-help": {
         "title":              "Centro de Ayuda",
-        "searchPlaceholder":  "¿En qué podemos ayudarte?",
+        "searchPlaceholder":  "Â¿En quÃ© podemos ayudarte?",
         "searchBtn":          "Buscar",
-        "frequentArticles":   "Artículos frecuentes",
+        "frequentArticles":   "ArtÃ­culos frecuentes",
         "popular":            "Ver populares",
         "readTime":           "min de lectura",
-        "mostConsulted":      "Más consultado",
-        "exploreByCategory":  "Explorar por categoría",
-        "articlesLabel":      "artículos",
-        "ctaTitle":           "¿No encontraste lo que buscabas?",
-        "ctaSub":             "Envíanos un reporte y te ayudaremos lo antes posible.",
+        "mostConsulted":      "MÃ¡s consultado",
+        "exploreByCategory":  "Explorar por categorÃ­a",
+        "articlesLabel":      "artÃ­culos",
+        "ctaTitle":           "Â¿No encontraste lo que buscabas?",
+        "ctaSub":             "EnvÃ­anos un reporte y te ayudaremos lo antes posible.",
         "ctaBtn":             "Reportar problema",
         "backBtn":            "Volver",
         "categoryNames": {
@@ -478,83 +478,83 @@
         },
         "articles": {
             "1": {
-                "title":    "Cómo registrar un nuevo producto",
+                "title":    "CÃ³mo registrar un nuevo producto",
                 "category": "Inventario",
                 "steps": {
-                    "0": "Ingresa a <strong>Productos</strong> desde el menú lateral.",
-                    "1": "Haz clic en el botón <strong>Agregar producto</strong>.",
-                    "2": "Completa nombre, categoría, unidad y precio. Los campos con * son obligatorios.",
-                    "3": "Guarda el producto. Quedará disponible para lotes y para el chatbot. ✅"
+                    "0": "Ingresa a <strong>Productos</strong> desde el menÃº lateral.",
+                    "1": "Haz clic en el botÃ³n <strong>Agregar producto</strong>.",
+                    "2": "Completa nombre, categorÃ­a, unidad y precio. Los campos con * son obligatorios.",
+                    "3": "Guarda el producto. QuedarÃ¡ disponible para lotes y para el chatbot. âœ…"
                 }
             },
             "2": {
-                "title":    "Cómo vincular WhatsApp Business al chatbot",
+                "title":    "CÃ³mo vincular WhatsApp Business al chatbot",
                 "category": "Chatbot",
                 "steps": {
-                    "0": "Ingresa a <strong>Chatbot</strong> desde el menú lateral.",
-                    "1": "Escanea el código QR con WhatsApp Business (Ajustes → Dispositivos vinculados).",
-                    "2": "Espera la confirmación de conexión. El estado cambiará a <strong>Conectado</strong>.",
-                    "3": "El chatbot empezará a recibir mensajes automáticamente. ✅"
+                    "0": "Ingresa a <strong>Chatbot</strong> desde el menÃº lateral.",
+                    "1": "Escanea el cÃ³digo QR con WhatsApp Business (Ajustes â†’ Dispositivos vinculados).",
+                    "2": "Espera la confirmaciÃ³n de conexiÃ³n. El estado cambiarÃ¡ a <strong>Conectado</strong>.",
+                    "3": "El chatbot empezarÃ¡ a recibir mensajes automÃ¡ticamente. âœ…"
                 }
             },
             "3": {
-                "title":    "Cómo aprobar o rechazar un pedido del bot",
+                "title":    "CÃ³mo aprobar o rechazar un pedido del bot",
                 "category": "Pedidos",
                 "steps": {
-                    "0": "Ingresa a <strong>Pedidos</strong> desde el menú lateral.",
+                    "0": "Ingresa a <strong>Pedidos</strong> desde el menÃº lateral.",
                     "1": "Localiza el pedido con estado <em>Comprobante recibido</em>.",
                     "2": "Revisa el comprobante adjunto. Si es correcto, haz clic en <strong>Aprobar pago</strong>.",
-                    "3": "Si el comprobante es inválido, haz clic en <strong>Rechazar</strong>. Tras tres rechazos se bloqueará el pedido. ✅"
+                    "3": "Si el comprobante es invÃ¡lido, haz clic en <strong>Rechazar</strong>. Tras tres rechazos se bloquearÃ¡ el pedido. âœ…"
                 }
             },
             "4": {
-                "title":    "Cómo gestionar lotes y fechas de vencimiento",
+                "title":    "CÃ³mo gestionar lotes y fechas de vencimiento",
                 "category": "Inventario",
                 "steps": {
-                    "0": "Ingresa a <strong>Lotes</strong> desde el menú lateral.",
+                    "0": "Ingresa a <strong>Lotes</strong> desde el menÃº lateral.",
                     "1": "Selecciona el producto al que deseas agregar un lote.",
                     "2": "Completa la cantidad, fecha de ingreso y fecha de vencimiento.",
-                    "3": "El sistema enviará alertas cuando un lote esté por vencer o sin stock. ✅"
+                    "3": "El sistema enviarÃ¡ alertas cuando un lote estÃ© por vencer o sin stock. âœ…"
                 }
             },
             "5": {
-                "title":    "Cómo registrar una venta y emitir boleta",
+                "title":    "CÃ³mo registrar una venta y emitir boleta",
                 "category": "Ventas",
                 "steps": {
-                    "0": "Ingresa a <strong>Ventas</strong> desde el menú lateral.",
+                    "0": "Ingresa a <strong>Ventas</strong> desde el menÃº lateral.",
                     "1": "Busca y agrega los productos al ticket de venta.",
-                    "2": "Selecciona el método de pago: efectivo o tarjeta/Yape.",
-                    "3": "Haz clic en <strong>Finalizar venta</strong>. La boleta se generará automáticamente. ✅"
+                    "2": "Selecciona el mÃ©todo de pago: efectivo o tarjeta/Yape.",
+                    "3": "Haz clic en <strong>Finalizar venta</strong>. La boleta se generarÃ¡ automÃ¡ticamente. âœ…"
                 }
             },
             "6": {
-                "title":    "Cómo funciona el flujo del chatbot",
+                "title":    "CÃ³mo funciona el flujo del chatbot",
                 "category": "Chatbot",
                 "steps": {
                     "0": "El cliente escribe al WhatsApp Business vinculado.",
-                    "1": "El bot muestra el catálogo, recibe el pedido y solicita la dirección de entrega.",
+                    "1": "El bot muestra el catÃ¡logo, recibe el pedido y solicita la direcciÃ³n de entrega.",
                     "2": "El bot solicita el comprobante de pago. Al recibirlo, el pedido aparece en <strong>Pedidos</strong>.",
-                    "3": "El administrador aprueba o rechaza el comprobante desde el panel. ✅"
+                    "3": "El administrador aprueba o rechaza el comprobante desde el panel. âœ…"
                 }
             },
             "7": {
-                "title":    "Cómo verificar un comprobante de pago",
+                "title":    "CÃ³mo verificar un comprobante de pago",
                 "category": "Chatbot",
                 "steps": {
                     "0": "Ingresa a <strong>Conversaciones</strong> para ver el hilo de mensajes del cliente.",
                     "1": "El comprobante enviado por el cliente aparece en el chat como imagen.",
                     "2": "Ve a <strong>Pedidos</strong> para aprobar o rechazar el pago.",
-                    "3": "Si apruebas, el cliente recibe confirmación automática por WhatsApp. ✅"
+                    "3": "Si apruebas, el cliente recibe confirmaciÃ³n automÃ¡tica por WhatsApp. âœ…"
                 }
             },
             "8": {
-                "title":    "Qué hacer cuando un pedido queda bloqueado",
+                "title":    "QuÃ© hacer cuando un pedido queda bloqueado",
                 "category": "Pedidos",
                 "steps": {
                     "0": "Un pedido se bloquea tras <strong>3 comprobantes rechazados</strong> consecutivos.",
-                    "1": "El cliente recibe un mensaje automático indicando que el pedido fue cancelado.",
+                    "1": "El cliente recibe un mensaje automÃ¡tico indicando que el pedido fue cancelado.",
                     "2": "Puedes ver el detalle del bloqueo en la vista de <strong>Pedidos</strong>.",
-                    "3": "Para retomar el pedido, el cliente debe iniciar una nueva conversación con el chatbot. ✅"
+                    "3": "Para retomar el pedido, el cliente debe iniciar una nueva conversaciÃ³n con el chatbot. âœ…"
                 }
             }
         },
@@ -564,39 +564,39 @@
             "email":      "soporte{'@'}entreprenly.com",
             "whatsapp":   "+51 999 000 111",
             "hoursLabel": "Horario",
-            "hours":      "Lun–Vie 9:00–18:00"
+            "hours":      "Lunâ€“Vie 9:00â€“18:00"
         },
         "results": {
             "count_other":        "resultado(s) para",
-            "resultsTitle":       "Resultados de búsqueda",
-            "articlesFound":      "artículos encontrados",
-            "clearSearch":        "Limpiar búsqueda",
+            "resultsTitle":       "Resultados de bÃºsqueda",
+            "articlesFound":      "artÃ­culos encontrados",
+            "clearSearch":        "Limpiar bÃºsqueda",
             "noResults":          "Sin resultados para \"{q}\"",
-            "noResultsSub":       "No encontramos artículos que coincidan con tu búsqueda.",
+            "noResultsSub":       "No encontramos artÃ­culos que coincidan con tu bÃºsqueda.",
             "suggestions":        "Sugerencias:",
-            "suggestion1":        "Usa palabras clave más simples",
-            "suggestion2":        "Revisa la ortografía",
-            "suggestion3":        "Intenta con términos relacionados",
-            "relatedCategories":  "Categorías relacionadas",
+            "suggestion1":        "Usa palabras clave mÃ¡s simples",
+            "suggestion2":        "Revisa la ortografÃ­a",
+            "suggestion3":        "Intenta con tÃ©rminos relacionados",
+            "relatedCategories":  "CategorÃ­as relacionadas",
             "report":             "Reportar problema"
         },
         "article": {
             "stepsTitle":         "Pasos a seguir",
-            "useful":             "¿Este artículo te fue útil?",
-            "yes":                "Sí, me ayudó",
-            "no":                 "No me ayudó",
-            "thanks":             "¡Gracias por tu feedback!",
-            "notUsefulBanner":    "Lamentamos que no haya sido útil",
-            "notUsefulBannerSub": "Cuéntanos qué salió mal para mejorar nuestra documentación.",
+            "useful":             "Â¿Este artÃ­culo te fue Ãºtil?",
+            "yes":                "SÃ­, me ayudÃ³",
+            "no":                 "No me ayudÃ³",
+            "thanks":             "Â¡Gracias por tu feedback!",
+            "notUsefulBanner":    "Lamentamos que no haya sido Ãºtil",
+            "notUsefulBannerSub": "CuÃ©ntanos quÃ© saliÃ³ mal para mejorar nuestra documentaciÃ³n.",
             "cancel":             "Cancelar",
-            "related":            "Artículos relacionados",
-            "stillProblems":      "¿Aún tienes problemas?",
-            "stillProblemsSub":   "Si el artículo no resolvió tu consulta, contacta a nuestro equipo.",
+            "related":            "ArtÃ­culos relacionados",
+            "stillProblems":      "Â¿AÃºn tienes problemas?",
+            "stillProblemsSub":   "Si el artÃ­culo no resolviÃ³ tu consulta, contacta a nuestro equipo.",
             "report":             "Reportar problema",
             "quickReport": {
-                "title":       "Cuéntanos qué salió mal",
-                "sub":         "Describe brevemente el problema con este artículo.",
-                "placeholder": "Ej: La información está desactualizada, los pasos no aplican a mi caso...",
+                "title":       "CuÃ©ntanos quÃ© saliÃ³ mal",
+                "sub":         "Describe brevemente el problema con este artÃ­culo.",
+                "placeholder": "Ej: La informaciÃ³n estÃ¡ desactualizada, los pasos no aplican a mi caso...",
                 "required":    "Por favor escribe algo antes de enviar.",
                 "submit":      "Enviar reporte"
             }
@@ -610,102 +610,102 @@
             "errorBannerSub":      "Revisa los campos marcados en rojo antes de continuar.",
             "formTitle":           "Describe el problema",
             "formSubtitle":        "Completa el formulario y te responderemos en menos de 24 horas.",
-            "category":            "Categoría del problema",
-            "categoryRequired":    "Selecciona una categoría",
-            "module":              "Módulo afectado",
-            "moduleDefault":       "-- Selecciona un módulo --",
-            "moduleRequired":      "Selecciona el módulo afectado",
-            "description":         "Descripción del problema",
-            "descriptionPlaceholder": "Describe qué ocurrió, qué esperabas que pasara y qué pasó en su lugar...",
-            "descriptionRequired": "La descripción debe tener al menos 5 caracteres",
-            "when":                "¿Cuándo ocurrió?",
+            "category":            "CategorÃ­a del problema",
+            "categoryRequired":    "Selecciona una categorÃ­a",
+            "module":              "MÃ³dulo afectado",
+            "moduleDefault":       "-- Selecciona un mÃ³dulo --",
+            "moduleRequired":      "Selecciona el mÃ³dulo afectado",
+            "description":         "DescripciÃ³n del problema",
+            "descriptionPlaceholder": "Describe quÃ© ocurriÃ³, quÃ© esperabas que pasara y quÃ© pasÃ³ en su lugar...",
+            "descriptionRequired": "La descripciÃ³n debe tener al menos 5 caracteres",
+            "when":                "Â¿CuÃ¡ndo ocurriÃ³?",
             "whenOptional":        "(opcional)",
-            "whenPlaceholder":     "Ej: Hoy por la mañana, 12/05/2026...",
+            "whenPlaceholder":     "Ej: Hoy por la maÃ±ana, 12/05/2026...",
             "submit":              "Enviar reporte",
             "errorFieldsTitle":    "Campos con errores",
-            "urgentTitle":         "¿Es urgente?",
-            "urgentSub":           "Contáctanos directamente por estos canales.",
+            "urgentTitle":         "Â¿Es urgente?",
+            "urgentSub":           "ContÃ¡ctanos directamente por estos canales.",
             "beforeTitle":         "Antes de reportar, intenta:",
-            "before1":             "Recargar la página",
-            "before2":             "Revisar la sección de artículos de ayuda",
-            "before3":             "Verificar tu conexión a internet",
+            "before1":             "Recargar la pÃ¡gina",
+            "before2":             "Revisar la secciÃ³n de artÃ­culos de ayuda",
+            "before3":             "Verificar tu conexiÃ³n a internet",
             "responseTimeTitle":   "Tiempos de respuesta",
             "priorityNormal":      "Normal",
-            "priorityNormalVal":   "24–48 horas",
+            "priorityNormalVal":   "24â€“48 horas",
             "priorityHigh":        "Urgente",
-            "priorityHighVal":     "2–4 horas",
+            "priorityHighVal":     "2â€“4 horas",
             "hoursLabel":          "Horario",
-            "hoursVal":            "Lun–Vie 9:00–18:00"
+            "hoursVal":            "Lunâ€“Vie 9:00â€“18:00"
         },
         "success": {
             "pageTitle":       "Reporte enviado",
-            "title":           "¡Reporte enviado con éxito!",
+            "title":           "Â¡Reporte enviado con Ã©xito!",
             "subtitle":        "Hemos recibido tu solicitud y te responderemos lo antes posible.",
-            "ticketLabel":     "Número de ticket",
-            "ticketHint":      "Guarda este número para hacer seguimiento de tu caso.",
+            "ticketLabel":     "NÃºmero de ticket",
+            "ticketHint":      "Guarda este nÃºmero para hacer seguimiento de tu caso.",
             "summaryTitle":    "Resumen del reporte",
-            "categoryLabel":   "Categoría",
-            "moduleLabel":     "Módulo",
+            "categoryLabel":   "CategorÃ­a",
+            "moduleLabel":     "MÃ³dulo",
             "dateLabel":       "Fecha",
             "statusLabel":     "Estado",
-            "statusValue":     "En revisión",
+            "statusValue":     "En revisiÃ³n",
             "estimatedLabel":  "Respuesta estimada",
             "estimatedValue":  "Menos de 24 horas",
             "backToHome":      "Volver al inicio",
             "viewReports":     "Ver mis reportes",
-            "emailNotice":     "Recibirás actualizaciones por correo",
+            "emailNotice":     "RecibirÃ¡s actualizaciones por correo",
             "emailNoticeSub":  "Te notificaremos cuando el equipo de soporte responda tu ticket.",
-            "nextTitle":       "Próximos pasos",
-            "step1":           "Recibirás un correo de confirmación con el número de ticket.",
-            "step2":           "El equipo de soporte revisará tu caso en horario laboral.",
-            "step3":           "Te contactaremos por correo con la solución o más preguntas."
+            "nextTitle":       "PrÃ³ximos pasos",
+            "step1":           "RecibirÃ¡s un correo de confirmaciÃ³n con el nÃºmero de ticket.",
+            "step2":           "El equipo de soporte revisarÃ¡ tu caso en horario laboral.",
+            "step3":           "Te contactaremos por correo con la soluciÃ³n o mÃ¡s preguntas."
         },
         "error": {
             "pageTitle":     "Error al enviar",
             "title":         "No se pudo enviar el reporte",
-            "subtitle":      "Ocurrió un error al procesar tu solicitud. Tus datos fueron guardados.",
-            "noTicket":      "No se generó número de ticket",
+            "subtitle":      "OcurriÃ³ un error al procesar tu solicitud. Tus datos fueron guardados.",
+            "noTicket":      "No se generÃ³ nÃºmero de ticket",
             "noTicketSub":   "El reporte no fue registrado. Puedes reintentar o contactarnos directamente.",
             "dataSaved":     "Datos guardados",
-            "descriptionLabel": "Descripción",
-            "retry":         "Reintentar envío",
+            "descriptionLabel": "DescripciÃ³n",
+            "retry":         "Reintentar envÃ­o",
             "backToHome":    "Volver al inicio",
-            "contactTitle":  "Contáctanos directamente",
-            "contactSub":    "Si el problema persiste, escríbenos por estos canales.",
+            "contactTitle":  "ContÃ¡ctanos directamente",
+            "contactSub":    "Si el problema persiste, escrÃ­benos por estos canales.",
             "causesTitle":   "Posibles causas",
-            "cause1":        "Sin conexión a internet",
-            "cause2":        "El servidor no está disponible",
+            "cause1":        "Sin conexiÃ³n a internet",
+            "cause2":        "El servidor no estÃ¡ disponible",
             "cause3":        "Error temporal del sistema"
         }
     },
     "chatbot": {
         "page": {
             "title": "Chatbot de WhatsApp",
-            "loading": "Verificando sesión...",
-            "connectPrompt": "Vincula tu cuenta de WhatsApp Business escaneando el código QR.",
-            "connectionStatus": "Tu cuenta de WhatsApp está conectada y activa."
+            "loading": "Verificando sesiÃ³n...",
+            "connectPrompt": "Vincula tu cuenta de WhatsApp Business escaneando el cÃ³digo QR.",
+            "connectionStatus": "Tu cuenta de WhatsApp estÃ¡ conectada y activa."
         },
         "qr": {
-            "expiredTitle": "El código QR ha expirado",
+            "expiredTitle": "El cÃ³digo QR ha expirado",
             "expiredDetail": "Espera un momento mientras generamos uno nuevo.",
             "linkTitle": "Vincula tu WhatsApp",
-            "newCode": "Nuevo código QR",
-            "scanInstruction": "Abre WhatsApp en tu celular y escanea el código.",
-            "alt": "Código QR de WhatsApp",
+            "newCode": "Nuevo cÃ³digo QR",
+            "scanInstruction": "Abre WhatsApp en tu celular y escanea el cÃ³digo.",
+            "alt": "CÃ³digo QR de WhatsApp",
             "expiresIn": "Expira en {seconds} segundos",
             "expiresInOne": "Expira en 1 segundo",
-            "generating": "Generando nuevo código...",
+            "generating": "Generando nuevo cÃ³digo...",
             "simulateScan": "Simular escaneo"
         },
         "statusCard": {
             "cardTitle": "WhatsApp Business",
-            "connectedTitle": "¡Conexión exitosa!",
-            "connectedDetail": "Tu WhatsApp está listo para recibir pedidos de tus clientes.",
-            "expiredTitle": "Sesión expirada",
-            "expiredDetail": "La sesión de WhatsApp ha expirado. Vuelve a vincular tu cuenta.",
+            "connectedTitle": "Â¡ConexiÃ³n exitosa!",
+            "connectedDetail": "Tu WhatsApp estÃ¡ listo para recibir pedidos de tus clientes.",
+            "expiredTitle": "SesiÃ³n expirada",
+            "expiredDetail": "La sesiÃ³n de WhatsApp ha expirado. Vuelve a vincular tu cuenta.",
             "activeSince": "activo desde",
-            "lastConnection": "última conexión",
-            "operative": "El chatbot está recibiendo y procesando pedidos.",
+            "lastConnection": "Ãºltima conexiÃ³n",
+            "operative": "El chatbot estÃ¡ recibiendo y procesando pedidos.",
             "viewConversations": "Ver conversaciones",
             "disconnect": "Desconectar",
             "reconnect": "Reconectar",
@@ -716,7 +716,7 @@
             "title": "Conversaciones"
         },
         "header": {
-            "online": "En línea"
+            "online": "En lÃ­nea"
         },
         "message": {
             "receiptAlt": "Comprobante de pago"
@@ -730,8 +730,8 @@
             "send": "Enviar mensaje"
         },
         "payment": {
-            "pendingBar": "Pago pendiente — Pedido #{orderNumber}",
-            "pendingBarDetail": "Método: {paymentMethod} · S/ {total}",
+            "pendingBar": "Pago pendiente â€” Pedido #{orderNumber}",
+            "pendingBarDetail": "MÃ©todo: {paymentMethod} Â· S/ {total}",
             "approve": "Aprobar",
             "reject": "Rechazar",
             "rejectTitle": "Motivo del rechazo",
@@ -744,24 +744,24 @@
             }
         },
         "conversations": {
-            "empty": "Aún no tienes conversaciones.\nTus clientes te escribirán por WhatsApp.",
-            "placeholder": "Selecciona una conversación para ver los mensajes."
+            "empty": "AÃºn no tienes conversaciones.\nTus clientes te escribirÃ¡n por WhatsApp.",
+            "placeholder": "Selecciona una conversaciÃ³n para ver los mensajes."
         },
         "sys": {
             "orderRegistered": "Pedido #{orderNumber} registrado a las {time}",
             "paymentApproved": "Pago aprobado a las {time}",
-            "botPaymentApproved": "¡Tu pedido #{orderNumber} ha sido confirmado! Pronto recibirás tu pedido.",
+            "botPaymentApproved": "Â¡Tu pedido #{orderNumber} ha sido confirmado! Pronto recibirÃ¡s tu pedido.",
             "receiptRejected": "Comprobante rechazado a las {time}",
-            "botReceiptRejected": "El comprobante del pedido #{orderNumber} fue rechazado. Motivo: {reason}. Por favor envía uno nuevo.",
-            "blocked": "Conversación bloqueada a las {time}",
-            "botBlocked": "Lamentablemente tu pedido #{orderNumber} fue cancelado por múltiples intentos fallidos de pago."
+            "botReceiptRejected": "El comprobante del pedido #{orderNumber} fue rechazado. Motivo: {reason}. Por favor envÃ­a uno nuevo.",
+            "blocked": "ConversaciÃ³n bloqueada a las {time}",
+            "botBlocked": "Lamentablemente tu pedido #{orderNumber} fue cancelado por mÃºltiples intentos fallidos de pago."
         },
         "orders": {
             "title":             "Pedidos del chatbot",
             "subtitle":          "Gestiona los pedidos recibidos por WhatsApp",
             "connectPrompt":     "Conecta tu WhatsApp para empezar a recibir pedidos.",
-            "goToConfig":        "Ir a configuración del chatbot",
-            "empty":             "Aún no hay pedidos",
+            "goToConfig":        "Ir a configuraciÃ³n del chatbot",
+            "empty":             "AÃºn no hay pedidos",
             "goToConversations": "Ver conversaciones",
             "receiptAlt":        "Comprobante de pago",
             "delivery":          "Entrega:",
@@ -769,17 +769,17 @@
             "traceability":      "Trazabilidad",
             "approvePayment":    "Aprobar pago",
             "rejectPayment":     "Rechazar",
-            "willBlock":         "(bloqueará el pedido)",
-            "blockedMessage":    "Este pedido fue bloqueado por múltiples comprobantes rechazados.",
+            "willBlock":         "(bloquearÃ¡ el pedido)",
+            "blockedMessage":    "Este pedido fue bloqueado por mÃºltiples comprobantes rechazados.",
             "trace": {
                 "registered":       "Pedido registrado el {date}",
                 "paymentSent":      "Instrucciones de pago enviadas al cliente",
                 "receiptReceived":  "Comprobante recibido",
                 "receiptRejected":  "Comprobante rechazado {count} vez(ces)",
-                "paymentApproved":  "Pago aprobado ✓",
-                "blocked":          "Pedido bloqueado por múltiples rechazos",
+                "paymentApproved":  "Pago aprobado âœ“",
+                "blocked":          "Pedido bloqueado por mÃºltiples rechazos",
                 "cancelled":        "Pedido cancelado",
-                "pendingValidation":"Comprobante pendiente de validación...",
+                "pendingValidation":"Comprobante pendiente de validaciÃ³n...",
                 "awaitingReceipt":  "Esperando comprobante de pago..."
             },
             "status": {
@@ -793,7 +793,7 @@
     },
     "profile": {
         "page": {
-            "ariaLabel":           "Configuración de perfil",
+            "ariaLabel":           "ConfiguraciÃ³n de perfil",
             "leftSectionLabel":    "Foto de perfil",
             "centerSectionLabel":  "Datos del perfil",
             "rightSectionLabel":   "Preferencias y email"
@@ -822,11 +822,11 @@
             }
         },
         "phoneVerify": {
-            "title":         "Verificar teléfono",
+            "title":         "Verificar telÃ©fono",
             "verifyAction":  "Verificar",
             "fields": {
                 "phone": {
-                    "label":       "Número de teléfono",
+                    "label":       "NÃºmero de telÃ©fono",
                     "placeholder": "+51 999 999 999"
                 }
             }
@@ -875,30 +875,30 @@
             }
         },
         "changePassword": {
-            "title":        "Cambiar contraseña",
-            "updateAction": "Actualizar contraseña",
+            "title":        "Cambiar contraseÃ±a",
+            "updateAction": "Actualizar contraseÃ±a",
             "fields": {
                 "current": {
-                    "label":       "Contraseña actual",
-                    "placeholder": "Ingresa tu contraseña actual",
-                    "showLabel":   "Mostrar contraseña actual",
-                    "hideLabel":   "Ocultar contraseña actual"
+                    "label":       "ContraseÃ±a actual",
+                    "placeholder": "Ingresa tu contraseÃ±a actual",
+                    "showLabel":   "Mostrar contraseÃ±a actual",
+                    "hideLabel":   "Ocultar contraseÃ±a actual"
                 },
                 "new": {
-                    "label":       "Nueva contraseña",
-                    "placeholder": "Ingresa la nueva contraseña",
-                    "showLabel":   "Mostrar nueva contraseña",
-                    "hideLabel":   "Ocultar nueva contraseña"
+                    "label":       "Nueva contraseÃ±a",
+                    "placeholder": "Ingresa la nueva contraseÃ±a",
+                    "showLabel":   "Mostrar nueva contraseÃ±a",
+                    "hideLabel":   "Ocultar nueva contraseÃ±a"
                 },
                 "confirm": {
-                    "label":       "Confirmar contraseña",
-                    "placeholder": "Confirma la nueva contraseña",
-                    "showLabel":   "Mostrar confirmación",
-                    "hideLabel":   "Ocultar confirmación"
+                    "label":       "Confirmar contraseÃ±a",
+                    "placeholder": "Confirma la nueva contraseÃ±a",
+                    "showLabel":   "Mostrar confirmaciÃ³n",
+                    "hideLabel":   "Ocultar confirmaciÃ³n"
                 }
             },
             "errors": {
-                "mismatch": "Las contraseñas no coinciden"
+                "mismatch": "Las contraseÃ±as no coinciden"
             }
         }
     },
@@ -910,13 +910,13 @@
         "delete":         "Eliminar",
         "cancel":         "Cancelar",
         "confirm":        "Confirmar",
-        "deleteHeader":   "Confirmar eliminación",
-        "deleteMessage":  "¿Eliminar \"{name}\"? Esta acción no se puede deshacer."
+        "deleteHeader":   "Confirmar eliminaciÃ³n",
+        "deleteMessage":  "Â¿Eliminar \"{name}\"? Esta acciÃ³n no se puede deshacer."
     },
     "products": {
         "title":        "Productos",
         "weightTitle":  "Productos por peso",
-        "subtitle":     "Administra el catálogo de productos del inventario",
+        "subtitle":     "Administra el catÃ¡logo de productos del inventario",
         "add":          "Agregar",
         "empty":        "No hay productos registrados",
         "col": {
@@ -924,8 +924,8 @@
             "byUnit":      "Por unidad",
             "byWeight":    "Por peso",
             "name":        "Nombre",
-            "description": "Descripción",
-            "qrCode":      "Código QR",
+            "description": "DescripciÃ³n",
+            "qrCode":      "CÃ³digo QR",
             "price":       "Precio",
             "stock":       "Stock",
             "edit":        "Editar"
@@ -936,13 +936,13 @@
             "byWeight":                   "Por peso",
             "name":                       "Nombre",
             "namePlaceholder":            "Ingresa el nombre del producto",
-            "description":                "Descripción",
-            "descriptionPlaceholder":     "Ingresa una breve descripción",
-            "qrCode":                     "Código QR",
-            "qrPlaceholder":              "Escanea o ingresa el código QR",
-            "qrHint":                     "Escanea con la cámara o ingresa el código manualmente",
+            "description":                "DescripciÃ³n",
+            "descriptionPlaceholder":     "Ingresa una breve descripciÃ³n",
+            "qrCode":                     "CÃ³digo QR",
+            "qrPlaceholder":              "Escanea o ingresa el cÃ³digo QR",
+            "qrHint":                     "Escanea con la cÃ¡mara o ingresa el cÃ³digo manualmente",
             "scanQr":                     "Escanear QR",
-            "orManual":                   "o ingrésalo manualmente",
+            "orManual":                   "o ingrÃ©salo manualmente",
             "price":                      "Precio",
             "pricePerKg":                 "Precio por kg",
             "weight":                     "Peso (g)",
@@ -954,8 +954,8 @@
             "addSubtitle":                "Registra un nuevo producto en el inventario",
             "editTitle":                  "Editar producto",
             "editSubtitle":               "Actualiza los datos del producto",
-            "scannerPermissionDenied":    "Permiso de cámara denegado",
-            "scannerCameraUnavailable":   "Cámara no disponible"
+            "scannerPermissionDenied":    "Permiso de cÃ¡mara denegado",
+            "scannerCameraUnavailable":   "CÃ¡mara no disponible"
         }
     },
     "lots": {
@@ -983,8 +983,8 @@
             "editSubtitle": "Actualiza los datos del lote",
             "product":      "Producto",
             "quantity":     "Cantidad",
-            "qrCode":       "Código QR",
-            "qrHint":       "Escanea o ingresa manualmente el código",
+            "qrCode":       "CÃ³digo QR",
+            "qrHint":       "Escanea o ingresa manualmente el cÃ³digo",
             "entryDate":    "Fecha de ingreso",
             "expiryDate":   "Fecha de vencimiento",
             "select":       "Selecciona un producto",
@@ -992,19 +992,23 @@
             "save":         "Guardar"
         },
         "alerts": {
+            "totalLabel": "alertas",
+            "buttonLabel": "Ver alertas de lotes",
+            "dropdownTitle": "Alertas de lotes",
+            "empty": "No hay alertas pendientes.",
             "title": {
                 "lowStock":     "{count} producto(s) con stock bajo",
                 "outOfStock":   "{count} producto(s) sin stock",
-                "expiringSoon": "{count} lote(s) próximos a vencer",
+                "expiringSoon": "{count} lote(s) prÃ³ximos a vencer",
                 "expired":      "{count} lote(s) vencidos"
             },
             "detail": {
                 "lowStock":         "{productName} {lotId} tiene poco stock",
                 "lowStockNoLot":    "{productName} tiene poco stock",
-                "outOfStock":       "{productName} {lotId} está sin stock",
-                "outOfStockNoLot":  "{productName} está sin stock",
-                "expiringSoon":     "{productName} {lotId} vence en {days} día(s) ({expiryDate})",
-                "expired":          "{productName} {lotId} venció el {expiryDate}"
+                "outOfStock":       "{productName} {lotId} estÃ¡ sin stock",
+                "outOfStockNoLot":  "{productName} estÃ¡ sin stock",
+                "expiringSoon":     "{productName} {lotId} vence en {days} dÃ­a(s) ({expiryDate})",
+                "expired":          "{productName} {lotId} venciÃ³ el {expiryDate}"
             }
         }
     },
@@ -1026,3 +1030,7 @@
         }
     }
 }
+
+
+
+
