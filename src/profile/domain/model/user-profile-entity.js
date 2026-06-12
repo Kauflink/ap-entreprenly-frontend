@@ -3,6 +3,7 @@ export class UserProfile {
         id = 0,
         firstName = '',
         lastName = '',
+        phone = null,
         avatarUrl = null,
         role = '',
         plan = ''
@@ -10,6 +11,7 @@ export class UserProfile {
         this.id = id
         this.firstName = firstName
         this.lastName = lastName
+        this.phone = phone
         this.avatarUrl = avatarUrl
         this.role = role
         this.plan = plan
