@@ -1,42 +1,77 @@
 <script setup>
-import { reactive } from 'vue'
-import { storeToRefs } from 'pinia'
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import brandLogo from '@/assets/brand/brand-logo-light-transparent.png'
-import useRegisterStore from '@/register/application/register.store.js'
+import useAuthStore from '@/auth/application/auth.store.js'
+import { RegisterAccount } from '@/register/domain/model/register-account.js'
 
-const registerStore = useRegisterStore()
-const { errors, notice } = storeToRefs(registerStore)
+const router = useRouter()
+const authStore = useAuthStore()
+
+const errors = ref([])
+const notice = ref('')
+const loading = ref(false)
+
+const timezones = [
+    'America/Lima (UTC-05:00)',
+    'America/Bogota (UTC-05:00)',
+    'America/Mexico_City (UTC-06:00)',
+    'America/Buenos_Aires (UTC-03:00)',
+    'America/Santiago (UTC-04:00)',
+    'Europe/Madrid (UTC+01:00)',
+    'UTC'
+]
 
 const form = reactive({
-    businessName: 'Bodega Central',
-    ownerName: 'Lionel Gutierrez',
-    email: 'nuevo@entreprenly.pe',
-    password: 'Entreprenly2026!',
-    confirmPassword: 'Entreprenly2026!',
-    acceptedTerms: true
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    timezone: timezones[0],
+    password: '',
+    confirmPassword: '',
+    acceptedTerms: false
 })
 
 const benefits = [
     {
         title: 'Inicio simple',
-        copy: 'Formulario corto para probar el flujo sin persistencia.'
+        copy: 'Crea tu cuenta en pocos pasos y entra al dashboard.'
     },
     {
         title: 'Plan Free listo',
-        copy: 'Registro demo preparado para avanzar al login cuando quieras.'
+        copy: 'Tu cuenta arranca con el plan inicial asignado.'
     },
     {
         title: 'Operacion ordenada',
         copy: 'La cuenta representa un negocio con inventario, ventas y caja.'
     },
     {
-        title: 'Sin backend',
-        copy: 'No guarda informacion ni llama endpoints externos.'
+        title: 'Acceso inmediato',
+        copy: 'Al registrarte quedas listo para iniciar sesion.'
     }
 ]
 
-function submitRegister() {
-    registerStore.register(form)
+async function submitRegister() {
+    notice.value = ''
+    const account = new RegisterAccount(form)
+    errors.value = account.errors
+    if (errors.value.length > 0) return
+
+    loading.value = true
+    try {
+        await authStore.register(account.toSignUpRequest())
+        router.push('/home')
+    } catch {
+        errors.value = ['No se pudo crear la cuenta (el correo ya podria estar registrado).']
+    } finally {
+        loading.value = false
+    }
+}
+
+function registerWithGoogle() {
+    errors.value = []
+    notice.value = 'Registro con Google no disponible aun.'
 }
 </script>
 
@@ -61,7 +96,7 @@ function submitRegister() {
                     <p class="eyebrow">Crear cuenta</p>
                     <h1>Crea tu cuenta para empezar a ordenar inventario, ventas y caja.</h1>
                     <p>
-                        Registro basico para probar interfaz. No persiste datos y no conecta ningun servicio externo.
+                        Crea tu cuenta para empezar a ordenar inventario, ventas y caja desde un solo lugar.
                     </p>
 
                     <div class="benefits-grid">
@@ -76,26 +111,26 @@ function submitRegister() {
                 </section>
 
                 <section class="form-panel" aria-labelledby="register-title">
-                    <span class="mini-tag">Registro demo</span>
+                    <span class="mini-tag">Crear cuenta</span>
                     <h2 id="register-title">Activa tu acceso</h2>
                     <p class="form-copy">
-                        Completa datos estaticos para validar la experiencia.
+                        Completa tus datos para crear la cuenta e iniciar sesion.
                     </p>
 
                     <form class="access-form" @submit.prevent="submitRegister">
                         <label>
-                            <span>Nombre del negocio</span>
+                            <span>Nombre</span>
                             <span class="field-shell">
-                                <span class="material-icons" aria-hidden="true">store</span>
-                                <input v-model="form.businessName" type="text" autocomplete="organization" />
+                                <span class="material-icons" aria-hidden="true">person</span>
+                                <input v-model="form.firstName" type="text" autocomplete="given-name" />
                             </span>
                         </label>
 
                         <label>
-                            <span>Responsable</span>
+                            <span>Apellido</span>
                             <span class="field-shell">
-                                <span class="material-icons" aria-hidden="true">person</span>
-                                <input v-model="form.ownerName" type="text" autocomplete="name" />
+                                <span class="material-icons" aria-hidden="true">badge</span>
+                                <input v-model="form.lastName" type="text" autocomplete="family-name" />
                             </span>
                         </label>
 
@@ -104,6 +139,24 @@ function submitRegister() {
                             <span class="field-shell">
                                 <span class="material-icons" aria-hidden="true">mail</span>
                                 <input v-model="form.email" type="email" autocomplete="email" />
+                            </span>
+                        </label>
+
+                        <label>
+                            <span>Telefono (opcional)</span>
+                            <span class="field-shell">
+                                <span class="material-icons" aria-hidden="true">call</span>
+                                <input v-model="form.phone" type="tel" autocomplete="tel" />
+                            </span>
+                        </label>
+
+                        <label>
+                            <span>Zona horaria</span>
+                            <span class="field-shell">
+                                <span class="material-icons" aria-hidden="true">schedule</span>
+                                <select v-model="form.timezone">
+                                    <option v-for="tz in timezones" :key="tz" :value="tz">{{ tz }}</option>
+                                </select>
                             </span>
                         </label>
 
@@ -125,7 +178,7 @@ function submitRegister() {
 
                         <label class="check-row">
                             <input v-model="form.acceptedTerms" type="checkbox" />
-                            <span>Acepto terminos y uso demo de datos.</span>
+                            <span>Acepto los terminos y condiciones.</span>
                         </label>
 
                         <div v-if="errors.length > 0" class="message message--error" role="alert">
@@ -133,11 +186,11 @@ function submitRegister() {
                         </div>
                         <p v-if="notice" class="message" role="status" aria-live="polite">{{ notice }}</p>
 
-                        <button class="primary-button" type="submit">
-                            Crear cuenta demo
+                        <button class="primary-button" type="submit" :disabled="loading">
+                            {{ loading ? 'Creando cuenta...' : 'Crear cuenta' }}
                         </button>
 
-                        <button class="secondary-button" type="button" @click="registerStore.registerWithGoogle">
+                        <button class="secondary-button" type="button" @click="registerWithGoogle">
                             <span class="material-icons" aria-hidden="true">account_circle</span>
                             <span>Registrarme con Google</span>
                         </button>
@@ -376,7 +429,8 @@ p {
     box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
 }
 
-.field-shell input {
+.field-shell input,
+.field-shell select {
     width: 100%;
     border: 0;
     background: transparent;

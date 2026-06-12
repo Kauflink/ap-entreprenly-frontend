@@ -1,21 +1,20 @@
 <script setup>
-import { reactive } from 'vue'
-import { storeToRefs } from 'pinia'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import brandLogo from '@/assets/brand/brand-logo-light-transparent.png'
-import useLoginStore from '@/login/application/login.store.js'
+import useAuthStore from '@/auth/application/auth.store.js'
+import { LoginCredentials } from '@/login/domain/model/login-credentials.js'
 
 const router = useRouter()
-const loginStore = useLoginStore()
-const { error, notice } = storeToRefs(loginStore)
-const demoCredentials = {
-    email: 'admin@entreprenly.pe',
-    password: 'Entreprenly2026!'
-}
+const authStore = useAuthStore()
+
+const error = ref('')
+const notice = ref('')
+const loading = ref(false)
 
 const form = reactive({
-    email: demoCredentials.email,
-    password: demoCredentials.password,
+    email: '',
+    password: '',
     rememberSession: true
 })
 
@@ -34,19 +33,37 @@ const benefits = [
     },
     {
         title: 'Acceso rapido',
-        copy: 'Usa el usuario demo o el boton Google simulado para probar.'
+        copy: 'Ingresa con tu cuenta para entrar al dashboard.'
     }
 ]
 
-function submitLogin() {
-    if (loginStore.login(form)) {
+async function submitLogin() {
+    error.value = ''
+    notice.value = ''
+    const credentials = new LoginCredentials(form)
+    if (!credentials.valid) {
+        error.value = 'Completa correo y contrasena para ingresar.'
+        return
+    }
+    loading.value = true
+    try {
+        await authStore.signIn(credentials.email, credentials.password)
         router.push('/home')
+    } catch {
+        error.value = 'Credenciales incorrectas o servicio no disponible.'
+    } finally {
+        loading.value = false
     }
 }
 
 function loginWithGoogle() {
-    loginStore.loginWithGoogle()
-    router.push('/home')
+    error.value = ''
+    notice.value = 'Acceso con Google no disponible aun.'
+}
+
+function forgotPassword() {
+    error.value = ''
+    notice.value = 'Se enviaria la recuperacion al correo indicado.'
 }
 </script>
 
@@ -109,7 +126,7 @@ function loginWithGoogle() {
                         <label>
                             <span class="label-row">
                                 <span>Contrasena</span>
-                                <button type="button" @click="loginStore.forgotPassword">
+                                <button type="button" @click="forgotPassword">
                                     Olvide mi contrasena
                                 </button>
                             </span>
@@ -129,14 +146,13 @@ function loginWithGoogle() {
                                 <input v-model="form.rememberSession" type="checkbox" />
                                 <span>Mantener sesion iniciada</span>
                             </label>
-                            <span>Usuario demo: {{ demoCredentials.email }}</span>
                         </div>
 
                         <p v-if="error" class="message message--error" role="alert">{{ error }}</p>
                         <p v-if="notice" class="message" role="status" aria-live="polite">{{ notice }}</p>
 
-                        <button class="primary-button" type="submit">
-                            Ingresar al dashboard
+                        <button class="primary-button" type="submit" :disabled="loading">
+                            {{ loading ? 'Ingresando...' : 'Ingresar al dashboard' }}
                         </button>
 
                         <button class="secondary-button" type="button" @click="loginWithGoogle">
