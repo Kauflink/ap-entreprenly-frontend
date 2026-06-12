@@ -8,7 +8,7 @@ const props = defineProps({
   product: { type: Object, required: true },
   stock:   { type: Number, default: 0 },
 });
-const emit = defineEmits(['edit']);
+const emit = defineEmits(['edit', 'remove']);
 
 const isUnit = computed(() => props.product.productType === 'unit');
 
@@ -60,12 +60,17 @@ const displayPrice = computed(() => {
       <span class="price">{{ displayPrice }}</span>
     </div>
 
-    <div class="col-edit">
-      <button class="btn-edit" @click="emit('edit', product)">
+    <div class="col-actions">
+      <button class="btn-edit" :title="t('products.col.edit')" @click="emit('edit', product)">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+      </button>
+      <button class="btn-delete" :title="t('products.col.delete')" @click="emit('remove', product)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
         </svg>
       </button>
     </div>
@@ -86,13 +91,20 @@ const displayPrice = computed(() => {
           {{ t('products.col.byWeight') }}
         </span>
       </div>
-      <button class="btn-edit" @click="emit('edit', product)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-        </svg>
-      </button>
+      <div class="card-actions">
+        <button class="btn-edit" :title="t('products.col.edit')" @click="emit('edit', product)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+        </button>
+        <button class="btn-delete" :title="t('products.col.delete')" @click="emit('remove', product)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <p v-if="product.description" class="card-description">{{ product.description }}</p>
@@ -121,7 +133,7 @@ const displayPrice = computed(() => {
 
 .row {
   display: grid;
-  grid-template-columns: 110px 1fr 1fr 90px 100px 90px 60px;
+  grid-template-columns: 110px 1fr 1fr 90px 100px 90px 96px;
   align-items: center;
   padding: 14px 24px;
   border-bottom: 1px solid var(--color-card-border);
@@ -148,7 +160,7 @@ const displayPrice = computed(() => {
 .col-qr    { display: flex; justify-content: center; }
 .col-stock { text-align: center; }
 .col-price { text-align: center; }
-.col-edit  { display: flex; justify-content: center; }
+.col-actions { display: flex; justify-content: center; align-items: center; gap: 8px; }
 
 .name {
   font-size: 14px;
@@ -203,14 +215,31 @@ const displayPrice = computed(() => {
 .btn-edit:hover  { border-color: var(--color-primary); color: var(--color-primary); background: var(--color-theme-btn-active-bg); }
 .btn-edit:active { transform: scale(0.94); }
 
+.btn-delete {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-card-border);
+  background: var(--color-card-bg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  transition: all 0.18s;
+}
+.btn-delete:hover  { border-color: var(--color-danger); color: var(--color-danger); background: color-mix(in srgb, var(--color-danger) 10%, transparent); }
+.btn-delete:active { transform: scale(0.94); }
+
 /* ── Hide mobile card on desktop ────────────────────────────── */
 .card-mobile { display: none; }
+.card-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .row {
-    grid-template-columns: 100px 1fr 1fr 80px 80px 80px 50px;
-    min-width: 580px;
+    grid-template-columns: 100px 1fr 1fr 80px 80px 80px 90px;
+    min-width: 620px;
     padding: 12px 14px;
   }
 }

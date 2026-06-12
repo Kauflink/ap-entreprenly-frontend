@@ -36,6 +36,12 @@ function onEdit(product) {
     : 'inventory-weight-products-edit';
   router.push({ name, params: { id: product.id } });
 }
+
+function onDelete(product) {
+  if (!window.confirm(t('products.deleteConfirm', { name: product.name }))) return;
+  if (product.productType === 'unit') store.deleteUnitProduct(product);
+  else store.deleteWeightProduct(product);
+}
 </script>
 
 <template>
@@ -60,7 +66,7 @@ function onEdit(product) {
         <span class="center">{{ t('products.col.qrCode') }}</span>
         <span class="center">{{ t('products.col.stock') }}</span>
         <span class="center">{{ t('products.col.price') }}</span>
-        <span class="center">{{ t('products.col.edit') }}</span>
+        <span class="center">{{ t('products.col.actions') }}</span>
       </div>
 
       <div class="table-body">
@@ -73,6 +79,7 @@ function onEdit(product) {
           :product="p"
           :stock="stockMap[p.id] || 0"
           @edit="onEdit"
+          @remove="onDelete"
         />
       </div>
     </div>
@@ -137,7 +144,7 @@ function onEdit(product) {
 
 .table-head {
   display: grid;
-  grid-template-columns: 110px 1fr 1fr 90px 100px 90px 60px;
+  grid-template-columns: 110px 1fr 1fr 90px 100px 90px 96px;
   padding: 14px 24px;
   border-bottom: 1px solid var(--color-card-border);
   font-size: 12px;
@@ -168,8 +175,8 @@ function onEdit(product) {
   /* Horizontal scroll for product table */
   .table-card { overflow-x: auto; }
   .table-head {
-    grid-template-columns: 100px 1fr 1fr 80px 80px 80px 50px;
-    min-width: 580px;
+    grid-template-columns: 100px 1fr 1fr 80px 80px 80px 90px;
+    min-width: 620px;
     font-size: 11px;
     padding: 12px 14px;
   }
