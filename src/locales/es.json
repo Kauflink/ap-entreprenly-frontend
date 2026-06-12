@@ -919,6 +919,7 @@
         "subtitle":     "Administra el catÃ¡logo de productos del inventario",
         "add":          "Agregar",
         "empty":        "No hay productos registrados",
+        "deleteConfirm": "¿Eliminar el producto \"{name}\"? Esta acción no se puede deshacer.",
         "col": {
             "type":        "Tipo",
             "byUnit":      "Por unidad",
@@ -928,7 +929,9 @@
             "qrCode":      "CÃ³digo QR",
             "price":       "Precio",
             "stock":       "Stock",
-            "edit":        "Editar"
+            "edit":        "Editar",
+            "delete":      "Eliminar",
+            "actions":     "Acciones"
         },
         "form": {
             "type":                       "Tipo de producto",
