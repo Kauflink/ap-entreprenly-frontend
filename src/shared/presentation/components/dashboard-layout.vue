@@ -5,11 +5,13 @@ import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import brandLogo from '@/assets/brand/brand-logo-light-transparent.png'
 import useProfileStore from '@/profile/application/profile.store.js'
+import useAuthStore from '@/auth/application/auth.store.js'
 
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
+const authStore = useAuthStore()
 const profileStore = useProfileStore()
 const { profile, fullName } = storeToRefs(profileStore)
 const mobileMenuOpen = ref(false)
@@ -35,11 +37,7 @@ function closeMobileMenu() {
 
 function logout() {
     closeMobileMenu()
-    try {
-        localStorage.removeItem('entreprenly-demo-session')
-    } catch {
-        // Demo-only session. Ignore storage failures.
-    }
+    authStore.logout()
     router.push('/login')
 }
 

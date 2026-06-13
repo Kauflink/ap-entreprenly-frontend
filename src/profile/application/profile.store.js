@@ -4,6 +4,7 @@ import { ProfileApi } from '@/profile/infrastructure/profile-api.js'
 import { UserProfile } from '@/profile/domain/model/user-profile-entity.js'
 import { UserPreferences } from '@/profile/domain/model/user-preferences-entity.js'
 import { NotificationSettings } from '@/profile/domain/model/notification-settings-entity.js'
+import useAuthStore from '@/auth/application/auth.store.js'
 import i18n from '@/i18n.js'
 
 const profileApi = new ProfileApi()
@@ -17,6 +18,8 @@ function writeStorage(key, value) {
 }
 
 const useProfileStore = defineStore('profile', () => {
+    const authStore = useAuthStore()
+
     const profile = ref(new UserProfile())
     const preferences = ref(new UserPreferences({
         language: readStorage('entreprenly-lang') ?? 'es',
@@ -24,7 +27,8 @@ const useProfileStore = defineStore('profile', () => {
         currency: readStorage('entreprenly-currency') ?? 'PEN'
     }))
     const notificationSettings = ref(new NotificationSettings())
-    const loaded = ref(false)
+    // Identifier of the loaded profile, used to target the update endpoints.
+    const profileId = ref(0)
     const loading = ref(false)
     const errors = ref([])
 
@@ -50,29 +54,37 @@ const useProfileStore = defineStore('profile', () => {
         writeStorage('entreprenly-currency', currency)
     }, { immediate: true })
 
-    function loadProfile() {
-        if (loaded.value) return Promise.resolve()
-        loading.value = true
-        return profileApi.getProfile().then(response => {
-            profile.value = response.profile
-            preferences.value = response.preferences
-            notificationSettings.value = response.notificationSettings
-            loaded.value = true
-        }).catch(error => {
-            errors.value.push(error)
-            console.error('Failed to load profile', error)
-        }).finally(() => {
-            loading.value = false
-        })
+    function applyModels(models) {
+        profileId.value = models.id
+        profile.value = models.profile
+        preferences.value = models.preferences
+        notificationSettings.value = models.notificationSettings
     }
 
-    function persist() {
-        return profileApi.updateProfile(profile.value, preferences.value, notificationSettings.value)
-            .then(response => {
-                profile.value = response.profile
-                preferences.value = response.preferences
-                notificationSettings.value = response.notificationSettings
+    function reset() {
+        profileId.value = 0
+        profile.value = new UserProfile()
+        notificationSettings.value = new NotificationSettings()
+    }
+
+    function loadProfile() {
+        const userId = authStore.userId
+        if (!userId) return Promise.resolve()
+        loading.value = true
+        return profileApi.getProfile(userId)
+            .then(applyModels)
+            .catch(error => {
+                errors.value.push(error)
+                console.error('Failed to load profile', error)
             })
+            .finally(() => {
+                loading.value = false
+            })
+    }
+
+    function persist(request) {
+        return request
+            .then(applyModels)
             .catch(error => {
                 errors.value.push(error)
                 console.error('Failed to persist profile changes', error)
@@ -81,22 +93,28 @@ const useProfileStore = defineStore('profile', () => {
 
     function updateProfile(partial) {
         profile.value = new UserProfile({ ...profile.value, ...partial })
-        return persist()
+        return persist(profileApi.updateProfile(profileId.value, profile.value))
     }
 
     function updatePreferences(partial) {
         preferences.value = new UserPreferences({ ...preferences.value, ...partial })
-        return persist()
+        return persist(profileApi.updatePreferences(profileId.value, preferences.value))
     }
 
     function updateNotifications(partial) {
         notificationSettings.value = new NotificationSettings({ ...notificationSettings.value, ...partial })
-        return persist()
+        return persist(profileApi.updateNotifications(profileId.value, notificationSettings.value))
     }
+
+    // Load the profile on login, clear it on logout.
+    watch(() => authStore.user, user => {
+        if (user) loadProfile()
+        else reset()
+    }, { immediate: true })
 
     return {
         profile, preferences, notificationSettings,
-        loaded, loading, errors,
+        profileId, loading, errors,
         fullName, roleAndPlan,
         loadProfile,
         updateProfile, updatePreferences, updateNotifications
