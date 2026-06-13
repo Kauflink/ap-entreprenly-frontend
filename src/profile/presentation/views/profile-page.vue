@@ -1,164 +1,196 @@
 <script setup>
-import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import useProfileStore from '@/profile/application/profile.store.js'
 import UserInfoCard from '@/profile/presentation/components/user-info-card.vue'
-import UploadPhotoCard from '@/profile/presentation/components/upload-photo-card.vue'
 import UpdateProfileCard from '@/profile/presentation/components/update-profile-card.vue'
-import PhoneVerifyCard from '@/profile/presentation/components/phone-verify-card.vue'
 import PreferencesCard from '@/profile/presentation/components/preferences-card.vue'
+import PhoneVerifyCard from '@/profile/presentation/components/phone-verify-card.vue'
 import EmailChangeCard from '@/profile/presentation/components/email-change-card.vue'
-import NotificationsCard from '@/profile/presentation/components/notifications-card.vue'
 import ChangePasswordCard from '@/profile/presentation/components/change-password-card.vue'
+import NotificationsCard from '@/profile/presentation/components/notifications-card.vue'
 
 const { t } = useI18n()
-const profileStore = useProfileStore()
-
-onMounted(() => {
-    profileStore.loadProfile()
-})
 </script>
 
 <template>
     <main class="page" :aria-label="t('profile.page.ariaLabel')">
+        <header class="page-header">
+            <p class="eyebrow">{{ t('profile.page.eyebrow') }}</p>
+            <h1>{{ t('profile.page.title') }}</h1>
+            <p>{{ t('profile.page.subtitle') }}</p>
+        </header>
+
         <div class="grid">
-            <section class="col col--left" :aria-label="t('profile.page.leftSectionLabel')">
-                <UserInfoCard class="user-info" />
-                <UploadPhotoCard class="upload-photo" />
+            <section class="profile-panel profile-panel--identity" :aria-label="t('profile.page.identitySection')">
+                <UserInfoCard />
             </section>
 
-            <section class="col col--center" :aria-label="t('profile.page.centerSectionLabel')">
-                <UpdateProfileCard class="update-profile" />
-                <PhoneVerifyCard class="phone-verify" />
+            <section class="profile-panel profile-panel--personal" :aria-label="t('profile.page.personalSection')">
+                <UpdateProfileCard />
             </section>
 
-            <section class="col col--right" :aria-label="t('profile.page.rightSectionLabel')">
-                <PreferencesCard class="preferences" />
-                <EmailChangeCard class="email-change" />
+            <section class="profile-panel profile-panel--preferences" :aria-label="t('profile.page.preferencesSection')">
+                <PreferencesCard />
             </section>
 
-            <div class="row row--bottom">
-                <NotificationsCard />
+            <section class="profile-stack profile-stack--contact" :aria-label="t('profile.page.contactSection')">
+                <PhoneVerifyCard />
+                <EmailChangeCard />
+            </section>
+
+            <section class="profile-panel profile-panel--security" :aria-label="t('profile.page.securitySection')">
                 <ChangePasswordCard />
-            </div>
+            </section>
+
+            <section class="profile-panel profile-panel--notifications" :aria-label="t('profile.page.notificationsSection')">
+                <NotificationsCard />
+            </section>
         </div>
     </main>
 </template>
 
 <style scoped>
 .page {
+    --color-card-shadow: 0 10px 26px rgb(0 0 0 / 10%);
+    --profile-gap: clamp(16px, 1.7vw, 24px);
+
     background: var(--color-bg-page);
     box-sizing: border-box;
-    height: calc(100dvh - 98px);
-    display: flex;
-    min-height: 0;
+    min-height: calc(100dvh - 98px);
+    width: 100%;
+}
+
+.page-header {
+    max-width: 1510px;
+    width: 100%;
+    margin: 0 auto clamp(18px, 2vw, 28px);
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    margin: 0 0 8px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: var(--color-inner-bg);
+    color: var(--color-label-accent);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.page-header h1 {
+    margin: 0;
+    color: var(--color-text-strong);
+    font-size: clamp(28px, 3vw, 42px);
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.page-header p:last-child {
+    max-width: 720px;
+    margin: 10px 0 0;
+    color: var(--color-text-muted);
+    font-size: clamp(14px, 1.1vw, 16px);
+    line-height: 1.6;
 }
 
 .grid {
     display: grid;
-    flex: 1;
-    grid-template-columns: 481fr 446fr 502fr;
-    grid-template-rows: minmax(0, 498fr) minmax(0, 423fr);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
     grid-template-areas:
-        'left center right'
-        'bottom bottom bottom';
-    column-gap: 24px;
-    row-gap: 25px;
+        'identity identity identity identity personal personal personal personal preferences preferences preferences preferences'
+        'contact contact contact contact contact contact security security security security security security'
+        'notifications notifications notifications notifications notifications notifications notifications notifications notifications notifications notifications notifications';
+    gap: var(--profile-gap);
     max-width: 1510px;
     width: 100%;
     margin: 0 auto;
-    height: 100%;
     align-items: stretch;
-    min-height: 0;
 }
 
-.col {
+.profile-panel,
+.profile-stack {
+    min-width: 0;
+}
+
+.profile-panel {
     display: flex;
-    flex-direction: column;
-    gap: 25px;
-    min-height: 0;
 }
 
-.col--left {
-    grid-area: left;
-}
-.col--center {
-    grid-area: center;
-}
-.col--right {
-    grid-area: right;
-    gap: 10px;
-}
-
-.col--left > .user-info {
-    flex: 2 1 0;
-    min-height: 0;
-}
-.col--left > .upload-photo {
-    flex: 3 1 0;
-    min-height: 0;
-}
-.col--center > .update-profile {
-    flex: 3 1 0;
-    min-height: 0;
-}
-.col--center > .phone-verify {
-    flex: 2 1 0;
-    min-height: 0;
-}
-.col--right > .preferences {
-    flex: 4 1 0;
-    min-height: 0;
-}
-.col--right > .email-change {
-    flex: 1 1 0;
-    min-height: 0;
-}
-
-.row--bottom {
-    grid-area: bottom;
+.profile-stack {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    align-items: stretch;
-    min-height: 0;
+    gap: var(--profile-gap);
+    align-content: stretch;
 }
 
-@media (max-width: 1200px) {
+.profile-panel > *,
+.profile-stack > * {
+    width: 100%;
+}
+
+.profile-panel--identity {
+    grid-area: identity;
+}
+
+.profile-panel--personal {
+    grid-area: personal;
+}
+
+.profile-panel--preferences {
+    grid-area: preferences;
+}
+
+.profile-stack--contact {
+    grid-area: contact;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.profile-panel--security {
+    grid-area: security;
+}
+
+.profile-panel--notifications {
+    grid-area: notifications;
+}
+
+@media (max-width: 1360px) {
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-areas:
+            'identity personal'
+            'contact preferences'
+            'security security'
+            'notifications notifications';
+    }
+}
+
+@media (max-width: 900px) {
+    .grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            'identity'
+            'personal'
+            'contact'
+            'preferences'
+            'security'
+            'notifications';
+    }
+
+    .profile-stack--contact {
+        grid-template-rows: auto;
+    }
+}
+
+@media (max-width: 620px) {
     .page {
-        height: auto;
+        --profile-gap: 14px;
+        min-height: auto;
     }
 
-    .grid {
-        height: auto;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto auto;
-        grid-template-areas:
-            'left center'
-            'right right'
-            'bottom bottom';
-    }
-
-    .col--left > .user-info,
-    .col--left > .upload-photo,
-    .col--center > .update-profile,
-    .col--center > .phone-verify {
-        flex: 0 0 auto;
-    }
-}
-
-@media (max-width: 768px) {
-    .grid {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            'left'
-            'center'
-            'right'
-            'bottom';
-    }
-
-    .row--bottom {
-        grid-template-columns: 1fr;
+    .page-header {
+        margin-bottom: 16px;
     }
 }
 </style>
