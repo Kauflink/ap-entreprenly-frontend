@@ -16,7 +16,13 @@ function toModels(resource) {
 
 export class ProfileApi extends BaseApi {
     getProfile(userId) {
-        return this.http.get(`${profilesPath}?userId=${userId}`).then(response => toModels(response.data))
+        return this.http.get(`${profilesPath}?userId=${userId}`).then(response => {
+            // The endpoint returns a collection; pick the profile for this user.
+            const list = Array.isArray(response.data) ? response.data : [response.data]
+            const resource = list.find(item => item.userId === userId) ?? list[0]
+            if (!resource) throw new Error(`Profile not found for user ${userId}`)
+            return toModels(resource)
+        })
     }
 
     updateProfile(id, profile) {

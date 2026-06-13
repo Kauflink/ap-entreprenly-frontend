@@ -96,7 +96,7 @@ function registerWithGoogle() {
                     <p class="eyebrow">Crear cuenta</p>
                     <h1>Crea tu cuenta para empezar a ordenar inventario, ventas y caja.</h1>
                     <p>
-                        Crea tu cuenta para empezar a ordenar inventario, ventas y caja desde un solo lugar.
+                        Registro para empezar a usar Entreprenly con tu negocio.
                     </p>
 
                     <div class="benefits-grid">
@@ -111,10 +111,10 @@ function registerWithGoogle() {
                 </section>
 
                 <section class="form-panel" aria-labelledby="register-title">
-                    <span class="mini-tag">Crear cuenta</span>
+                    <span class="mini-tag">Registro</span>
                     <h2 id="register-title">Activa tu acceso</h2>
                     <p class="form-copy">
-                        Completa tus datos para crear la cuenta e iniciar sesion.
+                        Completa tus datos para crear la cuenta.
                     </p>
 
                     <form class="access-form" @submit.prevent="submitRegister">
@@ -143,10 +143,10 @@ function registerWithGoogle() {
                         </label>
 
                         <label>
-                            <span>Telefono (opcional)</span>
+                            <span>Telefono</span>
                             <span class="field-shell">
                                 <span class="material-icons" aria-hidden="true">call</span>
-                                <input v-model="form.phone" type="tel" autocomplete="tel" />
+                                <input v-model="form.phone" type="tel" autocomplete="tel" placeholder="+51 999 888 777" />
                             </span>
                         </label>
 
