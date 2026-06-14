@@ -1,17 +1,28 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RouterLink } from 'vue-router'
 import useChatbotStore from '../../application/chatbot.store.js'
+import useSubscriptionStore from '@/subscription/application/subscription.store.js'
 import QrConnectionCard    from '../components/qr-connection-card.vue'
 import WhatsappStatusCard  from '../components/whatsapp-status-card.vue'
 
 const { t } = useI18n()
 const store = useChatbotStore()
+const subscriptionStore = useSubscriptionStore()
 
 const justConnected = ref(false)
+const chatbotAllowed = computed(() => {
+  const status = subscriptionStore.dashboard.currentPlan.status
+  return status === 'active' || status === 'scheduled-cancellation'
+})
 
 onMounted(() => {
-  store.loadSession()
+  subscriptionStore.loadDashboard().then(() => {
+    if (chatbotAllowed.value) {
+      store.loadSession()
+    }
+  })
 })
 
 function onScanned() {
@@ -27,14 +38,37 @@ function onReconnect() {
 
 <template>
   <div class="chatbot-page">
-    <h1 class="chatbot-page__title">{{ t('chatbot.page.title') }}</h1>
+    <header class="chatbot-page__header">
+      <h1 class="chatbot-page__title">{{ t('chatbot.page.title') }}</h1>
+      <p class="chatbot-page__subtitle">{{ t('chatbot.page.subtitle') }}</p>
+    </header>
 
-    <p v-if="!store.isSessionLoaded" class="chatbot-page__loading">
+    <p v-if="subscriptionStore.loading" class="chatbot-page__loading">
+      {{ t('chatbot.page.loading') }}
+    </p>
+
+    <section v-else-if="!chatbotAllowed" class="upgrade-card" aria-labelledby="chatbot-upgrade-title">
+      <div class="upgrade-card__icon" aria-hidden="true">QR</div>
+      <div class="upgrade-card__content">
+        <p class="upgrade-card__eyebrow">{{ t('chatbot.upgrade.eyebrow') }}</p>
+        <h2 id="chatbot-upgrade-title">{{ t('chatbot.upgrade.title') }}</h2>
+        <p>{{ t('chatbot.upgrade.description') }}</p>
+        <ul>
+          <li>{{ t('chatbot.upgrade.features.automation') }}</li>
+          <li>{{ t('chatbot.upgrade.features.orders') }}</li>
+          <li>{{ t('chatbot.upgrade.features.receipts') }}</li>
+        </ul>
+        <RouterLink class="upgrade-card__action" to="/subscription">
+          {{ t('chatbot.upgrade.action') }}
+        </RouterLink>
+      </div>
+    </section>
+
+    <p v-else-if="!store.isSessionLoaded" class="chatbot-page__loading">
       {{ t('chatbot.page.loading') }}
     </p>
 
     <template v-else-if="!store.session || store.session?.status === 'disconnected'">
-      <p class="chatbot-page__sub">{{ t('chatbot.page.connectPrompt') }}</p>
       <div class="chatbot-page__card">
         <QrConnectionCard :has-error="false" @scanned="onScanned" />
       </div>
@@ -57,11 +91,21 @@ function onReconnect() {
   overflow-y: auto;
   padding: 2rem;
 }
+.chatbot-page__header {
+  margin-bottom: 1.5rem;
+}
 .chatbot-page__title {
   font-size: 1.5rem;
   font-weight: 700;
   color: #111827;
   margin: 0 0 0.25rem;
+}
+.chatbot-page__subtitle {
+  margin: 0;
+  max-width: 42rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #6b7280;
 }
 .chatbot-page__loading {
   margin-top: 0.25rem;
@@ -77,5 +121,93 @@ function onReconnect() {
   border-radius: 1rem;
   background: #fff;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.07);
+}
+.upgrade-card {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  max-width: 54rem;
+  padding: 1.5rem;
+  border: 1px solid #fde3bf;
+  border-radius: 1rem;
+  background: #fffcf5;
+  box-shadow: 0 18px 40px rgb(17 24 39 / 0.08);
+}
+.upgrade-card__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 3.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+  background: #ff7a00;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.upgrade-card__content {
+  display: grid;
+  gap: 0.75rem;
+}
+.upgrade-card__eyebrow {
+  width: fit-content;
+  margin: 0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: #f2ebe8;
+  color: #511e00;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.upgrade-card h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 1.5rem;
+}
+.upgrade-card p {
+  margin: 0;
+  color: #5f6368;
+  line-height: 1.6;
+}
+.upgrade-card ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.upgrade-card li {
+  color: #511e00;
+  font-size: 0.9375rem;
+}
+.upgrade-card li::before {
+  content: "✓";
+  margin-right: 0.5rem;
+  color: #ff7a00;
+  font-weight: 800;
+}
+.upgrade-card__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  background: #ff7a00;
+  color: #fff;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 12px 24px rgb(255 122 0 / 0.24);
+}
+@media (max-width: 720px) {
+  .chatbot-page {
+    padding: 1rem;
+  }
+  .upgrade-card {
+    flex-direction: column;
+  }
 }
 </style>

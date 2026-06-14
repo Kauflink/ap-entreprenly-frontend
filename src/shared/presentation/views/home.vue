@@ -3,10 +3,12 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import useChatbotStore from '@/chatbot/application/chatbot.store.js'
+import useSubscriptionStore from '@/subscription/application/subscription.store.js'
 import { ChatOrder } from '@/chatbot/domain/model/chat-order-entity.js'
 
 const { t, locale } = useI18n()
 const store = useChatbotStore()
+const subscriptionStore = useSubscriptionStore()
 
 // ── Sales data (cash-registers) ───────────────────────────────────────────
 const totalDay     = ref(0)
@@ -27,6 +29,10 @@ const isChatbotConnected = computed(() => store.isConnected)
 const chatbotPhone       = computed(() => store.session?.phone ?? '')
 const chatbotChatsCount  = computed(() => store.conversations.length)
 const chatbotOrdersCount = computed(() => store.orders.length)
+const chatbotAllowed = computed(() => {
+  const status = subscriptionStore.dashboard.currentPlan.status
+  return status === 'active' || status === 'scheduled-cancellation'
+})
 
 const recentOrders = computed(() =>
   [...store.orders]
@@ -129,9 +135,13 @@ function alertLabel(alert) {
 
 // ── Lifecycle ─────────────────────────────────────────────────────────────
 onMounted(async () => {
-  store.loadSession()
-  store.loadOrders()
-  store.loadConversations()
+  await subscriptionStore.loadDashboard()
+
+  if (chatbotAllowed.value) {
+    store.loadSession()
+    store.loadOrders()
+    store.loadConversations()
+  }
 
   const BASE = import.meta.env.VITE_ENTREPENLY_PLATFORM_API_URL ?? 'http://localhost:3000/api/v1'
 
