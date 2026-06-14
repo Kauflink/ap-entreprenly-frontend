@@ -682,8 +682,19 @@
         "page": {
             "title": "Chatbot de WhatsApp",
             "loading": "Verificando sesiÃ³n...",
-            "connectPrompt": "Vincula tu cuenta de WhatsApp Business escaneando el cÃ³digo QR.",
+            "subtitle": "Conecta WhatsApp Business, automatiza respuestas y valida pedidos desde el panel.",
             "connectionStatus": "Tu cuenta de WhatsApp estÃ¡ conectada y activa."
+        },
+        "upgrade": {
+                  "eyebrow": "Plan Control",
+                  "title": "Actualiza para activar el chatbot",
+                  "description": "El chatbot de WhatsApp está disponible solo para negocios con Plan Control. Actualiza tu plan para conectar el QR y empezar a recibir pedidos automatizados.",
+                  "action": "Actualizar a Plan Control",
+                  "features": {
+                            "automation": "Respuestas automáticas para consultas frecuentes.",
+                            "orders": "Pedidos registrados desde conversaciones del chatbot.",
+                            "receipts": "Validación operativa de comprobantes desde el panel."
+                  }
         },
         "qr": {
             "expiredTitle": "El cÃ³digo QR ha expirado",

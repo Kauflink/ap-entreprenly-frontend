@@ -1,23 +1,39 @@
 <script setup>
 import { computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import useChatbotStore from '@/chatbot/application/chatbot.store.js'
+import useSubscriptionStore from '@/subscription/application/subscription.store.js'
 import YapeReceipt from '@/chatbot/presentation/components/yape-receipt.vue'
 
 const { t, locale } = useI18n()
 const store = useChatbotStore()
+const router = useRouter()
+const subscriptionStore = useSubscriptionStore()
 
 // ── Computed ───────────────────────────────────────────────────────────────────
 const allOrders = computed(() =>
   [...store.orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 )
 
+const chatbotAllowed = computed(() => {
+  const status = subscriptionStore.dashboard.currentPlan.status
+  return status === 'active' || status === 'scheduled-cancellation'
+})
+
 // ── Lifecycle ──────────────────────────────────────────────────────────────────
 onMounted(() => {
-  store.loadSession()
-  store.loadOrders()
-  store.loadConversations()
-  store.loadInventoryProducts()
+  subscriptionStore.loadDashboard().then(() => {
+    if (!chatbotAllowed.value) {
+      router.replace('/chatbot')
+      return
+    }
+
+    store.loadSession()
+    store.loadOrders()
+    store.loadConversations()
+    store.loadInventoryProducts()
+  })
 })
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
