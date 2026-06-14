@@ -77,38 +77,35 @@ function onSubmit() {
     border: 1px solid var(--color-card-border);
     box-shadow: var(--color-card-shadow);
     border-radius: 25px;
-    padding: clamp(6px, 0.74dvh, 10px) 24px;
+    padding: clamp(8px, 1.11dvh, 12px) 24px;
     display: flex;
     flex-direction: column;
-    gap: clamp(4px, 0.55dvh, 8px);
+    gap: clamp(6px, 0.93dvh, 10px);
     height: 100%;
     box-sizing: border-box;
-    overflow: hidden;
 }
 
 .card__title {
     font-family: 'Reddit Sans', sans-serif;
     font-weight: 800;
     font-size: clamp(13px, 1.48dvh, 16px);
-    line-height: 1;
+    line-height: 1.3;
     color: var(--color-text-primary);
     margin: 0;
 }
 
 form {
-    display: grid;
-    grid-template-rows: auto auto auto;
-    gap: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(5px, 0.74dvh, 8px);
     flex: 1;
-    min-height: 0;
-    align-content: space-between;
+    justify-content: center;
 }
 
 .field {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    min-height: 0;
+    gap: clamp(3px, 0.55dvh, 6px);
 }
 
 .field__label {
@@ -123,7 +120,7 @@ form {
     background: var(--color-card-bg);
     border: 1px solid var(--color-card-border);
     border-radius: 25px;
-    padding: clamp(3px, 0.46dvh, 6px) 20px;
+    padding: clamp(5px, 0.65dvh, 7px) 20px;
     font-family: 'Reddit Sans', sans-serif;
     font-weight: 500;
     font-size: clamp(10px, 1.11dvh, 12px);
@@ -144,12 +141,12 @@ form {
 }
 
 .btn-primary {
-    align-self: end;
+    margin-top: clamp(5px, 0.93dvh, 10px);
     background: var(--color-primary);
     border: 1px solid var(--color-card-border);
     box-shadow: var(--color-card-shadow);
     border-radius: 25px;
-    padding: clamp(4px, 0.55dvh, 7px) 24px;
+    padding: clamp(5px, 0.74dvh, 8px) 24px;
     font-family: 'Reddit Sans', sans-serif;
     font-weight: 800;
     font-size: clamp(10px, 1.11dvh, 12px);

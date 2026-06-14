@@ -794,9 +794,15 @@
     "profile": {
         "page": {
             "ariaLabel":           "ConfiguraciÃ³n de perfil",
-            "leftSectionLabel":    "Foto de perfil",
-            "centerSectionLabel":  "Datos del perfil",
-            "rightSectionLabel":   "Preferencias y email"
+            "eyebrow":              "Cuenta",
+            "title":                "Perfil y configuracion",
+            "subtitle":             "Gestiona tus datos personales, preferencias, contacto, seguridad y notificaciones desde un solo lugar.",
+            "identitySection":      "Identidad y foto de perfil",
+            "personalSection":      "Datos personales",
+            "preferencesSection":   "Preferencias",
+            "contactSection":       "Contacto y verificacion",
+            "securitySection":      "Seguridad de cuenta",
+            "notificationsSection": "Notificaciones"
         },
         "userInfo": {
             "avatarAlt": "Avatar del usuario"

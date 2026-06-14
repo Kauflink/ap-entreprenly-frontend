@@ -71,10 +71,10 @@ function forgotPassword() {
     <main class="access-page">
         <div class="access-shell">
             <header class="access-header">
-                <RouterLink class="ghost-button" to="/home">
+                <a class="ghost-button" href="https://entreprenly.online/">
                     <span class="material-icons" aria-hidden="true">arrow_back</span>
                     <span>Volver</span>
-                </RouterLink>
+                </a>
 
                 <img class="brand-logo" :src="brandLogo" alt="Entreprenly" />
 
@@ -88,7 +88,7 @@ function forgotPassword() {
                     <p class="eyebrow">Acceso a la plataforma</p>
                     <h1>Ingresa para revisar inventario, ventas y caja desde un solo lugar.</h1>
                     <p>
-                        Pantalla de acceso simple para probar el dashboard sin conectar backend ni servicios externos.
+                        Pantalla de acceso simple para entrar al dashboard de Entreprenly.
                     </p>
 
                     <div class="benefits-grid">
@@ -106,7 +106,7 @@ function forgotPassword() {
                     <span class="mini-tag">Iniciar sesion</span>
                     <h2 id="login-title">Bienvenido de vuelta</h2>
                     <p class="form-copy">
-                        Datos demo cargados para testear el flujo.
+                        Ingresa con tu correo y contrasena.
                     </p>
 
                     <form class="access-form" @submit.prevent="submitLogin">
@@ -118,7 +118,7 @@ function forgotPassword() {
                                     v-model="form.email"
                                     type="email"
                                     autocomplete="username"
-                                    placeholder="admin@entreprenly.pe"
+                                    placeholder="tu@correo.com"
                                 />
                             </span>
                         </label>
@@ -136,7 +136,7 @@ function forgotPassword() {
                                     v-model="form.password"
                                     type="password"
                                     autocomplete="current-password"
-                                    placeholder="Entreprenly2026!"
+                                    placeholder="********"
                                 />
                             </span>
                         </label>
