@@ -6,6 +6,7 @@ import { SaleAssembler } from '@/sales/infrastructure/sale.assembler.js'
 import { CashRegisterAssembler } from '@/sales/infrastructure/cash-register.assembler.js'
 import { Sale } from '@/sales/domain/model/sale-entity.js'
 import { PaymentMethod } from '@/sales/domain/model/payment-method.enum.js'
+import { SaleStatus } from '@/sales/domain/model/sale-status.enum.js'
 
 const salesApi = new SalesApi()
 
@@ -67,20 +68,26 @@ const useSalesStore = defineStore('sales', () => {
         })
     }
 
-    function createSale(items, paymentMethod) {
-        const total = Number(items.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2))
+    // selection is the UI payment selection: 'CASH' or 'DIGITAL'. Digital sales are settled
+    // with a card/wallet payment method on the backend.
+    function createSale(items, selection) {
+        const total      = Number(items.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2))
+        const isDigital  = selection === 'DIGITAL'
+        const domainMethod = isDigital ? PaymentMethod.CARD : PaymentMethod.CASH
 
         const sale = new Sale({
             sellerId: 1,
             items,
             total,
-            paymentMethod
+            paymentMethod: domainMethod,
+            status: SaleStatus.COMPLETED,
+            createdAt: new Date()
         })
 
         return salesApi.createSale(SaleAssembler.toResourceFromEntity(sale))
             .then(res => {
                 const created = SaleAssembler.toEntityFromResource(res.data)
-                return _updateCashRegister(total, paymentMethod)
+                return _updateCashRegister(total, isDigital)
                     .then(() => _decrementStock(items))
                     .then(() => {
                         fetchProducts()
@@ -93,17 +100,18 @@ const useSalesStore = defineStore('sales', () => {
             })
     }
 
-    function _updateCashRegister(amount, paymentMethod) {
+    function _updateCashRegister(amount, isDigital) {
         if (!cashRegister.value) return Promise.resolve()
 
         const updated = {
             ...cashRegister.value,
-            totalCash:    paymentMethod === PaymentMethod.CASH
-                ? Number((cashRegister.value.totalCash    + amount).toFixed(2))
-                : cashRegister.value.totalCash,
-            totalDigital: paymentMethod === PaymentMethod.DIGITAL
+            totalCash:    isDigital
+                ? cashRegister.value.totalCash
+                : Number((cashRegister.value.totalCash    + amount).toFixed(2)),
+            totalDigital: isDigital
                 ? Number((cashRegister.value.totalDigital + amount).toFixed(2))
-                : cashRegister.value.totalDigital
+                : cashRegister.value.totalDigital,
+            saleCount:    (cashRegister.value.saleCount ?? 0) + 1
         }
 
         return salesApi.updateCashRegister(updated).then(res => {
