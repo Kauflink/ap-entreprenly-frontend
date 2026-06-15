@@ -6,7 +6,8 @@ export class CashRegisterAssembler {
             id: resource.id,
             date: resource.date,
             totalCash: resource.totalCash,
-            totalDigital: resource.totalDigital
+            totalDigital: resource.totalDigital,
+            saleCount: resource.saleCount
         })
     }
 
@@ -15,7 +16,8 @@ export class CashRegisterAssembler {
             id: cashRegister.id,
             date: cashRegister.date,
             totalCash: cashRegister.totalCash,
-            totalDigital: cashRegister.totalDigital
+            totalDigital: cashRegister.totalDigital,
+            saleCount: cashRegister.saleCount
         }
     }
 

@@ -1,9 +1,10 @@
 export class CashRegister {
-    constructor({ id = null, date = null, totalCash = 0, totalDigital = 0 } = {}) {
+    constructor({ id = null, date = null, totalCash = 0, totalDigital = 0, saleCount = 0 } = {}) {
         this.id = id
         this.date = date
         this.totalCash = totalCash ?? 0
         this.totalDigital = totalDigital ?? 0
+        this.saleCount = saleCount ?? 0
     }
 
     get totalDay() {
