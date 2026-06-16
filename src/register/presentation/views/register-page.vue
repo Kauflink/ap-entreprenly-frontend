@@ -43,12 +43,12 @@ const benefits = [
         copy: 'Tu cuenta arranca con el plan inicial asignado.'
     },
     {
-        title: 'Operacion ordenada',
+        title: 'Operación ordenada',
         copy: 'La cuenta representa un negocio con inventario, ventas y caja.'
     },
     {
         title: 'Acceso inmediato',
-        copy: 'Al registrarte quedas listo para iniciar sesion.'
+        copy: 'Al registrarte quedas listo para iniciar sesión.'
     }
 ]
 
@@ -63,7 +63,7 @@ async function submitRegister() {
         await authStore.register(account.toSignUpRequest())
         router.push('/home')
     } catch {
-        errors.value = ['No se pudo crear la cuenta (el correo ya podria estar registrado).']
+        errors.value = ['No se pudo crear la cuenta (el correo ya podría estar registrado).']
     } finally {
         loading.value = false
     }
@@ -71,7 +71,7 @@ async function submitRegister() {
 
 function registerWithGoogle() {
     errors.value = []
-    notice.value = 'Registro con Google no disponible aun.'
+    notice.value = 'Registro con Google no disponible aún.'
 }
 </script>
 
@@ -135,7 +135,7 @@ function registerWithGoogle() {
                         </label>
 
                         <label>
-                            <span>Correo electronico</span>
+                            <span>Correo electrónico</span>
                             <span class="field-shell">
                                 <span class="material-icons" aria-hidden="true">mail</span>
                                 <input v-model="form.email" type="email" autocomplete="email" />
@@ -161,7 +161,7 @@ function registerWithGoogle() {
                         </label>
 
                         <label>
-                            <span>Contrasena</span>
+                            <span>Contraseña</span>
                             <span class="field-shell">
                                 <span class="material-icons" aria-hidden="true">lock</span>
                                 <input v-model="form.password" type="password" autocomplete="new-password" />
@@ -169,7 +169,7 @@ function registerWithGoogle() {
                         </label>
 
                         <label>
-                            <span>Confirmar contrasena</span>
+                            <span>Confirmar contraseña</span>
                             <span class="field-shell">
                                 <span class="material-icons" aria-hidden="true">lock</span>
                                 <input v-model="form.confirmPassword" type="password" autocomplete="new-password" />
@@ -178,7 +178,7 @@ function registerWithGoogle() {
 
                         <label class="check-row">
                             <input v-model="form.acceptedTerms" type="checkbox" />
-                            <span>Acepto los terminos y condiciones.</span>
+                            <span>Acepto los términos y condiciones.</span>
                         </label>
 
                         <div v-if="errors.length > 0" class="message message--error" role="alert">
@@ -197,8 +197,8 @@ function registerWithGoogle() {
                     </form>
 
                     <p class="switch-copy">
-                        Ya tienes cuenta?
-                        <RouterLink to="/login">Inicia sesion aqui</RouterLink>
+                        ¿Ya tienes cuenta?
+                        <RouterLink to="/login">Inicia sesión aquí</RouterLink>
                     </p>
                 </section>
             </div>
