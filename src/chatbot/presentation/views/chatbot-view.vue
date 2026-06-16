@@ -3,26 +3,21 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import useChatbotStore from '../../application/chatbot.store.js'
-import useSubscriptionStore from '@/subscription/application/subscription.store.js'
+import useProfileStore from '@/profile/application/profile.store.js'
 import QrConnectionCard    from '../components/qr-connection-card.vue'
 import WhatsappStatusCard  from '../components/whatsapp-status-card.vue'
 
 const { t } = useI18n()
 const store = useChatbotStore()
-const subscriptionStore = useSubscriptionStore()
+const profileStore = useProfileStore()
 
 const justConnected = ref(false)
-const chatbotAllowed = computed(() => {
-  const status = subscriptionStore.dashboard.currentPlan.status
-  return status === 'active' || status === 'scheduled-cancellation'
-})
+const chatbotAllowed = computed(() => profileStore.profile.plan !== 'Free')
 
 onMounted(() => {
-  subscriptionStore.loadDashboard().then(() => {
-    if (chatbotAllowed.value) {
-      store.loadSession()
-    }
-  })
+  if (chatbotAllowed.value) {
+    store.loadSession()
+  }
 })
 
 function onScanned() {
@@ -43,11 +38,7 @@ function onReconnect() {
       <p class="chatbot-page__subtitle">{{ t('chatbot.page.subtitle') }}</p>
     </header>
 
-    <p v-if="subscriptionStore.loading" class="chatbot-page__loading">
-      {{ t('chatbot.page.loading') }}
-    </p>
-
-    <section v-else-if="!chatbotAllowed" class="upgrade-card" aria-labelledby="chatbot-upgrade-title">
+    <section v-if="!chatbotAllowed" class="upgrade-card" aria-labelledby="chatbot-upgrade-title">
       <div class="upgrade-card__icon" aria-hidden="true">QR</div>
       <div class="upgrade-card__content">
         <p class="upgrade-card__eyebrow">{{ t('chatbot.upgrade.eyebrow') }}</p>

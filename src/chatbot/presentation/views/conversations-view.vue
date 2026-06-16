@@ -3,7 +3,7 @@ import { ref, computed, watch, nextTick, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import useChatbotStore from '../../application/chatbot.store.js'
-import useSubscriptionStore from '@/subscription/application/subscription.store.js'
+import useProfileStore from '@/profile/application/profile.store.js'
 import ConversationList   from '../components/conversation-list.vue'
 import ConversationHeader from '../components/conversation-header.vue'
 import MessageBubble      from '../components/message-bubble.vue'
@@ -12,7 +12,7 @@ import ChatInput          from '../components/chat-input.vue'
 const { t }  = useI18n()
 const store  = useChatbotStore()
 const router = useRouter()
-const subscriptionStore = useSubscriptionStore()
+const profileStore = useProfileStore()
 
 const messagesContainer = ref(null)
 const showRejectForm    = ref(false)
@@ -24,10 +24,7 @@ const rejectReasons = [
   'chatbot.payment.reasons.fake'
 ]
 
-const chatbotAllowed = computed(() => {
-  const status = subscriptionStore.dashboard.currentPlan.status
-  return status === 'active' || status === 'scheduled-cancellation'
-})
+const chatbotAllowed = computed(() => profileStore.profile.plan !== 'Free')
 
 /** Show payment bar only after the client sends a receipt image */
 const receiptVisible = computed(() =>
@@ -78,16 +75,14 @@ watch(
 )
 
 onMounted(() => {
-  subscriptionStore.loadDashboard().then(() => {
-    if (!chatbotAllowed.value) {
-      router.replace('/chatbot')
-      return
-    }
+  if (!chatbotAllowed.value) {
+    router.replace('/chatbot')
+    return
+  }
 
-    store.loadSession()
-    store.loadConversations()
-    store.loadOrders()
-  })
+  store.loadSession()
+  store.loadConversations()
+  store.loadOrders()
 })
 
 function onConversationSelected(id) {
