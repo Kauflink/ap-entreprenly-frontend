@@ -32,7 +32,7 @@ const benefits = [
         copy: 'WhatsApp, stock y seguimiento trabajan con el mismo contexto.'
     },
     {
-        title: 'Acceso rapido',
+        title: 'Acceso rápido',
         copy: 'Ingresa con tu cuenta para entrar al dashboard.'
     }
 ]
@@ -42,7 +42,7 @@ async function submitLogin() {
     notice.value = ''
     const credentials = new LoginCredentials(form)
     if (!credentials.valid) {
-        error.value = 'Completa correo y contrasena para ingresar.'
+        error.value = 'Completa correo y contraseña para ingresar.'
         return
     }
     loading.value = true
@@ -58,12 +58,12 @@ async function submitLogin() {
 
 function loginWithGoogle() {
     error.value = ''
-    notice.value = 'Acceso con Google no disponible aun.'
+    notice.value = 'Acceso con Google no disponible aún.'
 }
 
 function forgotPassword() {
     error.value = ''
-    notice.value = 'Se enviaria la recuperacion al correo indicado.'
+    notice.value = 'Se enviaría la recuperación al correo indicado.'
 }
 </script>
 
@@ -103,15 +103,15 @@ function forgotPassword() {
                 </section>
 
                 <section class="form-panel" aria-labelledby="login-title">
-                    <span class="mini-tag">Iniciar sesion</span>
+                    <span class="mini-tag">Iniciar sesión</span>
                     <h2 id="login-title">Bienvenido de vuelta</h2>
                     <p class="form-copy">
-                        Ingresa con tu correo y contrasena.
+                        Ingresa con tu correo y contraseña.
                     </p>
 
                     <form class="access-form" @submit.prevent="submitLogin">
                         <label>
-                            <span>Correo electronico</span>
+                            <span>Correo electrónico</span>
                             <span class="field-shell">
                                 <span class="material-icons" aria-hidden="true">mail</span>
                                 <input
@@ -125,9 +125,9 @@ function forgotPassword() {
 
                         <label>
                             <span class="label-row">
-                                <span>Contrasena</span>
+                                <span>Contraseña</span>
                                 <button type="button" @click="forgotPassword">
-                                    Olvide mi contrasena
+                                    Olvidé mi contraseña
                                 </button>
                             </span>
                             <span class="field-shell">
@@ -144,7 +144,7 @@ function forgotPassword() {
                         <div class="form-meta">
                             <label class="check-row">
                                 <input v-model="form.rememberSession" type="checkbox" />
-                                <span>Mantener sesion iniciada</span>
+                                <span>Mantener sesión iniciada</span>
                             </label>
                         </div>
 
@@ -162,8 +162,8 @@ function forgotPassword() {
                     </form>
 
                     <p class="switch-copy">
-                        No tienes cuenta todavia?
-                        <RouterLink to="/register">Registrate aqui</RouterLink>
+                        ¿No tienes cuenta todavía?
+                        <RouterLink to="/register">Regístrate aquí</RouterLink>
                     </p>
                 </section>
             </div>
