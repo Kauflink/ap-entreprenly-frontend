@@ -22,4 +22,8 @@ export class ChatbotApi extends BaseApi {
   get chatOrders()        { return this.#chatOrders }
   get whatsappSessions()  { return this.#whatsappSessions }
   get inventoryProducts() { return this.#inventoryProducts }
+
+  reportBridgeStatus(payload) {
+    return this.http.post('/chatbot/whatsapp/bridge/status', payload)
+  }
 }

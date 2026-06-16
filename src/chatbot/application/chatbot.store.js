@@ -175,8 +175,13 @@ const useChatbotStore = defineStore('chatbot', () => {
   function simulateScan() {
     const current = session.value
     if (!current) return
-    const updated = { ...current, status: WhatsappSession.Status.CONNECTED, connectedAt: new Date().toLocaleString('es-PE') }
-    api.whatsappSessions.update(current.id, updated).then(res => {
+    api.reportBridgeStatus({
+      connected: true,
+      phone: current.phone ?? '+51999000000',
+      ownerEmail: current.ownerEmail ?? '',
+      businessName: current.businessName,
+      sellerId: current.sellerId
+    }).then(res => {
       session.value = WhatsappSessionAssembler.toEntityFromResource(res.data)
     })
   }
@@ -184,8 +189,13 @@ const useChatbotStore = defineStore('chatbot', () => {
   function simulateDisconnect() {
     const current = session.value
     if (!current) return
-    const updated = { ...current, status: WhatsappSession.Status.DISCONNECTED, connectedAt: null }
-    api.whatsappSessions.update(current.id, updated).then(res => {
+    api.reportBridgeStatus({
+      connected: false,
+      phone: null,
+      ownerEmail: current.ownerEmail ?? '',
+      businessName: current.businessName,
+      sellerId: current.sellerId
+    }).then(res => {
       session.value = WhatsappSessionAssembler.toEntityFromResource(res.data)
     })
   }
@@ -194,10 +204,9 @@ const useChatbotStore = defineStore('chatbot', () => {
     const order = orders.value.find(o => o.id === orderId)
     if (!order) return
 
-    api.chatOrders.update(orderId, { ...order, status: ChatOrder.Status.CONFIRMED }).then(res => {
+    api.chatOrders.postAction(orderId, 'confirm').then(res => {
       const confirmed = ChatOrderAssembler.toEntityFromResource(res.data)
       orders.value = orders.value.map(o => o.id === orderId ? confirmed : o)
-      _updateConversationStatus(order.conversationId, Conversation.Status.COMPLETED)
 
       const time   = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })
       const sysMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: `chatbot.sys.paymentApproved|${time}`, sender: ChatMessage.Sender.SYSTEM, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
@@ -214,14 +223,11 @@ const useChatbotStore = defineStore('chatbot', () => {
     const order = orders.value.find(o => o.id === orderId)
     if (!order) return
 
-    const newCount  = (order.rejectionCount ?? 0) + 1
-    const isBlocked = newCount >= 2
-    const newStatus = isBlocked ? ChatOrder.Status.BLOCKED : ChatOrder.Status.WAITING_PAYMENT
-
-    api.chatOrders.update(orderId, { ...order, status: newStatus, hasReceipt: false, rejectionCount: newCount }).then(res => {
+    api.chatOrders.postAction(orderId, 'reject', { reason }).then(res => {
       const rejected = ChatOrderAssembler.toEntityFromResource(res.data)
       orders.value = orders.value.map(o => o.id === orderId ? rejected : o)
 
+      const isBlocked = rejected.status === ChatOrder.Status.BLOCKED
       if (isBlocked) _updateConversationStatus(order.conversationId, Conversation.Status.CLOSED)
 
       const time       = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })
@@ -245,10 +251,9 @@ const useChatbotStore = defineStore('chatbot', () => {
   function _updateConversationStatus(conversationId, status) {
     const conv = conversations.value.find(c => c.id === conversationId)
     if (!conv) return
-    api.conversations.update(conv.id, { ...conv, status }).then(res => {
-      const updated = ConversationAssembler.toEntityFromResource(res.data)
-      conversations.value = conversations.value.map(c => c.id === conv.id ? updated : c)
-    })
+    conversations.value = conversations.value.map(c =>
+      c.id === conversationId ? { ...c, status } : c
+    )
   }
 
   return {

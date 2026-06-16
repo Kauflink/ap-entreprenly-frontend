@@ -23,4 +23,8 @@ export class BaseEndpoint {
     delete(id) {
         return this.http.delete(`${this.endpointPath}/${id}`)
     }
+
+    postAction(id, subPath, body = null) {
+        return this.http.post(`${this.endpointPath}/${id}/${subPath}`, body)
+    }
 }
