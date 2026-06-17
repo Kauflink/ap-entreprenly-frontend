@@ -19,17 +19,12 @@ let qrPollId = null
 
 const chatbotAllowed = computed(() => profileStore.profile.plan !== 'Free')
 
-function startQrPolling(sellerId) {
+function startQrPolling(ownerEmail) {
   stopQrPolling()
-  console.log('[QR] iniciando polling para sellerId', sellerId)
   function poll() {
-    api.getWhatsappQr(sellerId).then(res => {
-      const qr = res.data?.qr ?? null
-      console.log('[QR] recibido:', qr ? 'data URL (' + qr.length + ' chars)' : 'null')
-      qrDataUrl.value = qr
-    }).catch(err => {
-      console.error('[QR] error en polling:', err?.response?.status, err?.message)
-    })
+    api.getWhatsappQr(ownerEmail).then(res => {
+      qrDataUrl.value = res.data?.qr ?? null
+    }).catch(() => {})
   }
   poll()
   qrPollId = setInterval(poll, 5000)
@@ -41,9 +36,8 @@ function stopQrPolling() {
 }
 
 watch(() => store.session, (session) => {
-  console.log('[QR] watch session:', session?.status, 'sellerId:', session?.sellerId)
-  if (session && session.status !== 'connected' && session.sellerId) {
-    startQrPolling(session.sellerId)
+  if (session && session.status !== 'connected' && session.ownerEmail) {
+    startQrPolling(session.ownerEmail)
   } else {
     stopQrPolling()
   }
