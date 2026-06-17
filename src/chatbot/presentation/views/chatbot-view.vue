@@ -1,23 +1,56 @@
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import useChatbotStore from '../../application/chatbot.store.js'
 import useProfileStore from '@/profile/application/profile.store.js'
+import { ChatbotApi } from '../../infrastructure/chatbot-api.js'
 import QrConnectionCard    from '../components/qr-connection-card.vue'
 import WhatsappStatusCard  from '../components/whatsapp-status-card.vue'
 
 const { t } = useI18n()
 const store = useChatbotStore()
 const profileStore = useProfileStore()
+const api = new ChatbotApi()
 
 const justConnected = ref(false)
+const qrDataUrl     = ref(null)
+let qrPollId = null
+
 const chatbotAllowed = computed(() => profileStore.profile.plan !== 'Free')
+
+function startQrPolling(sellerId) {
+  stopQrPolling()
+  function poll() {
+    api.getWhatsappQr(sellerId).then(res => {
+      qrDataUrl.value = res.data?.qr ?? null
+    }).catch(() => {})
+  }
+  poll()
+  qrPollId = setInterval(poll, 5000)
+}
+
+function stopQrPolling() {
+  if (qrPollId) { clearInterval(qrPollId); qrPollId = null }
+  qrDataUrl.value = null
+}
+
+watch(() => store.session, (session) => {
+  if (session && session.status !== 'connected' && session.sellerId) {
+    startQrPolling(session.sellerId)
+  } else {
+    stopQrPolling()
+  }
+}, { immediate: true, deep: true })
 
 onMounted(() => {
   if (chatbotAllowed.value) {
     store.loadSession()
   }
+})
+
+onUnmounted(() => {
+  stopQrPolling()
 })
 
 function onScanned() {
@@ -61,7 +94,7 @@ function onReconnect() {
 
     <template v-else-if="!store.session || store.session?.status === 'disconnected'">
       <div class="chatbot-page__card">
-        <QrConnectionCard :has-error="false" @scanned="onScanned" />
+        <QrConnectionCard :has-error="false" :qr-data-url="qrDataUrl" @scanned="onScanned" />
       </div>
     </template>
 

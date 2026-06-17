@@ -26,4 +26,8 @@ export class ChatbotApi extends BaseApi {
   reportBridgeStatus(payload) {
     return this.http.post('/chatbot/whatsapp/bridge/status', payload)
   }
+
+  getWhatsappQr(sellerId) {
+    return this.http.get(`/chatbot/whatsapp/qr?sellerId=${sellerId}`)
+  }
 }
