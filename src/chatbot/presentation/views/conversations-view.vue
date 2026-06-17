@@ -26,22 +26,11 @@ const rejectReasons = [
 
 const chatbotAllowed = computed(() => profileStore.profile.plan !== 'Free')
 
-/** Show payment bar only after the client sends a receipt image */
-const receiptVisible = computed(() =>
-  store.messages.some(m => m.sender === 'client' && m.type === 'image')
-)
-
 const clientInitials = computed(() => {
   const conv = store.selectedConversation
   if (!conv) return ''
   const parts = conv.clientName.split(' ')
   return `${parts[0]?.[0] ?? ''}${parts[1]?.[0] ?? ''}`
-})
-
-// Luis Ramirez → Plin · todos los demás → Yape
-const paymentApp = computed(() => {
-  const name = store.selectedConversation?.clientName ?? ''
-  return name.toLowerCase().startsWith('luis') ? 'plin' : 'yape'
 })
 
 /** Redirect to chatbot config if session is not connected */
@@ -145,13 +134,11 @@ function onCancelReject() {
             <div
               v-for="message in store.messages"
               :key="message.id"
-              class="msg-animate"
+              :class="{ 'msg-animate': store.liveAnimation }"
             >
               <MessageBubble
                 :message="message"
                 :client-initials="clientInitials"
-                :payment-app="paymentApp"
-                :order="store.pendingOrder ?? store.orders.find(o => o.conversationId === store.selectedConversationId) ?? null"
               />
             </div>
 
@@ -172,7 +159,7 @@ function onCancelReject() {
           </div>
 
           <!-- Payment bar -->
-          <template v-if="store.pendingOrder && receiptVisible">
+          <template v-if="store.pendingOrder">
             <!-- Reject form -->
             <div v-if="showRejectForm" class="payment-reject">
               <p class="payment-reject__title">{{ t('chatbot.payment.rejectTitle') }}</p>

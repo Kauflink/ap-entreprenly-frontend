@@ -1,14 +1,10 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import YapeReceipt from './yape-receipt.vue'
-import PlinReceipt from './plin-receipt.vue'
 
 const props = defineProps({
-  message:        { type: Object,  required: true },
-  clientInitials: { type: String,  default: 'AT'  },
-  paymentApp:     { type: String,  default: 'yape' }, // 'yape' | 'plin'
-  order:          { type: Object,  default: null   }
+  message:        { type: Object, required: true },
+  clientInitials: { type: String, default: 'AT'  }
 })
 
 const { t } = useI18n()
@@ -33,17 +29,11 @@ const systemText = computed(() => {
   return t(key, paramMap)
 })
 
-// Siempre fuerza el método de pago al app correcto (Yape o Plin)
-const receiptOrder = computed(() => {
-  const base = props.order ?? {
-    id: 'demo',
-    orderNumber: '#ORD-???',
-    total: 0,
-    createdAt: new Date().toISOString(),
-    status: 'WAITING_PAYMENT'
-  }
-  return { ...base, paymentMethod: props.paymentApp === 'plin' ? 'Plin' : 'Yape' }
-})
+const isImageData = computed(() =>
+  props.message.type === 'image' &&
+  typeof props.message.content === 'string' &&
+  (props.message.content.startsWith('data:') || props.message.content.startsWith('http'))
+)
 </script>
 
 <template>
@@ -55,12 +45,8 @@ const receiptOrder = computed(() => {
   <!-- Client message -->
   <div v-else-if="message.sender === 'client'" class="client-msg">
     <div class="client-msg__avatar">{{ clientInitials }}</div>
-    <div class="client-msg__bubble" :class="{ 'client-msg__bubble--receipt': message.type === 'image' }">
-      <!-- Comprobante simulado -->
-      <template v-if="message.type === 'image'">
-        <PlinReceipt v-if="paymentApp === 'plin'" :order="receiptOrder" />
-        <YapeReceipt v-else                        :order="receiptOrder" />
-      </template>
+    <div class="client-msg__bubble" :class="{ 'client-msg__bubble--image': message.type === 'image' }">
+      <img v-if="isImageData" :src="message.content" class="client-msg__image" alt="Imagen" />
       <p v-else class="client-msg__text">{{ message.content }}</p>
     </div>
   </div>
@@ -116,11 +102,16 @@ const receiptOrder = computed(() => {
   padding: 0.625rem 1rem;
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
 }
-/* Sin fondo naranja cuando es un recibo */
-.client-msg__bubble--receipt {
+/* Sin fondo naranja cuando es imagen */
+.client-msg__bubble--image {
   background: transparent;
   padding: 0;
   box-shadow: none;
+}
+.client-msg__image {
+  max-width: 100%;
+  border-radius: 0.75rem;
+  display: block;
 }
 .client-msg__text {
   font-size: 0.875rem;
