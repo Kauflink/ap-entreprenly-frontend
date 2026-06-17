@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import useChatbotStore from '../../application/chatbot.store.js'
 import useProfileStore from '@/profile/application/profile.store.js'
+import useAuthStore from '@/auth/application/auth.store.js'
 import { ChatbotApi } from '../../infrastructure/chatbot-api.js'
 import QrConnectionCard    from '../components/qr-connection-card.vue'
 import WhatsappStatusCard  from '../components/whatsapp-status-card.vue'
@@ -11,6 +12,7 @@ import WhatsappStatusCard  from '../components/whatsapp-status-card.vue'
 const { t } = useI18n()
 const store = useChatbotStore()
 const profileStore = useProfileStore()
+const authStore = useAuthStore()
 const api = new ChatbotApi()
 
 const justConnected = ref(false)
@@ -35,12 +37,12 @@ function stopQrPolling() {
   qrDataUrl.value = null
 }
 
-watch(() => store.session, (session) => {
-  if (session && session.status !== 'connected' && session.ownerEmail) {
-    startQrPolling(session.ownerEmail)
-  } else {
-    stopQrPolling()
-  }
+watch([() => store.session, () => store.isSessionLoaded], ([session, loaded]) => {
+  if (!loaded) return
+  if (session?.status === 'connected') { stopQrPolling(); return }
+  const email = session?.ownerEmail ?? authStore.user?.email ?? null
+  if (email) startQrPolling(email)
+  else stopQrPolling()
 }, { immediate: true, deep: true })
 
 onMounted(() => {
