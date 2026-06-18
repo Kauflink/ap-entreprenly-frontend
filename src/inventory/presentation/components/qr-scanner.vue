@@ -104,7 +104,9 @@ onUnmounted(closeScanner);
 
           <div class="qr-modal-header">
             <span class="qr-modal-title">{{ t('products.form.scanQr') }}</span>
-            <button type="button" class="qr-modal-close" @click="closeScanner">✕</button>
+            <button type="button" class="qr-modal-close" @click="closeScanner">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
+            </button>
           </div>
 
           <template v-if="cameraError">
