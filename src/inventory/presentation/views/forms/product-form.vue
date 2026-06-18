@@ -14,6 +14,8 @@ const route  = useRoute();
 const editId    = computed(() => route.params.id ? Number(route.params.id) : null);
 const isEdit    = computed(() => !!editId.value);
 const submitted = ref(false);
+const saving    = ref(false);
+const saveError = ref(null);
 
 const touched = ref({ name: false, price: false, pricePerKg: false });
 
@@ -77,19 +79,27 @@ watch([() => store.unit_productsLoaded, () => store.weight_productsLoaded], () =
   if (wp) { productType.value = 'weight'; form.value = { name: wp.name ?? '', description: wp.description ?? '', codeQR: wp.codeQR ?? '', price: null, weightGrams: null, brand: '', pricePerKg: wp.pricePerKg ?? null }; }
 });
 
-function save() {
+async function save() {
   submitted.value = true;
+  saveError.value = null;
   if (!formValid.value) return;
-  if (isUnit.value) {
-    const payload = { name: form.value.name, description: form.value.description, codeQR: form.value.codeQR, price: form.value.price, weightGrams: form.value.weightGrams, brand: form.value.brand };
-    if (isEdit.value) store.updateUnitProduct({ ...payload, id: editId.value });
-    else              store.addUnitProduct(payload);
-  } else {
-    const payload = { name: form.value.name, description: form.value.description, codeQR: form.value.codeQR, pricePerKg: form.value.pricePerKg };
-    if (isEdit.value) store.updateWeightProduct({ ...payload, id: editId.value });
-    else              store.addWeightProduct(payload);
+  saving.value = true;
+  try {
+    if (isUnit.value) {
+      const payload = { name: form.value.name, description: form.value.description, codeQR: form.value.codeQR, price: form.value.price, weightGrams: form.value.weightGrams ?? 0, brand: form.value.brand };
+      if (isEdit.value) await store.updateUnitProduct({ ...payload, id: editId.value });
+      else              await store.addUnitProduct(payload);
+    } else {
+      const payload = { name: form.value.name, description: form.value.description, codeQR: form.value.codeQR, pricePerKg: form.value.pricePerKg };
+      if (isEdit.value) await store.updateWeightProduct({ ...payload, id: editId.value });
+      else              await store.addWeightProduct(payload);
+    }
+    close();
+  } catch {
+    saveError.value = t('form.saveError');
+  } finally {
+    saving.value = false;
   }
-  close();
 }
 </script>
 
@@ -186,7 +196,7 @@ function save() {
                      type="number" step="0.01" min="0"
                      @blur="touched.price = true" />
             </div>
-            <span v-if="form.price == null && (touched.price || submitted)" class="v-x">✕</span>
+            <span v-if="form.price == null && (touched.price || submitted)" class="v-x">&times;</span>
           </div>
         </div>
 
@@ -219,17 +229,18 @@ function save() {
                      type="number" step="0.01" min="0"
                      @blur="touched.pricePerKg = true" />
             </div>
-            <span v-if="form.pricePerKg == null && (touched.pricePerKg || submitted)" class="v-x">✕</span>
+            <span v-if="form.pricePerKg == null && (touched.pricePerKg || submitted)" class="v-x">&times;</span>
           </div>
         </div>
       </template>
 
       <!-- Footer -->
       <div class="modal-footer">
-        <button class="btn-save" type="submit" :class="{ 'btn-save--invalid': !formValid && submitted }">
-          {{ t('products.form.save') }}
+        <button class="btn-save" type="submit" :disabled="saving" :class="{ 'btn-save--invalid': !formValid && submitted }">
+          {{ saving ? t('form.saving') : t('products.form.save') }}
         </button>
         <span v-if="!formValid && submitted" class="form-incomplete">{{ t('form.incomplete') }}</span>
+        <span v-if="saveError" class="form-incomplete">{{ saveError }}</span>
       </div>
 
     </form>

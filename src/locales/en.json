@@ -921,7 +921,9 @@
     },
     "form": {
         "required":   "Required field",
-        "incomplete": "Form incomplete"
+        "incomplete": "Form incomplete",
+        "saving":     "Saving...",
+        "saveError":  "Could not save. Please try again."
     },
     "common": {
         "delete":         "Delete",

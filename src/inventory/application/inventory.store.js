@@ -86,9 +86,9 @@ const useInventoryStore = defineStore('inventory', () => {
     }
 
     function addUnitProduct(product) {
-        inventoryApi.createUnitProduct(product).then(response => {
+        return inventoryApi.createUnitProduct(product).then(response => {
             unit_products.value.push(UnitProductAssembler.toEntityFromResource(response.data));
-        }).catch(error => errors.value.push(error));
+        }).catch(error => { errors.value.push(error); throw error; });
     }
 
     function updateUnitProduct(product) {
@@ -120,9 +120,9 @@ const useInventoryStore = defineStore('inventory', () => {
     }
 
     function addWeightProduct(product) {
-        inventoryApi.createWeightProduct(product).then(response => {
+        return inventoryApi.createWeightProduct(product).then(response => {
             weight_products.value.push(WeightProductAssembler.toEntityFromResource(response.data));
-        }).catch(error => errors.value.push(error));
+        }).catch(error => { errors.value.push(error); throw error; });
     }
 
     function updateWeightProduct(product) {
