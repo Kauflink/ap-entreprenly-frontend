@@ -85,7 +85,9 @@ function save() {
           <h2 class="modal-title">{{ isEdit ? t('products.form.editTitle') : t('products.form.addTitle') }}</h2>
           <p class="modal-subtitle">{{ isEdit ? t('products.form.editSubtitle') : t('products.form.addSubtitle') }}</p>
         </div>
-        <button class="btn-close" type="button" @click="close">✕</button>
+        <button class="btn-close" type="button" @click="close">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
+        </button>
       </div>
 
       <form @submit.prevent="save" novalidate>
@@ -106,7 +108,7 @@ function save() {
                    :placeholder="t('products.form.namePlaceholder')"
                    @blur="touched.name = true" />
             <template v-if="!form.name && (touched.name || submitted)">
-              <span class="v-x">✕</span>
+              <span class="v-x">&times;</span>
               <span class="v-text">{{ t('form.required') }}</span>
             </template>
           </div>
