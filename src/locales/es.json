@@ -921,7 +921,9 @@
     },
     "form": {
         "required":   "Campo requerido",
-        "incomplete": "Formulario incompleto"
+        "incomplete": "Formulario incompleto",
+        "saving":     "Guardando...",
+        "saveError":  "No se pudo guardar. Intenta de nuevo."
     },
     "common": {
         "delete":         "Eliminar",
