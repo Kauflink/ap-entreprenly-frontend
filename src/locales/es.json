@@ -415,7 +415,7 @@
             "colClient":      "Cliente",
             "colStatus":      "Estado",
             "colTotal":       "Total",
-            "clientFallback": "â€”",
+            "clientFallback": "—",
             "approved":       "Aprobados",
             "pending":        "Por validar",
             "status": {
@@ -484,7 +484,7 @@
                     "0": "Ingresa a <strong>Productos</strong> desde el menú lateral.",
                     "1": "Haz clic en el botón <strong>Agregar producto</strong>.",
                     "2": "Completa nombre, categoría, unidad y precio. Los campos con * son obligatorios.",
-                    "3": "Guarda el producto. Quedará disponible para lotes y para el chatbot. âœ…"
+                    "3": "Guarda el producto. Quedará disponible para lotes y para el chatbot. ✅"
                 }
             },
             "2": {
@@ -494,7 +494,7 @@
                     "0": "Ingresa a <strong>Chatbot</strong> desde el menú lateral.",
                     "1": "Escanea el código QR con WhatsApp Business (Ajustes â†’ Dispositivos vinculados).",
                     "2": "Espera la confirmación de conexión. El estado cambiará a <strong>Conectado</strong>.",
-                    "3": "El chatbot empezará a recibir mensajes automáticamente. âœ…"
+                    "3": "El chatbot empezará a recibir mensajes automáticamente. ✅"
                 }
             },
             "3": {
@@ -504,7 +504,7 @@
                     "0": "Ingresa a <strong>Pedidos</strong> desde el menú lateral.",
                     "1": "Localiza el pedido con estado <em>Comprobante recibido</em>.",
                     "2": "Revisa el comprobante adjunto. Si es correcto, haz clic en <strong>Aprobar pago</strong>.",
-                    "3": "Si el comprobante es inválido, haz clic en <strong>Rechazar</strong>. Tras tres rechazos se bloqueará el pedido. âœ…"
+                    "3": "Si el comprobante es inválido, haz clic en <strong>Rechazar</strong>. Tras tres rechazos se bloqueará el pedido. ✅"
                 }
             },
             "4": {
@@ -514,7 +514,7 @@
                     "0": "Ingresa a <strong>Lotes</strong> desde el menú lateral.",
                     "1": "Selecciona el producto al que deseas agregar un lote.",
                     "2": "Completa la cantidad, fecha de ingreso y fecha de vencimiento.",
-                    "3": "El sistema enviará alertas cuando un lote esté por vencer o sin stock. âœ…"
+                    "3": "El sistema enviará alertas cuando un lote esté por vencer o sin stock. ✅"
                 }
             },
             "5": {
@@ -524,7 +524,7 @@
                     "0": "Ingresa a <strong>Ventas</strong> desde el menú lateral.",
                     "1": "Busca y agrega los productos al ticket de venta.",
                     "2": "Selecciona el método de pago: efectivo o tarjeta/Yape.",
-                    "3": "Haz clic en <strong>Finalizar venta</strong>. La boleta se generará automáticamente. âœ…"
+                    "3": "Haz clic en <strong>Finalizar venta</strong>. La boleta se generará automáticamente. ✅"
                 }
             },
             "6": {
@@ -534,7 +534,7 @@
                     "0": "El cliente escribe al WhatsApp Business vinculado.",
                     "1": "El bot muestra el catálogo, recibe el pedido y solicita la dirección de entrega.",
                     "2": "El bot solicita el comprobante de pago. Al recibirlo, el pedido aparece en <strong>Pedidos</strong>.",
-                    "3": "El administrador aprueba o rechaza el comprobante desde el panel. âœ…"
+                    "3": "El administrador aprueba o rechaza el comprobante desde el panel. ✅"
                 }
             },
             "7": {
@@ -544,7 +544,7 @@
                     "0": "Ingresa a <strong>Conversaciones</strong> para ver el hilo de mensajes del cliente.",
                     "1": "El comprobante enviado por el cliente aparece en el chat como imagen.",
                     "2": "Ve a <strong>Pedidos</strong> para aprobar o rechazar el pago.",
-                    "3": "Si apruebas, el cliente recibe confirmación automática por WhatsApp. âœ…"
+                    "3": "Si apruebas, el cliente recibe confirmación automática por WhatsApp. ✅"
                 }
             },
             "8": {
@@ -554,7 +554,7 @@
                     "0": "Un pedido se bloquea tras <strong>3 comprobantes rechazados</strong> consecutivos.",
                     "1": "El cliente recibe un mensaje automático indicando que el pedido fue cancelado.",
                     "2": "Puedes ver el detalle del bloqueo en la vista de <strong>Pedidos</strong>.",
-                    "3": "Para retomar el pedido, el cliente debe iniciar una nueva conversación con el chatbot. âœ…"
+                    "3": "Para retomar el pedido, el cliente debe iniciar una nueva conversación con el chatbot. ✅"
                 }
             }
         },
@@ -564,7 +564,7 @@
             "email":      "soporte{'@'}entreprenly.com",
             "whatsapp":   "+51 999 000 111",
             "hoursLabel": "Horario",
-            "hours":      "Lunâ€“Vie 9:00â€“18:00"
+            "hours":      "Lun–Vie 9:00–18:00"
         },
         "results": {
             "count_other":        "resultado(s) para",
@@ -631,11 +631,11 @@
             "before3":             "Verificar tu conexión a internet",
             "responseTimeTitle":   "Tiempos de respuesta",
             "priorityNormal":      "Normal",
-            "priorityNormalVal":   "24â€“48 horas",
+            "priorityNormalVal":   "24–48 horas",
             "priorityHigh":        "Urgente",
-            "priorityHighVal":     "2â€“4 horas",
+            "priorityHighVal":     "2–4 horas",
             "hoursLabel":          "Horario",
-            "hoursVal":            "Lunâ€“Vie 9:00â€“18:00"
+            "hoursVal":            "Lun–Vie 9:00–18:00"
         },
         "success": {
             "pageTitle":       "Reporte enviado",
