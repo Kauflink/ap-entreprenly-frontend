@@ -3,8 +3,9 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
-  message:        { type: Object, required: true },
-  clientInitials: { type: String, default: 'AT'  }
+  message:          { type: Object, required: true },
+  clientInitials:   { type: String, default: 'AT'  },
+  receiptImageUrl:  { type: String, default: null   }
 })
 
 const { t } = useI18n()
@@ -40,6 +41,7 @@ const isImageData = computed(() =>
   <!-- System message -->
   <div v-if="message.sender === 'system'" class="sys-msg">
     <span class="sys-msg__badge">{{ systemText }}</span>
+    <img v-if="receiptImageUrl" :src="receiptImageUrl" class="sys-msg__receipt" alt="Comprobante" />
   </div>
 
   <!-- Client message -->
@@ -64,7 +66,9 @@ const isImageData = computed(() =>
 /* System */
 .sys-msg {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.25rem 0;
 }
 .sys-msg__badge {
@@ -73,6 +77,11 @@ const isImageData = computed(() =>
   padding: 0.125rem 0.75rem;
   font-size: 0.75rem;
   color: #6b7280;
+}
+.sys-msg__receipt {
+  max-width: 14rem;
+  border-radius: 0.75rem;
+  object-fit: contain;
 }
 
 /* Client */
