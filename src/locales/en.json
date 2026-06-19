@@ -787,7 +787,7 @@
                 "paymentSent":       "Payment instructions sent to customer",
                 "receiptReceived":   "Receipt received",
                 "receiptRejected":   "Receipt rejected {count} time(s)",
-                "paymentApproved":   "Payment approved âœ“",
+                “paymentApproved”:   “Payment approved ✓”,
                 "blocked":           "Order blocked due to multiple rejections",
                 "cancelled":         "Order cancelled",
                 "pendingValidation": "Receipt pending validation...",

@@ -171,12 +171,10 @@ const useChatbotStore = defineStore('chatbot', () => {
 
       const time   = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })
       const sysMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: `chatbot.sys.paymentApproved|${time}`, sender: ChatMessage.Sender.SYSTEM, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
-      const botMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: `chatbot.sys.botPaymentApproved|${order.orderNumber}`, sender: ChatMessage.Sender.BOT, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
 
       liveAnimation.value = true
       api.chatMessages.create(sysMsg).then(r => {
         messages.value = [...messages.value, ChatMessageAssembler.toEntityFromResource(r.data)]
-        setTimeout(() => _typewriteAndSend(botMsg), 400)
       })
     }).finally(() => processingOrders.delete(orderId))
   }
@@ -201,17 +199,12 @@ const useChatbotStore = defineStore('chatbot', () => {
       const sysContent = isBlocked
         ? `chatbot.sys.blocked|${time}`
         : `chatbot.sys.receiptRejected|${time}`
-      const botContent = isBlocked
-        ? `chatbot.sys.botBlocked|${order.orderNumber}`
-        : `chatbot.sys.botReceiptRejected|${order.orderNumber}|${reason}`
 
       const sysMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: sysContent, sender: ChatMessage.Sender.SYSTEM, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
-      const botMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: botContent, sender: ChatMessage.Sender.BOT, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
 
       liveAnimation.value = true
       api.chatMessages.create(sysMsg).then(r => {
         messages.value = [...messages.value, ChatMessageAssembler.toEntityFromResource(r.data)]
-        setTimeout(() => _typewriteAndSend(botMsg), 400)
       })
     }).finally(() => processingOrders.delete(orderId))
   }
