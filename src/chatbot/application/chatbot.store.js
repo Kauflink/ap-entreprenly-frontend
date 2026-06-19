@@ -171,10 +171,16 @@ const useChatbotStore = defineStore('chatbot', () => {
 
       const time   = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })
       const sysMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: `chatbot.sys.paymentApproved|${time}`, sender: ChatMessage.Sender.SYSTEM, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
+      const botMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: `chatbot.sys.botPaymentApproved|${order.id}`, sender: ChatMessage.Sender.BOT, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
 
       liveAnimation.value = true
       api.chatMessages.create(sysMsg).then(r => {
         messages.value = [...messages.value, ChatMessageAssembler.toEntityFromResource(r.data)]
+        setTimeout(() => {
+          api.chatMessages.create(botMsg).then(r2 => {
+            messages.value = [...messages.value, ChatMessageAssembler.toEntityFromResource(r2.data)]
+          })
+        }, 400)
       })
     }).finally(() => processingOrders.delete(orderId))
   }
@@ -199,12 +205,21 @@ const useChatbotStore = defineStore('chatbot', () => {
       const sysContent = isBlocked
         ? `chatbot.sys.blocked|${time}`
         : `chatbot.sys.receiptRejected|${time}`
+      const botContent = isBlocked
+        ? `chatbot.sys.botBlocked|${order.id}`
+        : `chatbot.sys.botReceiptRejected|${order.id}|${reason}`
 
       const sysMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: sysContent, sender: ChatMessage.Sender.SYSTEM, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
+      const botMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: botContent, sender: ChatMessage.Sender.BOT, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
 
       liveAnimation.value = true
       api.chatMessages.create(sysMsg).then(r => {
         messages.value = [...messages.value, ChatMessageAssembler.toEntityFromResource(r.data)]
+        setTimeout(() => {
+          api.chatMessages.create(botMsg).then(r2 => {
+            messages.value = [...messages.value, ChatMessageAssembler.toEntityFromResource(r2.data)]
+          })
+        }, 400)
       })
     }).finally(() => processingOrders.delete(orderId))
   }
