@@ -78,11 +78,11 @@ const hasAlerts = computed(() => stockAlerts.value.length > 0)
 
 // ── Quick links ───────────────────────────────────────────────────────────
 const quickLinks = computed(() => [
-  { labelKey: 'dashboard-home.links.products', subtextKey: 'dashboard-home.links.productsSub', icon: 'products', route: '/sales'                          },
-  { labelKey: 'dashboard-home.links.lots',     subtextKey: 'dashboard-home.links.lotsSub',     icon: 'lots',     route: '/sales', alertBadge: hasAlerts.value },
-  { labelKey: 'dashboard-home.links.chatbot',  subtextKey: 'dashboard-home.links.chatbotSub',  icon: 'chat',     route: '/chatbot'                        },
-  { labelKey: 'dashboard-home.links.orders',   subtextKey: 'dashboard-home.links.ordersSub',   icon: 'orders',   route: '/chatbot/orders'                 },
-  { labelKey: 'dashboard-home.links.reports',  subtextKey: 'dashboard-home.links.reportsSub',  icon: 'reports',  route: '/sales'                          },
+  { labelKey: 'dashboard-home.links.products', subtextKey: 'dashboard-home.links.productsSub', icon: 'products', route: '/inventory-products'              },
+  { labelKey: 'dashboard-home.links.lots',     subtextKey: 'dashboard-home.links.lotsSub',     icon: 'lots',     route: '/inventory-lots', alertBadge: hasAlerts.value },
+  { labelKey: 'dashboard-home.links.chatbot',  subtextKey: 'dashboard-home.links.chatbotSub',  icon: 'chat',     route: '/chatbot'                          },
+  { labelKey: 'dashboard-home.links.orders',   subtextKey: 'dashboard-home.links.ordersSub',   icon: 'orders',   route: '/chatbot/orders'                   },
+  { labelKey: 'dashboard-home.links.reports',  subtextKey: 'dashboard-home.links.reportsSub',  icon: 'reports',  route: '/sales'                            },
 ])
 
 // ── Today label ───────────────────────────────────────────────────────────
@@ -92,6 +92,14 @@ const todayLabel = computed(() => {
 })
 
 // ── Helpers ───────────────────────────────────────────────────────────────
+function clientName(conversationId) {
+  return store.conversations.find(c => c.id === conversationId)?.clientName ?? '—'
+}
+
+function orderTime(createdAt) {
+  return new Date(createdAt).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })
+}
+
 function orderStatusLabel(status, hasReceipt) {
   const k = status === 'CONFIRMED'  ? 'confirmed'
           : status === 'BLOCKED'    ? 'blocked'
@@ -170,12 +178,20 @@ onMounted(async () => {
   <div class="home-page">
     <div class="home-inner">
 
-      <!-- ══ WELCOME BANNER ══════════════════════════════════════════════ -->
+      <!-- ══ TÍTULO + BADGE ════════════════════════════════════════════ -->
+      <div class="page-header">
+        <h1 class="page-title">{{ t('dashboard-home.title') }}</h1>
+        <span v-if="pendingOrderCount > 0" class="pending-badge">
+          {{ pendingOrderCount }} {{ t('dashboard-home.orders.pendingBadge') }}
+        </span>
+      </div>
+
+      <!-- ══ WELCOME BANNER ════════════════════════════════════════════ -->
       <header class="banner">
         <div class="banner__content">
           <div>
             <p class="banner__eyebrow">{{ t('dashboard-home.welcomeBack') }}</p>
-            <h1 class="banner__title">{{ t('dashboard-home.welcome') }}</h1>
+            <h2 class="banner__title">{{ t('dashboard-home.welcome') }}</h2>
             <p class="banner__date">{{ todayLabel }}</p>
           </div>
           <div class="banner__stats">
@@ -206,20 +222,8 @@ onMounted(async () => {
         <div class="banner__circle banner__circle--2" aria-hidden="true"></div>
       </header>
 
-      <!-- ══ ALERT BANNER ═══════════════════════════════════════════════ -->
-      <div v-if="!alertsLoading && hasAlerts" class="alert-banner" role="alert" aria-live="polite">
-        <svg class="alert-banner__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-        </svg>
-        <div>
-          <p class="alert-banner__title">{{ t('dashboard-home.alertBannerTitle') }}</p>
-          <p class="alert-banner__sub">{{ t('dashboard-home.alertBanner', { count: stockAlerts.length }) }}</p>
-        </div>
-        <RouterLink to="/sales" class="alert-banner__link">{{ t('dashboard-home.alertBannerLink') }}</RouterLink>
-      </div>
 
-      <!-- ══ QUICK LINKS ════════════════════════════════════════════════ -->
+      <!-- ══ QUICK LINKS ═══════════════════════════════════════════════ -->
       <nav :aria-label="t('dashboard-home.quickLinksLabel')">
         <p class="ql-hint">{{ t('dashboard-home.quickLinksHint') }}</p>
         <ul class="ql-grid" role="list">
@@ -227,23 +231,18 @@ onMounted(async () => {
             <RouterLink :to="link.route" class="ql-card" :aria-label="t('dashboard-home.links.goTo', { label: t(link.labelKey) })">
               <span v-if="link.alertBadge" class="ql-badge" aria-hidden="true"></span>
               <span class="ql-icon" aria-hidden="true">
-                <!-- products -->
                 <svg v-if="link.icon === 'products'" class="ql-svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" />
                 </svg>
-                <!-- lots -->
                 <svg v-if="link.icon === 'lots'" class="ql-svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <!-- chat -->
                 <svg v-if="link.icon === 'chat'" class="ql-svg" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M20 2H4C2.9 2 2 2.9 2 4v13c0 1.1.9 2 2 2h3l3 3 3-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
                 </svg>
-                <!-- orders -->
                 <svg v-if="link.icon === 'orders'" class="ql-svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                <!-- reports -->
                 <svg v-if="link.icon === 'reports'" class="ql-svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
@@ -255,10 +254,10 @@ onMounted(async () => {
         </ul>
       </nav>
 
-      <!-- ══ MAIN GRID ══════════════════════════════════════════════════ -->
+      <!-- ══ MAIN GRID ═════════════════════════════════════════════════ -->
       <div class="main-grid">
 
-        <!-- ── LEFT COLUMN ─────────────────────────────────────────────── -->
+        <!-- ── LEFT COLUMN (2/5) ──────────────────────────────────────── -->
         <div class="col-left">
 
           <!-- Ingresos hoy -->
@@ -314,7 +313,7 @@ onMounted(async () => {
                 </div>
               </dl>
               <div v-if="pendingOrderCount > 0" class="pending-alert" role="status" aria-live="polite">
-                <span class="pending-alert__dot animate-pulse" aria-hidden="true"></span>
+                <span class="pending-alert__dot" aria-hidden="true"></span>
                 <p class="pending-alert__text">
                   {{ t('dashboard-home.chatbot.pendingOrders_other', { count: pendingOrderCount }) }}
                 </p>
@@ -328,128 +327,140 @@ onMounted(async () => {
           </section>
         </div>
 
-        <!-- ── CENTER COLUMN (pedidos) ────────────────────────────────── -->
-        <section class="card" aria-labelledby="orders-heading">
-          <div class="section-header">
-            <h2 id="orders-heading" class="card__section-title">{{ t('dashboard-home.orders.title') }}</h2>
-            <RouterLink to="/chatbot/orders" class="view-all-link">{{ t('dashboard-home.orders.viewAll') }}</RouterLink>
-          </div>
+        <!-- ── RIGHT COLUMN (3/5) ─────────────────────────────────────── -->
+        <div class="col-right">
 
-          <div v-if="recentOrders.length === 0" class="empty-state" role="status">
-            <svg class="empty-state__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <p class="empty-state__title">{{ t('dashboard-home.orders.empty') }}</p>
-            <p class="empty-state__sub">{{ t('dashboard-home.orders.emptySub') }}</p>
-          </div>
-
-          <template v-else>
-            <table class="orders-table" aria-label="Pedidos recientes">
-              <thead>
-                <tr class="orders-table__head">
-                  <th scope="col">#</th>
-                  <th scope="col">{{ t('dashboard-home.orders.colClient') }}</th>
-                  <th scope="col">{{ t('dashboard-home.orders.colStatus') }}</th>
-                  <th scope="col" class="text-right">{{ t('dashboard-home.orders.colTotal') }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="order in recentOrders" :key="order.id" class="orders-table__row">
-                  <td class="orders-table__num">{{ order.orderNumber }}</td>
-                  <td class="orders-table__client">
-                    <p class="orders-table__address">{{ order.deliveryAddress || t('dashboard-home.orders.clientFallback') }}</p>
-                    <p class="orders-table__source">Chatbot</p>
-                  </td>
-                  <td>
-                    <span :class="['badge', orderStatusClass(order.status, order.hasReceipt)]">
-                      {{ orderStatusLabel(order.status, order.hasReceipt) }}
-                    </span>
-                  </td>
-                  <td class="orders-table__total">S/{{ order.total.toFixed(2) }}</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="orders-mini">
-              <div class="orders-mini__card orders-mini__card--green">
-                <p class="orders-mini__count">{{ confirmedOrderCount }}</p>
-                <p class="orders-mini__label">{{ t('dashboard-home.orders.approved') }}</p>
-              </div>
-              <div class="orders-mini__card orders-mini__card--orange">
-                <p class="orders-mini__count">{{ pendingOrderCount }}</p>
-                <p class="orders-mini__label">{{ t('dashboard-home.orders.pending') }}</p>
-              </div>
-            </div>
-          </template>
-        </section>
-
-        <!-- ── RIGHT COLUMN (inventario) ──────────────────────────────── -->
-        <section class="card inventory-col" aria-labelledby="inventory-heading">
-          <div class="section-header">
-            <h2 id="inventory-heading" class="card__section-title">{{ t('dashboard-home.inventory.title') }}</h2>
-            <RouterLink to="/sales" class="view-all-link">{{ t('dashboard-home.inventory.viewAll') }}</RouterLink>
-          </div>
-
-          <div v-if="alertsLoading" class="inv-skeleton" aria-busy="true">
-            <div v-for="i in 4" :key="i" class="inv-skeleton__row animate-pulse"></div>
-          </div>
-
-          <p v-else-if="inventoryDisplay.length === 0" class="inv-empty">{{ t('dashboard-home.inventory.empty') }}</p>
-
-          <ul v-else class="inv-list" role="list">
-            <li v-for="item in inventoryDisplay" :key="item.name" class="inv-item">
-              <span :class="['dot', stockDotColor(item)]" aria-hidden="true"></span>
-              <div class="inv-item__info">
-                <div class="inv-item__row">
-                  <span class="inv-item__name">{{ item.name }}</span>
-                  <span class="inv-item__qty">{{ item.quantity }} {{ item.unit }}</span>
-                </div>
-                <div class="inv-bar" role="progressbar" :aria-valuenow="item.stockLevel" aria-valuemin="0" aria-valuemax="100">
-                  <div :class="['inv-bar__fill', stockBarColor(item)]" :style="{ width: item.stockLevel + '%' }"></div>
-                </div>
-              </div>
-            </li>
-          </ul>
-
-          <!-- Alerts footer -->
-          <template v-if="!alertsLoading">
-            <div v-if="!hasAlerts" class="inv-ok" role="status">
-              <svg class="inv-ok__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+          <!-- Pedidos recientes -->
+          <section class="card" aria-labelledby="orders-heading">
+            <div class="section-header">
               <div>
-                <p class="inv-ok__title">{{ t('dashboard-home.alerts.empty') }}</p>
-                <p class="inv-ok__sub">{{ t('dashboard-home.alerts.emptySub') }}</p>
+                <h2 id="orders-heading" class="card__section-title">{{ t('dashboard-home.orders.title') }}</h2>
+                <p v-if="recentOrders.length > 0" class="section-date">{{ todayLabel }}</p>
               </div>
+              <RouterLink to="/chatbot/orders" class="view-all-link">{{ t('dashboard-home.orders.viewAll') }} →</RouterLink>
             </div>
 
-            <div v-else class="inv-alerts">
-              <div
-                v-for="(alert, idx) in stockAlerts.slice(0, 3)"
-                :key="idx"
-                :class="['inv-alert-card', alertCardClass(alert)]"
-              >
-                <span class="inv-alert-card__icon" aria-hidden="true">
-                  <svg v-if="alert.alertType === 'expired' || alert.alertType === 'out_of_stock'" class="icon-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                  <svg v-else class="icon-yellow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </span>
-                <div>
-                  <p class="inv-alert-card__name">{{ alert.message?.split(' ')[0] ?? 'Producto' }}</p>
-                  <p :class="['inv-alert-card__sub', alertTextClass(alert)]">{{ alertLabel(alert) }}</p>
+            <div v-if="recentOrders.length === 0" class="empty-state" role="status">
+              <svg class="empty-state__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <p class="empty-state__title">{{ t('dashboard-home.orders.empty') }}</p>
+              <p class="empty-state__sub">{{ t('dashboard-home.orders.emptySub') }}</p>
+            </div>
+
+            <template v-else>
+              <div class="orders-scroll">
+                <table class="orders-table" aria-label="Pedidos recientes">
+                  <thead>
+                    <tr class="orders-table__head">
+                      <th scope="col">#</th>
+                      <th scope="col">{{ t('dashboard-home.orders.colClient') }}</th>
+                      <th scope="col">{{ t('dashboard-home.orders.colTime') }}</th>
+                      <th scope="col">{{ t('dashboard-home.orders.colStatus') }}</th>
+                      <th scope="col" class="text-right">{{ t('dashboard-home.orders.colTotal') }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="order in recentOrders" :key="order.id" class="orders-table__row">
+                      <td class="orders-table__num">{{ order.orderNumber }}</td>
+                      <td class="orders-table__client">
+                        <p class="orders-table__name">{{ clientName(order.conversationId) }}</p>
+                        <p class="orders-table__source">Chatbot</p>
+                      </td>
+                      <td class="orders-table__time">{{ orderTime(order.createdAt) }}</td>
+                      <td>
+                        <span :class="['badge', orderStatusClass(order.status, order.hasReceipt)]">
+                          {{ orderStatusLabel(order.status, order.hasReceipt) }}
+                        </span>
+                      </td>
+                      <td class="orders-table__total">S/{{ order.total.toFixed(2) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="orders-mini">
+                <div class="orders-mini__card orders-mini__card--orange">
+                  <p class="orders-mini__count">{{ pendingOrderCount }}</p>
+                  <p class="orders-mini__label">{{ t('dashboard-home.orders.pending') }}</p>
+                  <p class="orders-mini__detail">{{ t('dashboard-home.orders.pendingDetail') }}</p>
+                </div>
+                <div class="orders-mini__card orders-mini__card--green">
+                  <p class="orders-mini__count">{{ confirmedOrderCount }}</p>
+                  <p class="orders-mini__label">{{ t('dashboard-home.orders.approved') }}</p>
+                  <p class="orders-mini__detail">{{ t('dashboard-home.orders.approvedDetail') }}</p>
                 </div>
               </div>
-              <RouterLink v-if="stockAlerts.length > 3" to="/sales" class="view-all-link view-all-link--center">
-                {{ t('dashboard-home.alerts.viewMore', { count: stockAlerts.length - 3 }) }}
-              </RouterLink>
-            </div>
-          </template>
-        </section>
+            </template>
+          </section>
 
+          <!-- Estado del inventario -->
+          <section class="card inventory-section" aria-labelledby="inventory-heading">
+            <div class="section-header">
+              <h2 id="inventory-heading" class="card__section-title">{{ t('dashboard-home.inventory.title') }}</h2>
+              <RouterLink to="/inventory-products" class="view-all-link">{{ t('dashboard-home.inventory.viewAll') }}</RouterLink>
+            </div>
+
+            <div v-if="alertsLoading" class="inv-skeleton" aria-busy="true">
+              <div v-for="i in 4" :key="i" class="inv-skeleton__row"></div>
+            </div>
+
+            <p v-else-if="inventoryDisplay.length === 0" class="inv-empty">{{ t('dashboard-home.inventory.empty') }}</p>
+
+            <ul v-else class="inv-list" role="list">
+              <li v-for="item in inventoryDisplay" :key="item.name" class="inv-item">
+                <span :class="['dot', stockDotColor(item)]" aria-hidden="true"></span>
+                <div class="inv-item__info">
+                  <div class="inv-item__row">
+                    <span class="inv-item__name">{{ item.name }}</span>
+                    <span class="inv-item__qty">{{ item.quantity }} {{ item.unit }}</span>
+                  </div>
+                  <div class="inv-bar" role="progressbar" :aria-valuenow="item.stockLevel" aria-valuemin="0" aria-valuemax="100">
+                    <div :class="['inv-bar__fill', stockBarColor(item)]" :style="{ width: item.stockLevel + '%' }"></div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+            <template v-if="!alertsLoading">
+              <div v-if="!hasAlerts" class="inv-ok" role="status">
+                <svg class="inv-ok__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <p class="inv-ok__title">{{ t('dashboard-home.alerts.empty') }}</p>
+                  <p class="inv-ok__sub">{{ t('dashboard-home.alerts.emptySub') }}</p>
+                </div>
+              </div>
+
+              <div v-else class="inv-alerts">
+                <div
+                  v-for="(alert, idx) in stockAlerts.slice(0, 3)"
+                  :key="idx"
+                  :class="['inv-alert-card', alertCardClass(alert)]"
+                >
+                  <span class="inv-alert-card__icon" aria-hidden="true">
+                    <svg v-if="alert.alertType === 'expired' || alert.alertType === 'out_of_stock'" class="icon-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    <svg v-else class="icon-yellow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </span>
+                  <div class="inv-alert-card__body">
+                    <p class="inv-alert-card__name">{{ alert.message?.split(' ')[0] ?? 'Producto' }}</p>
+                    <p :class="['inv-alert-card__sub', alertTextClass(alert)]">{{ alertLabel(alert) }}</p>
+                  </div>
+                </div>
+                <RouterLink v-if="stockAlerts.length > 3" to="/inventory-lots" class="view-all-link view-all-link--center">
+                  {{ t('dashboard-home.alerts.viewMore', { count: stockAlerts.length - 3 }) }}
+                </RouterLink>
+              </div>
+            </template>
+          </section>
+
+        </div><!-- /col-right -->
       </div><!-- /main-grid -->
     </div><!-- /home-inner -->
   </div><!-- /home-page -->
@@ -457,7 +468,23 @@ onMounted(async () => {
 
 <style scoped>
 .home-page   { height: 100%; overflow-y: auto; background: #f9fafb; }
-.home-inner  { width: 100%; display: flex; flex-direction: column; gap: 1.5rem; padding: clamp(1rem, 2.5vw, 2rem); }
+.home-inner  { width: 100%; display: flex; flex-direction: column; gap: 1.25rem; padding: clamp(1rem, 2.5vw, 1.5rem); }
+
+/* ── Page header ─────────────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.page-title  { font-size: 1.25rem; font-weight: 700; color: #111827; }
+.pending-badge {
+  border-radius: 9999px;
+  background: #fff7ed;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #ea580c;
+}
 
 /* ── Banner ─────────────────────────────────────────────────────── */
 .banner {
@@ -465,7 +492,7 @@ onMounted(async () => {
   overflow: hidden;
   border-radius: 1rem;
   background: linear-gradient(to right, #f97316, #fb923c);
-  padding: 1.5rem 2rem;
+  padding: 1.25rem 2rem;
   color: #fff;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.07);
 }
@@ -478,34 +505,19 @@ onMounted(async () => {
   gap: 1.5rem;
   flex-wrap: wrap;
 }
-.banner__eyebrow { font-size: 0.75rem; font-weight: 500; opacity: 0.75; }
+.banner__eyebrow { font-size: 0.75rem; font-weight: 500; opacity: 0.80; }
 .banner__title   { margin-top: 0.125rem; font-size: 1.25rem; font-weight: 700; }
 .banner__date    { margin-top: 0.125rem; font-size: 0.75rem; opacity: 0.75; }
-.banner__stats   { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.banner__stats   { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
 .stat { text-align: center; }
-.stat__value     { font-size: 1.5rem; font-weight: 700; }
-.stat__value--alert { color: #fef08a; }
-.stat__label     { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.8; }
-.stat-divider    { width: 1px; height: 2.5rem; background: rgb(255 255 255 / 0.3); }
-.banner__circle  { position: absolute; border-radius: 9999px; background: rgb(255 255 255 / 0.1); }
-.banner__circle--1 { width: 10rem; height: 10rem; top: -2rem; right: -2rem; }
-.banner__circle--2 { width: 8rem;  height: 8rem;  bottom: -2.5rem; right: -1rem; }
+.stat__value         { font-size: 1.5rem; font-weight: 700; }
+.stat__value--alert  { color: #fef08a; }
+.stat__label         { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.8; }
+.stat-divider        { width: 1px; height: 2rem; background: rgb(255 255 255 / 0.3); }
+.banner__circle      { position: absolute; border-radius: 9999px; background: rgb(255 255 255 / 0.1); }
+.banner__circle--1   { width: 10rem; height: 10rem; top: -2rem; right: -2rem; }
+.banner__circle--2   { width: 8rem;  height: 8rem;  bottom: -2.5rem; right: -1rem; }
 
-/* ── Alert banner ────────────────────────────────────────────────── */
-.alert-banner {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  border-radius: 0.75rem;
-  border: 1px solid #fde68a;
-  background: #fefce8;
-  padding: 0.75rem 1.25rem;
-}
-.alert-banner__icon  { width: 1.25rem; height: 1.25rem; flex-shrink: 0; color: #eab308; }
-.alert-banner__title { font-size: 0.875rem; font-weight: 600; color: #854d0e; }
-.alert-banner__sub   { font-size: 0.75rem; color: #a16207; }
-.alert-banner__link  { margin-left: auto; flex-shrink: 0; font-size: 0.75rem; font-weight: 600; color: #a16207; text-decoration: none; }
-.alert-banner__link:hover { text-decoration: underline; }
 
 /* ── Quick links ─────────────────────────────────────────────────── */
 .ql-hint { margin-bottom: 0.75rem; font-size: 0.75rem; color: #9ca3af; }
@@ -532,27 +544,29 @@ onMounted(async () => {
   transition: box-shadow 0.2s;
 }
 .ql-card:hover { box-shadow: 0 4px 6px rgb(0 0 0 / 0.07); }
-.ql-badge { position: absolute; top: 0.5rem; right: 0.5rem; width: 0.625rem; height: 0.625rem; border-radius: 9999px; background: #ef4444; }
-.ql-icon { display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; background: #fff7ed; }
-.ql-svg  { width: 1.25rem; height: 1.25rem; color: #ea580c; }
-.ql-label { font-size: 0.75rem; font-weight: 600; color: #1f2937; }
-.ql-sub   { font-size: 0.625rem; color: #9ca3af; }
+.ql-badge  { position: absolute; top: 0.5rem; right: 0.5rem; width: 0.625rem; height: 0.625rem; border-radius: 9999px; background: #ef4444; }
+.ql-icon   { display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; background: #fff7ed; }
+.ql-svg    { width: 1.25rem; height: 1.25rem; color: #ea580c; }
+.ql-label  { font-size: 0.75rem; font-weight: 600; color: #1f2937; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; }
+.ql-sub    { font-size: 0.625rem; color: #9ca3af; }
 
-/* ── Main grid ────────────────────────────────────────────────────── */
+/* ── Main grid (2/5 + 3/5) ───────────────────────────────────────── */
 .main-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1.5rem;
+  grid-template-columns: 2fr 3fr;
+  gap: 1.25rem;
   align-items: start;
 }
-.col-left { display: flex; flex-direction: column; gap: 1rem; }
+.col-left  { display: flex; flex-direction: column; gap: 1rem; }
+.col-right { display: flex; flex-direction: column; gap: 1rem; }
 
 /* ── Card ─────────────────────────────────────────────────────────── */
-.card { border-radius: 1rem; background: #fff; padding: 1.25rem; box-shadow: 0 1px 3px rgb(0 0 0 / 0.07); }
-.card__eyebrow { font-size: 0.75rem; color: #9ca3af; }
+.card               { border-radius: 1rem; background: #fff; padding: 1.25rem; box-shadow: 0 1px 3px rgb(0 0 0 / 0.07); }
+.card__eyebrow      { font-size: 0.75rem; color: #9ca3af; }
 .card__section-title { font-size: 0.875rem; font-weight: 600; color: #374151; }
-.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-.view-all-link { font-size: 0.75rem; color: #f97316; text-decoration: none; }
+.section-header     { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.section-date       { font-size: 0.75rem; color: #9ca3af; margin-top: 0.125rem; }
+.view-all-link      { font-size: 0.75rem; color: #f97316; text-decoration: none; flex-shrink: 0; }
 .view-all-link:hover { text-decoration: underline; }
 .view-all-link--center { display: block; text-align: center; }
 
@@ -574,8 +588,8 @@ onMounted(async () => {
 .go-sales-btn:hover { background: #fff7ed; }
 
 /* ── Chatbot section ──────────────────────────────────────────────── */
-.chatbot-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
-.status-chip    { display: flex; align-items: center; gap: 0.25rem; border-radius: 9999px; padding: 0.125rem 0.625rem; font-size: 0.75rem; font-weight: 600; }
+.chatbot-header  { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+.status-chip     { display: flex; align-items: center; gap: 0.25rem; border-radius: 9999px; padding: 0.125rem 0.625rem; font-size: 0.75rem; font-weight: 600; }
 .status-chip--green { background: #dcfce7; color: #15803d; }
 .status-chip--red   { background: #fee2e2; color: #dc2626; }
 .status-chip__dot   { width: 0.375rem; height: 0.375rem; border-radius: 9999px; }
@@ -599,56 +613,65 @@ onMounted(async () => {
 .connect-btn:hover { background: #ea6c0a; }
 
 /* ── Orders table ─────────────────────────────────────────────────── */
-.orders-table { width: 100%; text-align: left; border-collapse: collapse; }
-.orders-table__head th { padding-bottom: 0.5rem; font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af; border-bottom: 1px solid #f3f4f6; }
+.orders-scroll { overflow-x: auto; margin: 0 -0.25rem; padding: 0 0.25rem; }
+.orders-table  { width: 100%; min-width: 380px; text-align: left; border-collapse: collapse; }
+.orders-table__head th {
+  padding-bottom: 0.5rem; font-size: 0.625rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af;
+  border-bottom: 1px solid #f3f4f6;
+}
 .orders-table__row { border-bottom: 1px solid #f9fafb; transition: background 0.15s; }
 .orders-table__row:hover { background: #f9fafb; }
 .orders-table__num    { padding: 0.625rem 0.5rem 0.625rem 0; font-size: 0.75rem; font-weight: 600; color: #f97316; white-space: nowrap; }
 .orders-table__client { padding: 0.625rem 0.5rem; }
-.orders-table__address { max-width: 5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.75rem; font-weight: 500; color: #1f2937; }
-.orders-table__source  { font-size: 0.625rem; color: #9ca3af; }
-.orders-table__total   { padding: 0.625rem 0 0.625rem 0.5rem; text-align: right; font-size: 0.75rem; font-weight: 700; color: #f97316; white-space: nowrap; }
-.badge { border-radius: 9999px; padding: 0.125rem 0.5rem; font-size: 0.625rem; font-weight: 600; }
+.orders-table__name   { max-width: 6rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.75rem; font-weight: 500; color: #1f2937; }
+.orders-table__source { font-size: 0.625rem; color: #9ca3af; }
+.orders-table__time   { padding: 0.625rem 0.5rem; font-size: 0.75rem; color: #6b7280; white-space: nowrap; }
+.orders-table__total  { padding: 0.625rem 0 0.625rem 0.5rem; text-align: right; font-size: 0.75rem; font-weight: 700; color: #f97316; white-space: nowrap; }
+.badge  { border-radius: 9999px; padding: 0.125rem 0.5rem; font-size: 0.625rem; font-weight: 600; }
 .badge--green  { background: #dcfce7; color: #15803d; }
 .badge--red    { background: #fee2e2; color: #dc2626; }
 .badge--orange { background: #fff7ed; color: #ea580c; }
 .badge--gray   { background: #f3f4f6; color: #6b7280; }
-.orders-mini { margin-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; border-top: 1px solid #f3f4f6; padding-top: 1rem; }
-.orders-mini__card { border-radius: 0.5rem; padding: 0.5rem 0.75rem; text-align: center; }
-.orders-mini__card--green  { background: #f0fdf4; }
-.orders-mini__card--orange { background: #fff7ed; }
-.orders-mini__count { font-size: 1rem; font-weight: 700; }
-.orders-mini__card--green  .orders-mini__count { color: #16a34a; }
-.orders-mini__card--orange .orders-mini__count { color: #ea580c; }
-.orders-mini__label { font-size: 0.625rem; }
-.orders-mini__card--green  .orders-mini__label { color: #22c55e; }
-.orders-mini__card--orange .orders-mini__label { color: #fb923c; }
 
-/* ── Inventory column ─────────────────────────────────────────────── */
-.inventory-col { display: flex; flex-direction: column; gap: 1rem; }
+.orders-mini { margin-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; border-top: 1px solid #f3f4f6; padding-top: 1rem; }
+.orders-mini__card { border-radius: 0.5rem; padding: 0.625rem 0.75rem; }
+.orders-mini__card--orange { background: #fff7ed; }
+.orders-mini__card--green  { background: #f0fdf4; }
+.orders-mini__count  { font-size: 1rem; font-weight: 700; }
+.orders-mini__card--orange .orders-mini__count { color: #ea580c; }
+.orders-mini__card--green  .orders-mini__count { color: #16a34a; }
+.orders-mini__label  { font-size: 0.625rem; margin-top: 0.125rem; }
+.orders-mini__card--orange .orders-mini__label { color: #fb923c; }
+.orders-mini__card--green  .orders-mini__label { color: #22c55e; }
+.orders-mini__detail { font-size: 0.625rem; color: #9ca3af; }
+
+/* ── Inventory section ────────────────────────────────────────────── */
+.inventory-section { display: flex; flex-direction: column; gap: 1rem; }
 .inv-skeleton     { display: flex; flex-direction: column; gap: 0.75rem; }
-.inv-skeleton__row { height: 2rem; border-radius: 0.5rem; background: #f3f4f6; }
-.inv-empty        { padding: 1.5rem 0; text-align: center; font-size: 0.75rem; color: #9ca3af; }
-.inv-list         { display: flex; flex-direction: column; gap: 0.75rem; list-style: none; padding: 0; margin: 0; }
-.inv-item         { display: flex; align-items: center; gap: 0.75rem; }
-.dot              { width: 0.5rem; height: 0.5rem; border-radius: 9999px; flex-shrink: 0; }
+.inv-skeleton__row { height: 2rem; border-radius: 0.5rem; background: #f3f4f6; animation: pulse 1.5s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+.inv-empty  { padding: 1.5rem 0; text-align: center; font-size: 0.75rem; color: #9ca3af; }
+.inv-list   { display: flex; flex-direction: column; gap: 0.75rem; list-style: none; padding: 0; margin: 0; }
+.inv-item   { display: flex; align-items: center; gap: 0.75rem; }
+.dot        { width: 0.5rem; height: 0.5rem; border-radius: 9999px; flex-shrink: 0; }
 .dot--green  { background: #4ade80; }
 .dot--yellow { background: #facc15; }
 .dot--red    { background: #f87171; }
-.inv-item__info   { flex: 1; min-width: 0; }
-.inv-item__row    { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; }
-.inv-item__name   { font-size: 0.75rem; font-weight: 500; color: #374151; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.inv-item__qty    { font-size: 0.75rem; color: #6b7280; margin-left: 0.5rem; flex-shrink: 0; }
-.inv-bar          { height: 0.375rem; width: 100%; border-radius: 9999px; background: #f3f4f6; }
-.inv-bar__fill    { height: 0.375rem; border-radius: 9999px; transition: width 0.3s; }
+.inv-item__info { flex: 1; min-width: 0; }
+.inv-item__row  { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; }
+.inv-item__name { font-size: 0.75rem; font-weight: 500; color: #374151; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.inv-item__qty  { font-size: 0.75rem; color: #6b7280; margin-left: 0.5rem; flex-shrink: 0; }
+.inv-bar        { height: 0.375rem; width: 100%; border-radius: 9999px; background: #f3f4f6; }
+.inv-bar__fill  { height: 0.375rem; border-radius: 9999px; transition: width 0.3s; }
 .bar--green  { background: #4ade80; }
 .bar--yellow { background: #facc15; }
 .bar--red    { background: #f87171; }
-.inv-ok { display: flex; align-items: center; gap: 0.75rem; border-radius: 0.75rem; border: 1px solid #bbf7d0; background: #f0fdf4; padding: 0.75rem 1rem; margin-top: auto; }
+.inv-ok { display: flex; align-items: center; gap: 0.75rem; border-radius: 0.75rem; border: 1px solid #bbf7d0; background: #f0fdf4; padding: 0.75rem 1rem; }
 .inv-ok__icon  { width: 1.25rem; height: 1.25rem; flex-shrink: 0; color: #22c55e; }
 .inv-ok__title { font-size: 0.75rem; font-weight: 600; color: #15803d; }
 .inv-ok__sub   { font-size: 0.625rem; color: #16a34a; }
-.inv-alerts    { display: flex; flex-direction: column; gap: 0.5rem; margin-top: auto; }
+.inv-alerts    { display: flex; flex-direction: column; gap: 0.5rem; }
 .inv-alert-card { display: flex; align-items: flex-start; gap: 0.5rem; border-radius: 0.5rem; border: 1px solid; padding: 0.5rem 0.75rem; }
 .inv-alert-card--red    { border-color: #fecaca; background: #fef2f2; }
 .inv-alert-card--yellow { border-color: #fde68a; background: #fefce8; }
@@ -656,6 +679,7 @@ onMounted(async () => {
 .inv-alert-card__icon { margin-top: 0.125rem; flex-shrink: 0; }
 .icon-red    { width: 0.875rem; height: 0.875rem; color: #ef4444; }
 .icon-yellow { width: 0.875rem; height: 0.875rem; color: #eab308; }
+.inv-alert-card__body { min-width: 0; }
 .inv-alert-card__name { font-size: 0.75rem; font-weight: 600; color: #1f2937; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .inv-alert-card__sub  { font-size: 0.625rem; }
 .text-red    { color: #dc2626; }
@@ -663,66 +687,28 @@ onMounted(async () => {
 .text-orange { color: #ea580c; }
 
 /* ── Empty state ──────────────────────────────────────────────────── */
-.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem 0; text-align: center; }
+.empty-state        { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 0; text-align: center; }
 .empty-state__icon  { width: 2.5rem; height: 2.5rem; color: #e5e7eb; }
 .empty-state__title { margin-top: 0.75rem; font-size: 0.875rem; font-weight: 500; color: #9ca3af; }
 .empty-state__sub   { margin-top: 0.25rem; font-size: 0.75rem; color: #9ca3af; }
 
 /* ── Responsive ───────────────────────────────────────────────────── */
-@media (min-width: 1440px) {
-  .main-grid        { grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
-  .banner__title    { font-size: clamp(1.25rem, 1.8vw, 1.75rem); }
-  .cash-total       { font-size: clamp(1.875rem, 2.5vw, 2.5rem); }
-  .stat__value      { font-size: clamp(1.5rem, 2vw, 2rem); }
-  .ql-grid          { grid-template-columns: repeat(5, 1fr); gap: 1rem; }
-  .ql-card          { padding: 1.25rem 1rem; }
-  .ql-icon          { width: 3rem; height: 3rem; }
-  .ql-label         { font-size: 0.875rem; }
-}
-
 @media (max-width: 1024px) {
-  /* Grid: columna izquierda + pedidos en fila, inventario abajo full */
-  .main-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .inventory-col {
-    grid-column: 1 / -1; /* inventario ocupa toda la fila */
-  }
-  .ql-grid { grid-template-columns: repeat(3, 1fr); }
+  .main-grid { grid-template-columns: 1fr 1fr; }
 }
-
 @media (max-width: 768px) {
   .home-inner { padding: 1rem; gap: 1rem; }
   .banner { padding: 1.25rem 1.5rem; }
   .banner__content { flex-direction: column; align-items: flex-start; gap: 1rem; }
   .banner__stats { width: 100%; justify-content: space-between; }
-  /* Alert banner apilado */
-  .alert-banner { flex-wrap: wrap; gap: 0.5rem; }
-  .alert-banner__link { margin-left: 0; }
-}
 
+}
 @media (max-width: 640px) {
   .home-inner { padding: 0.75rem; }
   .main-grid { grid-template-columns: 1fr; }
-  .inventory-col { grid-column: auto; }
-  .ql-grid { grid-template-columns: repeat(2, 1fr); }
+  .ql-grid { grid-template-columns: repeat(3, 1fr); }
   .banner__stats { gap: 0.75rem; }
   .stat-divider  { display: none; }
   .stat__value   { font-size: 1.25rem; }
-  /* Orders table → cards en mobile */
-  .orders-table thead { display: none; }
-  .orders-table, .orders-table tbody, .orders-table tr, .orders-table td {
-    display: block; width: 100%;
-  }
-  .orders-table__row {
-    border: 1px solid #f3f4f6; border-radius: 0.5rem;
-    margin-bottom: 0.5rem; padding: 0.5rem 0.75rem;
-  }
-  .orders-table__num   { font-size: 0.625rem; padding: 0; }
-  .orders-table__total { text-align: left; padding: 0; }
-  .orders-table__client { padding: 0.25rem 0; }
-  /* Banner compacto */
-  .banner { padding: 1rem; }
-  .banner__title { font-size: 1rem; }
 }
 </style>
