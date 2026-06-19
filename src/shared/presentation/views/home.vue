@@ -237,18 +237,6 @@ onMounted(async () => {
         <div class="banner__circle banner__circle--2" aria-hidden="true"></div>
       </header>
 
-      <!-- ══ ALERT BANNER ══════════════════════════════════════════════ -->
-      <div v-if="!alertsLoading && hasAlerts" class="alert-banner" role="alert" aria-live="polite">
-        <svg class="alert-banner__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-        </svg>
-        <div>
-          <p class="alert-banner__title">{{ t('dashboard-home.alertBannerTitle') }}</p>
-          <p class="alert-banner__sub">{{ t('dashboard-home.alertBanner', { count: stockAlerts.length }) }}</p>
-        </div>
-        <RouterLink to="/inventory-lots" class="alert-banner__link">{{ t('dashboard-home.alertBannerLink') }}</RouterLink>
-      </div>
 
       <!-- ══ QUICK LINKS ═══════════════════════════════════════════════ -->
       <nav :aria-label="t('dashboard-home.quickLinksLabel')">
@@ -545,21 +533,6 @@ onMounted(async () => {
 .banner__circle--1   { width: 10rem; height: 10rem; top: -2rem; right: -2rem; }
 .banner__circle--2   { width: 8rem;  height: 8rem;  bottom: -2.5rem; right: -1rem; }
 
-/* ── Alert banner ────────────────────────────────────────────────── */
-.alert-banner {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  border-radius: 0.75rem;
-  border: 1px solid #fde68a;
-  background: #fefce8;
-  padding: 0.75rem 1.25rem;
-}
-.alert-banner__icon  { width: 1.25rem; height: 1.25rem; flex-shrink: 0; color: #eab308; }
-.alert-banner__title { font-size: 0.875rem; font-weight: 600; color: #854d0e; }
-.alert-banner__sub   { font-size: 0.75rem; color: #a16207; }
-.alert-banner__link  { margin-left: auto; flex-shrink: 0; font-size: 0.75rem; font-weight: 600; color: #a16207; text-decoration: none; }
-.alert-banner__link:hover { text-decoration: underline; }
 
 /* ── Quick links ─────────────────────────────────────────────────── */
 .ql-hint { margin-bottom: 0.75rem; font-size: 0.75rem; color: #9ca3af; }
@@ -743,8 +716,7 @@ onMounted(async () => {
   .banner { padding: 1.25rem 1.5rem; }
   .banner__content { flex-direction: column; align-items: flex-start; gap: 1rem; }
   .banner__stats { width: 100%; justify-content: space-between; }
-  .alert-banner { flex-wrap: wrap; gap: 0.5rem; }
-  .alert-banner__link { margin-left: 0; }
+
 }
 @media (max-width: 640px) {
   .home-inner { padding: 0.75rem; }
