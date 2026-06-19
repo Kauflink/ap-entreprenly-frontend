@@ -375,6 +375,7 @@
         }
     },
     "dashboard-home": {
+        "title":       "Dashboard",
         "welcomeBack": "Panel de control",
         "welcome":     "¡Hola, bienvenido!",
         "quickLinksLabel": "Accesos rápidos",
@@ -413,11 +414,15 @@
             "empty":          "Sin pedidos aún",
             "emptySub":       "Los pedidos del chatbot aparecerán aquí.",
             "colClient":      "Cliente",
+            "colTime":        "Hora",
             "colStatus":      "Estado",
             "colTotal":       "Total",
             "clientFallback": "—",
+            "pendingBadge":   "pedidos por validar",
             "approved":       "Aprobados",
+            "approvedDetail": "Confirmados hoy",
             "pending":        "Por validar",
+            "pendingDetail":  "Esperando comprobante",
             "status": {
                 "confirmed":       "Confirmado",
                 "blocked":         "Bloqueado",
