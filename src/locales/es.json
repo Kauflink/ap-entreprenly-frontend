@@ -741,8 +741,8 @@
             "send": "Enviar mensaje"
         },
         "payment": {
-            “pendingBar”: “Pago pendiente — Pedido #{orderNumber}”,
-            “pendingBarDetail”: “Método: {paymentMethod} · S/ {total}”,
+            "pendingBar": "Pago pendiente — Pedido #{orderNumber}",
+            "pendingBarDetail": "Método: {paymentMethod} · S/ {total}",
             "approve": "Aprobar",
             "reject": "Rechazar",
             "rejectTitle": "Motivo del rechazo",
@@ -787,7 +787,7 @@
                 "paymentSent":      "Instrucciones de pago enviadas al cliente",
                 "receiptReceived":  "Comprobante recibido",
                 "receiptRejected":  "Comprobante rechazado {count} vez(ces)",
-                “paymentApproved”:  “Pago aprobado ✓”,
+                "paymentApproved":  "Pago aprobado ✓",
                 "blocked":          "Pedido bloqueado por múltiples rechazos",
                 "cancelled":        "Pedido cancelado",
                 "pendingValidation":"Comprobante pendiente de validación...",
