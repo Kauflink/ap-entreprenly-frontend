@@ -74,6 +74,29 @@ const useChatbotStore = defineStore('chatbot', () => {
 
   // ── Conversation selection — loads history instantly, no animation ──────────
 
+  let _pollInterval = null
+
+  function _stopPoll() {
+    if (_pollInterval) { clearInterval(_pollInterval); _pollInterval = null }
+  }
+
+  function _startPoll(id) {
+    _stopPoll()
+    _pollInterval = setInterval(() => {
+      if (selectedConversationId.value !== id) { _stopPoll(); return }
+      api.chatMessages.getAll().then(res => {
+        if (selectedConversationId.value !== id) return
+        const fresh = ChatMessageAssembler.toEntitiesFromResponse(res).filter(m => m.conversationId === id)
+        if (fresh.length !== messages.value.length) messages.value = fresh
+      })
+      api.chatOrders.getAll().then(res => {
+        if (selectedConversationId.value !== id) return
+        orders.value = ChatOrderAssembler.toEntitiesFromResponse(res)
+      })
+      loadConversations()
+    }, 4000)
+  }
+
   function selectConversation(id) {
     selectedConversationId.value = id
     messages.value               = []
@@ -91,7 +114,11 @@ const useChatbotStore = defineStore('chatbot', () => {
       if (selectedConversationId.value !== id) return
       orders.value = ChatOrderAssembler.toEntitiesFromResponse(res)
     })
+
+    _startPoll(id)
   }
+
+  function stopConversationPoll() { _stopPoll() }
 
   // ── Typewriter for bot replies (approval / rejection only) ────────────────
 
@@ -291,7 +318,7 @@ const useChatbotStore = defineStore('chatbot', () => {
     messages, isClientTyping, botInputText, liveAnimation, orders, inventoryProducts,
     selectedConversation, pendingOrder, isConnected,
     loadSession, loadConversations, loadOrders, loadInventoryProducts,
-    selectConversation, sendMessage, simulateScan, simulateDisconnect,
+    selectConversation, stopConversationPoll, sendMessage, simulateScan, simulateDisconnect,
     approveOrder, rejectOrder
   }
 })

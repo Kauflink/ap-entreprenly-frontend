@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, nextTick, onMounted } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import useChatbotStore from '../../application/chatbot.store.js'
@@ -79,6 +79,8 @@ onMounted(() => {
   store.loadConversations()
   store.loadOrders()
 })
+
+onUnmounted(() => store.stopConversationPoll())
 
 function onConversationSelected(id) {
   store.selectConversation(id)
