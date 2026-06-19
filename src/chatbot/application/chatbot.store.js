@@ -84,6 +84,11 @@ const useChatbotStore = defineStore('chatbot', () => {
       const all = ChatMessageAssembler.toEntitiesFromResponse(res)
       messages.value = all.filter(m => m.conversationId === id)
     })
+
+    api.chatOrders.getAll().then(res => {
+      if (selectedConversationId.value !== id) return
+      orders.value = ChatOrderAssembler.toEntitiesFromResponse(res)
+    })
   }
 
   // ── Typewriter for bot replies (approval / rejection only) ────────────────
