@@ -94,7 +94,7 @@ const useChatbotStore = defineStore('chatbot', () => {
         orders.value = ChatOrderAssembler.toEntitiesFromResponse(res)
       })
       loadConversations()
-    }, 4000)
+    }, 2000)
   }
 
   function selectConversation(id) {
