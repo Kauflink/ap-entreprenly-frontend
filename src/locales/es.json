@@ -787,7 +787,7 @@
                 "paymentSent":      "Instrucciones de pago enviadas al cliente",
                 "receiptReceived":  "Comprobante recibido",
                 "receiptRejected":  "Comprobante rechazado {count} vez(ces)",
-                "paymentApproved":  "Pago aprobado âœ“",
+                “paymentApproved”:  “Pago aprobado ✓”,
                 "blocked":          "Pedido bloqueado por múltiples rechazos",
                 "cancelled":        "Pedido cancelado",
                 "pendingValidation":"Comprobante pendiente de validación...",
