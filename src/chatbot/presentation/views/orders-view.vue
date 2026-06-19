@@ -109,7 +109,7 @@ function reject(id)  { store.rejectOrder(id) }
         <!-- Cabecera del pedido -->
         <div class="order-card__head">
           <div>
-            <h2 class="order-card__title">{{ order.orderNumber }} — {{ clientName(order) }}</h2>
+            <h2 class="order-card__title">#{{ order.id }} — {{ clientName(order) }}</h2>
             <p class="order-card__meta">
               {{ order.paymentMethod }} · S/{{ order.total.toFixed(2) }} · {{ formatDate(order.createdAt) }}
             </p>
