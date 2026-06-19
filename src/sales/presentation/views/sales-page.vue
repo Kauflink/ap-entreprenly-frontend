@@ -7,6 +7,7 @@ import { SaleItem } from '@/sales/domain/model/sale-item-entity.js'
 import SalesCart from './sales-cart.vue'
 import PaymentMethod from './payment-method.vue'
 import CashSummary from './cash-summary.vue'
+import SalesHistory from './sales-history.vue'
 import QuantityModal from '../components/quantity-modal.vue'
 import WeightModal from '../components/weight-modal.vue'
 import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js'
@@ -30,8 +31,8 @@ const subtotal  = computed(() =>
 const itemCount = computed(() => cartItems.value.length)
 
 onMounted(() => {
-    store.fetchProducts()
-    store.loadTodayCashRegister()
+    store.reloadProducts()
+    store.loadSales()
 })
 
 function onProductSelected(product) {
@@ -120,6 +121,7 @@ function onCloseSuccessModal() {
                     @item-deleted="onItemDeleted"
                 />
                 <CashSummary />
+                <SalesHistory />
             </div>
 
             <aside class="right-column">

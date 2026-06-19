@@ -3,37 +3,31 @@ import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import useChatbotStore from '@/chatbot/application/chatbot.store.js'
-import useSubscriptionStore from '@/subscription/application/subscription.store.js'
-import YapeReceipt from '@/chatbot/presentation/components/yape-receipt.vue'
+import useProfileStore from '@/profile/application/profile.store.js'
 
 const { t, locale } = useI18n()
 const store = useChatbotStore()
 const router = useRouter()
-const subscriptionStore = useSubscriptionStore()
+const profileStore = useProfileStore()
 
 // ── Computed ───────────────────────────────────────────────────────────────────
 const allOrders = computed(() =>
   [...store.orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 )
 
-const chatbotAllowed = computed(() => {
-  const status = subscriptionStore.dashboard.currentPlan.status
-  return status === 'active' || status === 'scheduled-cancellation'
-})
+const chatbotAllowed = computed(() => profileStore.profile.plan !== 'Free')
 
 // ── Lifecycle ──────────────────────────────────────────────────────────────────
 onMounted(() => {
-  subscriptionStore.loadDashboard().then(() => {
-    if (!chatbotAllowed.value) {
-      router.replace('/chatbot')
-      return
-    }
+  if (!chatbotAllowed.value) {
+    router.replace('/chatbot')
+    return
+  }
 
-    store.loadSession()
-    store.loadOrders()
-    store.loadConversations()
-    store.loadInventoryProducts()
-  })
+  store.loadSession()
+  store.loadOrders()
+  store.loadConversations()
+  store.loadInventoryProducts()
 })
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -115,7 +109,7 @@ function reject(id)  { store.rejectOrder(id) }
         <!-- Cabecera del pedido -->
         <div class="order-card__head">
           <div>
-            <h2 class="order-card__title">{{ order.orderNumber }} — {{ clientName(order) }}</h2>
+            <h2 class="order-card__title">#{{ order.id }} — {{ clientName(order) }}</h2>
             <p class="order-card__meta">
               {{ order.paymentMethod }} · S/{{ order.total.toFixed(2) }} · {{ formatDate(order.createdAt) }}
             </p>
@@ -128,8 +122,13 @@ function reject(id)  { store.rejectOrder(id) }
         <!-- Cuerpo: comprobante + detalles -->
         <div class="order-card__body">
 
-          <!-- Comprobante Yape simulado -->
-          <YapeReceipt v-if="order.hasReceipt" :order="order" />
+          <!-- Comprobante real -->
+          <img
+            v-if="order.hasReceipt && order.receiptImageUrl"
+            :src="order.receiptImageUrl"
+            class="receipt-img"
+            alt="Comprobante"
+          />
 
           <!-- Info derecha -->
           <div class="order-info">
@@ -260,6 +259,9 @@ function reject(id)  { store.rejectOrder(id) }
 /* ── Card body ───────────────────────────────────────────────────────── */
 .order-card__body { display: flex; gap: 1.5rem; padding: 0 1.5rem 1.5rem; }
 
+
+/* ── Receipt image ───────────────────────────────────────────────────── */
+.receipt-img { width: 14rem; border-radius: 0.75rem; object-fit: contain; flex-shrink: 0; }
 
 /* ── Order info ──────────────────────────────────────────────────────── */
 .order-info { display: flex; flex-direction: column; flex: 1; gap: 1rem; min-width: 0; }

@@ -101,7 +101,11 @@ function submit() {
   <div class="modal-overlay" @click.self="closeModal">
     <div class="modal-card">
 
-      <button type="button" class="btn-close-circle" @click="closeModal">✕</button>
+      <button type="button" class="btn-close-circle" @click="closeModal">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
+        </svg>
+      </button>
 
       <h2 class="modal-title-main">{{ t('lots.form.addTitle') }}</h2>
       <p class="modal-subtitle">{{ t('lots.form.addSubtitle') }}</p>
@@ -174,7 +178,7 @@ function submit() {
               class="grey-input"
               :class="{ 'input-error': form.quantityKg == null && submitted }">
             <template v-if="(isUnit ? form.quantity : form.quantityKg) == null && submitted">
-              <span class="v-x">✕</span>
+              <span class="v-x">&times;</span>
               <span class="v-text">{{ t('form.required') }}</span>
             </template>
           </div>
@@ -190,7 +194,7 @@ function submit() {
               class="grey-input"
               :class="{ 'input-error': !form.entryDate && submitted }">
             <template v-if="!form.entryDate && submitted">
-              <span class="v-x">✕</span>
+              <span class="v-x">&times;</span>
               <span class="v-text">{{ t('form.required') }}</span>
             </template>
           </div>

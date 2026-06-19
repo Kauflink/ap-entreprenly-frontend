@@ -9,14 +9,16 @@ export class SaleAssembler {
             items: sale.items.map(item => ({
                 productId: item.productId,
                 productName: item.productName,
+                // A line is sold either by unit (quantity) or by weight (weightKg); the other is null.
+                quantity: item.isWeighted ? null : item.quantity,
+                weightKg: item.isWeighted ? item.quantity : null,
                 unitPrice: item.unitPrice,
-                quantity: item.quantity,
-                isWeighted: item.isWeighted
+                subtotal: item.subtotal
             })),
             total: sale.total,
             paymentMethod: sale.paymentMethod,
-            status: SaleStatus.COMPLETED,
-            createdAt: new Date().toISOString()
+            status: sale.status ?? SaleStatus.COMPLETED,
+            createdAt: (sale.createdAt instanceof Date ? sale.createdAt : new Date()).toISOString()
         }
     }
 
@@ -24,11 +26,18 @@ export class SaleAssembler {
         return new Sale({
             id: resource.id,
             sellerId: resource.sellerId,
-            items: (resource.items || []).map(item => new SaleItem({ ...item })),
+            items: (resource.items || []).map(item => new SaleItem({
+                productId: item.productId,
+                productName: item.productName,
+                unitPrice: item.unitPrice,
+                quantity: item.weightKg != null ? item.weightKg : item.quantity,
+                isWeighted: item.weightKg != null
+            })),
             total: resource.total,
             paymentMethod: resource.paymentMethod,
             status: resource.status,
-            createdAt: resource.createdAt ? new Date(resource.createdAt) : null
+            createdAt: resource.createdAt ? new Date(resource.createdAt) : null,
+            completedAt: resource.completedAt ? new Date(resource.completedAt) : null
         })
     }
 }

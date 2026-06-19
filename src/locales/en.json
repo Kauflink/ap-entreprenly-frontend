@@ -415,7 +415,7 @@
             "colClient":      "Client",
             "colStatus":      "Status",
             "colTotal":       "Total",
-            "clientFallback": "â€”",
+            "clientFallback": "—",
             "approved":       "Approved",
             "pending":        "Pending review",
             "status": {
@@ -484,7 +484,7 @@
                     "0": "Go to <strong>Products</strong> from the sidebar.",
                     "1": "Click the <strong>Add product</strong> button.",
                     "2": "Fill in the name, category, unit, and price. Fields marked with * are required.",
-                    "3": "Save the product. It will be available for lots and the chatbot. âœ…"
+                    "3": "Save the product. It will be available for lots and the chatbot. ✅"
                 }
             },
             "2": {
@@ -494,7 +494,7 @@
                     "0": "Go to <strong>Chatbot</strong> from the sidebar.",
                     "1": "Scan the QR code with WhatsApp Business (Settings â†’ Linked devices).",
                     "2": "Wait for the connection confirmation. The status will change to <strong>Connected</strong>.",
-                    "3": "The chatbot will start receiving messages automatically. âœ…"
+                    "3": "The chatbot will start receiving messages automatically. ✅"
                 }
             },
             "3": {
@@ -504,7 +504,7 @@
                     "0": "Go to <strong>Orders</strong> from the sidebar.",
                     "1": "Find the order with status <em>Receipt received</em>.",
                     "2": "Review the attached receipt. If correct, click <strong>Approve payment</strong>.",
-                    "3": "If the receipt is invalid, click <strong>Reject</strong>. After three rejections the order will be blocked. âœ…"
+                    "3": "If the receipt is invalid, click <strong>Reject</strong>. After three rejections the order will be blocked. ✅"
                 }
             },
             "4": {
@@ -514,7 +514,7 @@
                     "0": "Go to <strong>Lots</strong> from the sidebar.",
                     "1": "Select the product you want to add a lot to.",
                     "2": "Fill in the quantity, entry date, and expiry date.",
-                    "3": "The system will send alerts when a lot is about to expire or runs out of stock. âœ…"
+                    "3": "The system will send alerts when a lot is about to expire or runs out of stock. ✅"
                 }
             },
             "5": {
@@ -524,7 +524,7 @@
                     "0": "Go to <strong>Sales</strong> from the sidebar.",
                     "1": "Search and add the products to the sale ticket.",
                     "2": "Select the payment method: cash or card/Yape.",
-                    "3": "Click <strong>Finalize sale</strong>. The receipt will be generated automatically. âœ…"
+                    "3": "Click <strong>Finalize sale</strong>. The receipt will be generated automatically. ✅"
                 }
             },
             "6": {
@@ -534,7 +534,7 @@
                     "0": "The customer writes to the linked WhatsApp Business.",
                     "1": "The bot shows the catalog, receives the order, and requests the delivery address.",
                     "2": "The bot requests the payment receipt. Once received, the order appears in <strong>Orders</strong>.",
-                    "3": "The administrator approves or rejects the receipt from the panel. âœ…"
+                    "3": "The administrator approves or rejects the receipt from the panel. ✅"
                 }
             },
             "7": {
@@ -544,7 +544,7 @@
                     "0": "Go to <strong>Conversations</strong> to see the customer's message thread.",
                     "1": "The receipt sent by the customer appears in the chat as an image.",
                     "2": "Go to <strong>Orders</strong> to approve or reject the payment.",
-                    "3": "If approved, the customer automatically receives a confirmation via WhatsApp. âœ…"
+                    "3": "If approved, the customer automatically receives a confirmation via WhatsApp. ✅"
                 }
             },
             "8": {
@@ -554,7 +554,7 @@
                     "0": "An order is blocked after <strong>3 consecutive rejected receipts</strong>.",
                     "1": "The customer receives an automatic message indicating the order was cancelled.",
                     "2": "You can view the block details in the <strong>Orders</strong> view.",
-                    "3": "To resume the order, the customer must start a new conversation with the chatbot. âœ…"
+                    "3": "To resume the order, the customer must start a new conversation with the chatbot. ✅"
                 }
             }
         },
@@ -564,7 +564,7 @@
             "email":      "support{'@'}entreprenly.com",
             "whatsapp":   "+51 999 000 111",
             "hoursLabel": "Hours",
-            "hours":      "Monâ€“Fri 9:00â€“18:00"
+            "hours":      "Mon–Fri 9:00–18:00"
         },
         "results": {
             "count_other":        "result(s) for",
@@ -631,11 +631,11 @@
             "before3":             "Checking your internet connection",
             "responseTimeTitle":   "Response times",
             "priorityNormal":      "Normal",
-            "priorityNormalVal":   "24â€“48 hours",
+            "priorityNormalVal":   "24–48 hours",
             "priorityHigh":        "Urgent",
-            "priorityHighVal":     "2â€“4 hours",
+            "priorityHighVal":     "2–4 hours",
             "hoursLabel":          "Hours",
-            "hoursVal":            "Monâ€“Fri 9:00â€“18:00"
+            "hoursVal":            "Mon–Fri 9:00–18:00"
         },
         "success": {
             "pageTitle":       "Report sent",
@@ -741,8 +741,8 @@
             "send": "Send message"
         },
         "payment": {
-            "pendingBar": "Pending payment â€” Order #{orderNumber}",
-            "pendingBarDetail": "Method: {paymentMethod} Â· S/ {total}",
+            "pendingBar": "Pending payment — Order #{orderNumber}",
+            "pendingBarDetail": "Method: {paymentMethod} · S/ {total}",
             "approve": "Approve",
             "reject": "Reject",
             "rejectTitle": "Rejection reason",
@@ -787,7 +787,7 @@
                 "paymentSent":       "Payment instructions sent to customer",
                 "receiptReceived":   "Receipt received",
                 "receiptRejected":   "Receipt rejected {count} time(s)",
-                "paymentApproved":   "Payment approved âœ“",
+                "paymentApproved":   "Payment approved ✓",
                 "blocked":           "Order blocked due to multiple rejections",
                 "cancelled":         "Order cancelled",
                 "pendingValidation": "Receipt pending validation...",
@@ -921,7 +921,9 @@
     },
     "form": {
         "required":   "Required field",
-        "incomplete": "Form incomplete"
+        "incomplete": "Form incomplete",
+        "saving":     "Saving...",
+        "saveError":  "Could not save. Please try again."
     },
     "common": {
         "delete":         "Delete",

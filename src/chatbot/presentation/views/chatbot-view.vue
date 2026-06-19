@@ -1,28 +1,58 @@
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import useChatbotStore from '../../application/chatbot.store.js'
-import useSubscriptionStore from '@/subscription/application/subscription.store.js'
+import useProfileStore from '@/profile/application/profile.store.js'
+import useAuthStore from '@/auth/application/auth.store.js'
+import { ChatbotApi } from '../../infrastructure/chatbot-api.js'
 import QrConnectionCard    from '../components/qr-connection-card.vue'
 import WhatsappStatusCard  from '../components/whatsapp-status-card.vue'
 
 const { t } = useI18n()
 const store = useChatbotStore()
-const subscriptionStore = useSubscriptionStore()
+const profileStore = useProfileStore()
+const authStore = useAuthStore()
+const api = new ChatbotApi()
 
 const justConnected = ref(false)
-const chatbotAllowed = computed(() => {
-  const status = subscriptionStore.dashboard.currentPlan.status
-  return status === 'active' || status === 'scheduled-cancellation'
-})
+const qrDataUrl     = ref(null)
+let qrPollId = null
+
+const chatbotAllowed = computed(() => profileStore.profile.plan !== 'Free')
+
+function startQrPolling(ownerEmail) {
+  stopQrPolling()
+  function poll() {
+    api.getWhatsappQr(ownerEmail).then(res => {
+      qrDataUrl.value = res.data?.qr ?? null
+    }).catch(() => {})
+  }
+  poll()
+  qrPollId = setInterval(poll, 5000)
+}
+
+function stopQrPolling() {
+  if (qrPollId) { clearInterval(qrPollId); qrPollId = null }
+  qrDataUrl.value = null
+}
+
+watch([() => store.session, () => store.isSessionLoaded], ([session, loaded]) => {
+  if (!loaded) return
+  if (session?.status === 'connected') { stopQrPolling(); return }
+  const email = session?.ownerEmail ?? authStore.user?.email ?? null
+  if (email) startQrPolling(email)
+  else stopQrPolling()
+}, { immediate: true, deep: true })
 
 onMounted(() => {
-  subscriptionStore.loadDashboard().then(() => {
-    if (chatbotAllowed.value) {
-      store.loadSession()
-    }
-  })
+  if (chatbotAllowed.value) {
+    store.loadSession()
+  }
+})
+
+onUnmounted(() => {
+  stopQrPolling()
 })
 
 function onScanned() {
@@ -43,11 +73,7 @@ function onReconnect() {
       <p class="chatbot-page__subtitle">{{ t('chatbot.page.subtitle') }}</p>
     </header>
 
-    <p v-if="subscriptionStore.loading" class="chatbot-page__loading">
-      {{ t('chatbot.page.loading') }}
-    </p>
-
-    <section v-else-if="!chatbotAllowed" class="upgrade-card" aria-labelledby="chatbot-upgrade-title">
+    <section v-if="!chatbotAllowed" class="upgrade-card" aria-labelledby="chatbot-upgrade-title">
       <div class="upgrade-card__icon" aria-hidden="true">QR</div>
       <div class="upgrade-card__content">
         <p class="upgrade-card__eyebrow">{{ t('chatbot.upgrade.eyebrow') }}</p>
@@ -70,7 +96,7 @@ function onReconnect() {
 
     <template v-else-if="!store.session || store.session?.status === 'disconnected'">
       <div class="chatbot-page__card">
-        <QrConnectionCard :has-error="false" @scanned="onScanned" />
+        <QrConnectionCard :has-error="false" :qr-data-url="qrDataUrl" @scanned="onScanned" />
       </div>
     </template>
 
