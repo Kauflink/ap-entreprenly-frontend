@@ -36,7 +36,10 @@ const clientInitials = computed(() => {
 const conversationReceiptUrl = computed(() => {
   const convId = store.selectedConversationId
   if (!convId) return null
-  return store.orders.find(o => o.conversationId === convId && o.receiptImageUrl)?.receiptImageUrl ?? null
+  const withReceipt = store.orders
+    .filter(o => o.conversationId === convId && o.receiptImageUrl)
+    .sort((a, b) => b.id - a.id)
+  return withReceipt[0]?.receiptImageUrl ?? null
 })
 
 /** Redirect to chatbot config if session is not connected */
