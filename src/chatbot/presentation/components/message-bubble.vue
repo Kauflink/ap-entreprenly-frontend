@@ -38,10 +38,22 @@ const isImageData = computed(() =>
 </script>
 
 <template>
-  <!-- System message -->
-  <div v-if="message.sender === 'system'" class="sys-msg">
+  <!-- System message: [Comprobante recibido] with receipt image → render as client image bubble -->
+  <template v-if="message.sender === 'system' && receiptImageUrl">
+    <div class="client-msg">
+      <div class="client-msg__avatar">{{ clientInitials }}</div>
+      <div class="client-msg__bubble client-msg__bubble--image">
+        <img :src="receiptImageUrl" class="client-msg__image" alt="Comprobante" />
+      </div>
+    </div>
+    <div class="sys-msg">
+      <span class="sys-msg__badge">{{ systemText }}</span>
+    </div>
+  </template>
+
+  <!-- System message (normal) -->
+  <div v-else-if="message.sender === 'system'" class="sys-msg">
     <span class="sys-msg__badge">{{ systemText }}</span>
-    <img v-if="receiptImageUrl" :src="receiptImageUrl" class="sys-msg__receipt" alt="Comprobante" />
   </div>
 
   <!-- Client message -->
@@ -78,12 +90,6 @@ const isImageData = computed(() =>
   font-size: 0.75rem;
   color: #6b7280;
 }
-.sys-msg__receipt {
-  max-width: 14rem;
-  border-radius: 0.75rem;
-  object-fit: contain;
-}
-
 /* Client */
 .client-msg {
   display: flex;
