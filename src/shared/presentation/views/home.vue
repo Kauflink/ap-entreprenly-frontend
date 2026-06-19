@@ -1,14 +1,17 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import axios from 'axios'
 import useChatbotStore from '@/chatbot/application/chatbot.store.js'
 import useSubscriptionStore from '@/subscription/application/subscription.store.js'
 import { ChatOrder } from '@/chatbot/domain/model/chat-order-entity.js'
+import { SalesApi } from '@/sales/infrastructure/sales-api.js'
+import { InventoryApi } from '@/inventory/infrastructure/inventory-api.js'
 
 const { t, locale } = useI18n()
 const store = useChatbotStore()
 const subscriptionStore = useSubscriptionStore()
+const salesApi = new SalesApi()
+const inventoryApi = new InventoryApi()
 
 // ── Sales data (cash-registers) ───────────────────────────────────────────
 const totalDay     = ref(0)
@@ -143,23 +146,21 @@ onMounted(async () => {
     store.loadConversations()
   }
 
-  const BASE = import.meta.env.VITE_ENTREPENLY_PLATFORM_API_URL ?? 'http://localhost:3000/api/v1'
-
   try {
     const today = new Date().toISOString().split('T')[0]
-    const cashRes = await axios.get(`${BASE}${import.meta.env.VITE_CASH_REGISTERS_ENDPOINT_PATH ?? '/cash-registers'}`)
-    const reg = cashRes.data.find(r => r.date === today)
+    const cashRes = await salesApi.getCashRegisterByDate(today)
+    const reg = (cashRes.data ?? []).find(r => r.date === today)
     if (reg) { totalCash.value = reg.totalCash; totalDigital.value = reg.totalDigital; saleCount.value = reg.saleCount }
     totalDay.value = totalCash.value + totalDigital.value
   } catch {}
 
   try {
     const [alertRes, upRes, ulRes, wpRes, wlRes] = await Promise.all([
-      axios.get(`${BASE}${import.meta.env.VITE_STOCK_ALERT_ENDPOINT_PATH         ?? '/inventory-stock-alerts'}`),
-      axios.get(`${BASE}${import.meta.env.VITE_UNIT_PRODUCT_ENDPOINT_PATH        ?? '/inventory-unit-products'}`),
-      axios.get(`${BASE}${import.meta.env.VITE_UNIT_LOT_ENDPOINT_PATH            ?? '/inventory-unit-lots'}`),
-      axios.get(`${BASE}${import.meta.env.VITE_WEIGHT_PRODUCT_ENDPOINT_PATH      ?? '/inventory-weight-products'}`),
-      axios.get(`${BASE}${import.meta.env.VITE_WEIGHT_LOT_ENDPOINT_PATH          ?? '/inventory-weight-lots'}`),
+      inventoryApi.getStockAlerts(),
+      inventoryApi.getUnitProducts(),
+      inventoryApi.getUnitLots(),
+      inventoryApi.getWeightProducts(),
+      inventoryApi.getWeightLots(),
     ])
     stockAlerts.value    = alertRes.data
     unitProducts.value   = upRes.data
