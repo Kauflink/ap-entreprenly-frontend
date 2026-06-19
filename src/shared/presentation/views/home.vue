@@ -146,11 +146,9 @@ function alertLabel(alert) {
 onMounted(async () => {
   await subscriptionStore.loadDashboard()
 
-  if (chatbotAllowed.value) {
-    store.loadSession()
-    store.loadOrders()
-    store.loadConversations()
-  }
+  store.loadSession()
+  store.loadOrders()
+  store.loadConversations()
 
   // Cash summary comes from the shared Sales store, derived from the day's real sales.
   salesStore.loadSales()
