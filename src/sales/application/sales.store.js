@@ -149,7 +149,7 @@ const useSalesStore = defineStore('sales', () => {
                     if (remaining <= 0) break
                     const decrement = Math.min(lot.quantity, remaining)
                     remaining -= decrement
-                    patches.push(salesApi.patchUnitLot(lot.id, lot.quantity - decrement))
+                    patches.push(salesApi.updateUnitLot({ ...lot, quantity: lot.quantity - decrement }))
                 }
             } else {
                 const productId = item.productId - WEIGHT_ID_OFFSET
@@ -163,7 +163,7 @@ const useSalesStore = defineStore('sales', () => {
                     if (remaining <= 0) break
                     const decrement = Math.min(lot.quantityKg, remaining)
                     remaining = Number((remaining - decrement).toFixed(3))
-                    patches.push(salesApi.patchWeightLot(lot.id, Number((lot.quantityKg - decrement).toFixed(3))))
+                    patches.push(salesApi.updateWeightLot({ ...lot, quantityKg: Number((lot.quantityKg - decrement).toFixed(3)) }))
                 }
             }
         }

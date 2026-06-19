@@ -4,20 +4,18 @@ import { useI18n } from 'vue-i18n'
 import useChatbotStore from '@/chatbot/application/chatbot.store.js'
 import useSubscriptionStore from '@/subscription/application/subscription.store.js'
 import { ChatOrder } from '@/chatbot/domain/model/chat-order-entity.js'
-import { SalesApi } from '@/sales/infrastructure/sales-api.js'
 import { InventoryApi } from '@/inventory/infrastructure/inventory-api.js'
+import useSalesStore from '@/sales/application/sales.store.js'
+import { storeToRefs } from 'pinia'
 
 const { t, locale } = useI18n()
 const store = useChatbotStore()
 const subscriptionStore = useSubscriptionStore()
-const salesApi = new SalesApi()
+const salesStore = useSalesStore()
 const inventoryApi = new InventoryApi()
 
-// ── Sales data ────────────────────────────────────────────────────────────
-const totalDay     = ref(0)
-const totalCash    = ref(0)
-const totalDigital = ref(0)
-const saleCount    = ref(0)
+// ── Sales data (derived from the day's real sales) ─────────────────────────
+const { totalDay, totalCash, totalDigital, saleCount } = storeToRefs(salesStore)
 
 // ── Inventory data ────────────────────────────────────────────────────────
 const stockAlerts     = ref([])
@@ -154,21 +152,8 @@ onMounted(async () => {
     store.loadConversations()
   }
 
-  try {
-    const today = new Date().toISOString().split('T')[0]
-    const salesRes = await salesApi.getSalesByDate(today)
-    const sales = salesRes.data ?? []
-    saleCount.value = sales.length
-    for (const s of sales) {
-      const total = s.total ?? 0
-      if ((s.paymentMethod ?? '').toLowerCase() === 'cash') {
-        totalCash.value += total
-      } else {
-        totalDigital.value += total
-      }
-    }
-    totalDay.value = totalCash.value + totalDigital.value
-  } catch {}
+  // Cash summary comes from the shared Sales store, derived from the day's real sales.
+  salesStore.loadSales()
 
   try {
     const [alertRes, upRes, ulRes, wpRes, wlRes] = await Promise.all([

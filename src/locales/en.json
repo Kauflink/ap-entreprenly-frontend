@@ -874,6 +874,10 @@
                     "label":       "New email",
                     "placeholder": "name{'@'}example.com"
                 }
+            },
+            "feedback": {
+                "success": "Email updated. Please sign in again.",
+                "error":   "Could not update email. Please try again."
             }
         },
         "notifications": {
@@ -921,6 +925,10 @@
             },
             "errors": {
                 "mismatch": "Passwords do not match"
+            },
+            "feedback": {
+                "success": "Password updated successfully.",
+                "error":   "Could not update password. Please try again."
             }
         }
     },

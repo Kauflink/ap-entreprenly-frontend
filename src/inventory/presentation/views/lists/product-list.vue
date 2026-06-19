@@ -10,10 +10,10 @@ const store  = useInventoryStore();
 const router = useRouter();
 
 onMounted(() => {
-  if (!store.unit_productsLoaded)  store.fetchUnitProducts();
+  store.fetchUnitLots();
+  store.fetchWeightLots();
+  if (!store.unit_productsLoaded)   store.fetchUnitProducts();
   if (!store.weight_productsLoaded) store.fetchWeightProducts();
-  if (!store.unit_lotsLoaded)      store.fetchUnitLots();
-  if (!store.weight_lotsLoaded)    store.fetchWeightLots();
 });
 
 const allProducts = computed(() => [

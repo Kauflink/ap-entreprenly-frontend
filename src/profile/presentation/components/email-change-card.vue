@@ -1,14 +1,33 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { AuthApi } from '@/auth/infrastructure/auth-api.js'
+import useAuthStore from '@/auth/application/auth.store.js'
 
 const { t } = useI18n()
+const authApi = new AuthApi()
+const authStore = useAuthStore()
+
 const email = ref('')
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const isValid = computed(() => emailPattern.test(email.value))
 
+/** Submission feedback: 'idle' | 'pending' | 'success' | 'error'. */
+const status = ref('idle')
+
 function onSubmit() {
-    if (!isValid.value) return
+    if (!isValid.value || status.value === 'pending') return
+    status.value = 'pending'
+    authApi.changeEmail(email.value)
+        .then(() => {
+            // The JWT subject is now stale; force a fresh sign-in with the new email.
+            status.value = 'success'
+            email.value = ''
+            setTimeout(() => authStore.logout(), 2500)
+        })
+        .catch(() => {
+            status.value = 'error'
+        })
 }
 </script>
 
@@ -30,10 +49,16 @@ function onSubmit() {
                         :placeholder="t('profile.emailChange.fields.email.placeholder')"
                         autocomplete="email"
                     />
-                    <button type="submit" class="btn-verify" :disabled="!isValid">
+                    <button type="submit" class="btn-verify" :disabled="!isValid || status === 'pending'">
                         {{ t('profile.emailChange.verifyAction') }}
                     </button>
                 </div>
+                <p v-if="status === 'success'" class="field__success" role="status">
+                    {{ t('profile.emailChange.feedback.success') }}
+                </p>
+                <p v-if="status === 'error'" class="field__error" role="alert">
+                    {{ t('profile.emailChange.feedback.error') }}
+                </p>
             </div>
         </form>
     </div>
@@ -133,5 +158,19 @@ form {
 .btn-verify:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.field__success {
+    font-size: 11px;
+    color: var(--color-primary);
+    margin: 4px 0 0;
+    padding-left: 12px;
+}
+
+.field__error {
+    font-size: 11px;
+    color: var(--color-danger);
+    margin: 4px 0 0;
+    padding-left: 12px;
 }
 </style>

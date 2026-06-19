@@ -35,11 +35,13 @@ export class SalesApi extends BaseApi {
         return this.http.get(`${salesPath}?date=${date}`)
     }
 
-    patchUnitLot(id, quantity) {
-        return this.http.patch(`${unitLotsPath}/${id}`, { quantity })
+    // Stock is decremented by replacing the lot through the inventory PUT endpoint, which expects
+    // the full lot resource (the backend exposes no PATCH for lots).
+    updateUnitLot(lot) {
+        return this.http.put(`${unitLotsPath}/${lot.id}`, lot)
     }
-    patchWeightLot(id, quantityKg) {
-        return this.http.patch(`${weightLotsPath}/${id}`, { quantityKg })
+    updateWeightLot(lot) {
+        return this.http.put(`${weightLotsPath}/${lot.id}`, lot)
     }
 
     getScaleStatus() { return this.http.get('/iot-scale') }
