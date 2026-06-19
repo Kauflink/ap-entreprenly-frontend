@@ -869,6 +869,10 @@
                     "label":       "Nuevo email",
                     "placeholder": "nombre{'@'}ejemplo.com"
                 }
+            },
+            "feedback": {
+                "success": "Email actualizado. Inicia sesión nuevamente.",
+                "error":   "No se pudo actualizar el email. Inténtalo de nuevo."
             }
         },
         "notifications": {
@@ -916,6 +920,10 @@
             },
             "errors": {
                 "mismatch": "Las contraseñas no coinciden"
+            },
+            "feedback": {
+                "success": "Contraseña actualizada correctamente.",
+                "error":   "No se pudo actualizar la contraseña. Inténtalo de nuevo."
             }
         }
     },
