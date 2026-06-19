@@ -741,8 +741,8 @@
             "send": "Enviar mensaje"
         },
         "payment": {
-            "pendingBar": "Pago pendiente â€” Pedido #{orderNumber}",
-            "pendingBarDetail": "Método: {paymentMethod} Â· S/ {total}",
+            “pendingBar”: “Pago pendiente — Pedido #{orderNumber}”,
+            “pendingBarDetail”: “Método: {paymentMethod} · S/ {total}”,
             "approve": "Aprobar",
             "reject": "Rechazar",
             "rejectTitle": "Motivo del rechazo",

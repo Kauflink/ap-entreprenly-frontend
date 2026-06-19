@@ -741,8 +741,8 @@
             "send": "Send message"
         },
         "payment": {
-            "pendingBar": "Pending payment â€” Order #{orderNumber}",
-            "pendingBarDetail": "Method: {paymentMethod} Â· S/ {total}",
+            “pendingBar”: “Pending payment — Order #{orderNumber}”,
+            “pendingBarDetail”: “Method: {paymentMethod} · S/ {total}”,
             "approve": "Approve",
             "reject": "Reject",
             "rejectTitle": "Rejection reason",

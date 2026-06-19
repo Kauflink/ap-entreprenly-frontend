@@ -33,6 +33,12 @@ const clientInitials = computed(() => {
   return `${parts[0]?.[0] ?? ''}${parts[1]?.[0] ?? ''}`
 })
 
+const conversationReceiptUrl = computed(() => {
+  const convId = store.selectedConversationId
+  if (!convId) return null
+  return store.orders.find(o => o.conversationId === convId && o.receiptImageUrl)?.receiptImageUrl ?? null
+})
+
 /** Redirect to chatbot config if session is not connected */
 watch(
   () => store.isSessionLoaded,
@@ -139,6 +145,7 @@ function onCancelReject() {
               <MessageBubble
                 :message="message"
                 :client-initials="clientInitials"
+                :receipt-image-url="message.content === '[Comprobante recibido]' ? conversationReceiptUrl : null"
               />
             </div>
 
@@ -188,7 +195,7 @@ function onCancelReject() {
             <div v-else class="payment-bar">
               <div>
                 <p class="payment-bar__title">
-                  {{ t('chatbot.payment.pendingBar', { orderNumber: store.pendingOrder.orderNumber }) }}
+                  {{ t('chatbot.payment.pendingBar', { orderNumber: store.pendingOrder.id }) }}
                 </p>
                 <p class="payment-bar__detail">
                   {{ t('chatbot.payment.pendingBarDetail', { paymentMethod: store.pendingOrder.paymentMethod, total: store.pendingOrder.total.toFixed(2) }) }}
