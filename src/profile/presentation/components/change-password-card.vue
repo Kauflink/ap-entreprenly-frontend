@@ -1,8 +1,11 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { AuthApi } from '@/auth/infrastructure/auth-api.js'
 
 const { t } = useI18n()
+
+const authApi = new AuthApi()
 
 const form = reactive({
     currentPassword: '',
@@ -14,6 +17,9 @@ const showCurrent = ref(false)
 const showNew = ref(false)
 const showConfirm = ref(false)
 const confirmDirty = ref(false)
+
+/** Submission feedback: 'idle' | 'pending' | 'success' | 'error'. */
+const status = ref('idle')
 
 const passwordsMatch = computed(() =>
     form.newPassword === form.confirmPassword
@@ -35,11 +41,19 @@ function onConfirmInput() {
 }
 
 function onSubmit() {
-    if (!isValid.value) return
-    form.currentPassword = ''
-    form.newPassword = ''
-    form.confirmPassword = ''
-    confirmDirty.value = false
+    if (!isValid.value || status.value === 'pending') return
+    status.value = 'pending'
+    authApi.changePassword(form.currentPassword, form.newPassword)
+        .then(() => {
+            status.value = 'success'
+            form.currentPassword = ''
+            form.newPassword = ''
+            form.confirmPassword = ''
+            confirmDirty.value = false
+        })
+        .catch(() => {
+            status.value = 'error'
+        })
 }
 </script>
 
@@ -125,9 +139,16 @@ function onSubmit() {
                 </p>
             </div>
 
-            <button type="submit" class="btn-primary" :disabled="!isValid">
+            <button type="submit" class="btn-primary" :disabled="!isValid || status === 'pending'">
                 {{ t('profile.changePassword.updateAction') }}
             </button>
+
+            <p v-if="status === 'success'" class="field__success" role="status">
+                {{ t('profile.changePassword.feedback.success') }}
+            </p>
+            <p v-if="status === 'error'" class="field__error" role="alert">
+                {{ t('profile.changePassword.feedback.error') }}
+            </p>
         </form>
     </div>
 </template>
@@ -231,6 +252,13 @@ form {
 .field__error {
     font-size: 11px;
     color: var(--color-danger);
+    margin: 0;
+    padding-left: 12px;
+}
+
+.field__success {
+    font-size: 11px;
+    color: var(--color-primary);
     margin: 0;
     padding-left: 12px;
 }
