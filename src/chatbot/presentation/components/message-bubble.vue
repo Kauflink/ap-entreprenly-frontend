@@ -56,7 +56,7 @@ const isImageData = computed(() =>
   <!-- Bot message -->
   <div v-else class="bot-msg">
     <div class="bot-msg__bubble">
-      <p class="bot-msg__text">{{ message.content }}</p>
+      <p class="bot-msg__text">{{ message.content.startsWith('chatbot.sys.') ? systemText : message.content }}</p>
     </div>
     <div class="bot-msg__avatar">BH</div>
   </div>
