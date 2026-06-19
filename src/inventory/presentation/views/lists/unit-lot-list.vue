@@ -13,9 +13,9 @@ const route  = useRoute();
 const productId = computed(() => Number(route.query.productId) || null);
 
 onMounted(() => {
-  if (!store.unit_lotsLoaded)       store.fetchUnitLots();
+  store.fetchUnitLots();
+  store.fetchWeightLots();
   if (!store.unit_productsLoaded)   store.fetchUnitProducts();
-  if (!store.weight_lotsLoaded)     store.fetchWeightLots();
   if (!store.weight_productsLoaded) store.fetchWeightProducts();
 });
 
