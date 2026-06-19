@@ -9,8 +9,10 @@ import { Conversation } from '../domain/model/conversation-entity.js'
 import { ChatMessage } from '../domain/model/chat-message-entity.js'
 import { ChatOrder } from '../domain/model/chat-order-entity.js'
 import { WhatsappSession } from '../domain/model/whatsapp-session-entity.js'
+import { InventoryApi } from '@/inventory/infrastructure/inventory-api.js'
 
 const api = new ChatbotApi()
+const inventoryApi = new InventoryApi()
 
 const useChatbotStore = defineStore('chatbot', () => {
   const session                = ref(null)
@@ -160,6 +162,52 @@ const useChatbotStore = defineStore('chatbot', () => {
     })
   }
 
+  // ── Stock decrement (FIFO) on chatbot order confirmation ─────────────────
+
+  function _decrementChatOrderStock(items) {
+    if (!items?.length) return
+    Promise.all([
+      inventoryApi.getUnitLots(),
+      inventoryApi.getWeightLots(),
+    ]).then(([unitRes, weightRes]) => {
+      const unitLots   = unitRes.data
+      const weightLots = weightRes.data
+      const patches    = []
+
+      for (const item of items) {
+        const productId = item.productId ?? item.ProductId
+        let remaining   = Number(item.quantity ?? item.Quantity)
+
+        const uLots = unitLots
+          .filter(l => l.productId === productId)
+          .sort((a, b) => new Date(a.entryDate) - new Date(b.entryDate))
+
+        if (uLots.length > 0) {
+          for (const lot of uLots) {
+            if (remaining <= 0) break
+            const dec = Math.min(lot.quantity, remaining)
+            remaining -= dec
+            patches.push(inventoryApi.updateUnitLot({ ...lot, quantity: lot.quantity - dec }))
+          }
+          continue
+        }
+
+        const wLots = weightLots
+          .filter(l => l.productId === productId)
+          .sort((a, b) => new Date(a.entryDate) - new Date(b.entryDate))
+
+        for (const lot of wLots) {
+          if (remaining <= 0) break
+          const dec = Math.min(lot.quantityKg, remaining)
+          remaining  = Number((remaining - dec).toFixed(3))
+          patches.push(inventoryApi.updateWeightLot({ ...lot, quantityKg: Number((lot.quantityKg - dec).toFixed(3)) }))
+        }
+      }
+
+      return Promise.all(patches)
+    }).catch(e => console.warn('[chatbot] stock decrement failed:', e))
+  }
+
   // ── Payment approval ──────────────────────────────────────────────────────
 
   function approveOrder(orderId) {
@@ -173,6 +221,7 @@ const useChatbotStore = defineStore('chatbot', () => {
       const confirmed = ChatOrderAssembler.toEntityFromResource(res.data)
       orders.value = orders.value.map(o => o.id === orderId ? confirmed : o)
       _updateConversationStatus(order.conversationId, Conversation.Status.COMPLETED)
+      _decrementChatOrderStock(order.items)
 
       const time   = new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })
       const sysMsg = new ChatMessage({ id: 0, conversationId: order.conversationId, content: `chatbot.sys.paymentApproved|${time}`, sender: ChatMessage.Sender.SYSTEM, type: ChatMessage.Type.TEXT, sentAt: new Date().toISOString() })
