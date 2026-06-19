@@ -741,8 +741,8 @@
             "send": "Send message"
         },
         "payment": {
-            “pendingBar”: “Pending payment — Order #{orderNumber}”,
-            “pendingBarDetail”: “Method: {paymentMethod} · S/ {total}”,
+            "pendingBar": "Pending payment — Order #{orderNumber}",
+            "pendingBarDetail": "Method: {paymentMethod} · S/ {total}",
             "approve": "Approve",
             "reject": "Reject",
             "rejectTitle": "Rejection reason",
@@ -787,7 +787,7 @@
                 "paymentSent":       "Payment instructions sent to customer",
                 "receiptReceived":   "Receipt received",
                 "receiptRejected":   "Receipt rejected {count} time(s)",
-                “paymentApproved”:   “Payment approved ✓”,
+                "paymentApproved":   "Payment approved ✓",
                 "blocked":           "Order blocked due to multiple rejections",
                 "cancelled":         "Order cancelled",
                 "pendingValidation": "Receipt pending validation...",
