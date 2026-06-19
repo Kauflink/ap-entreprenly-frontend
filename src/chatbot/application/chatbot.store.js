@@ -82,22 +82,40 @@ const useChatbotStore = defineStore('chatbot', () => {
 
   function _startPoll(id) {
     _stopPoll()
+    const pending = new Set()
+
     _pollInterval = setInterval(() => {
       if (selectedConversationId.value !== id) { _stopPoll(); return }
+
       api.chatMessages.getAll().then(res => {
         if (selectedConversationId.value !== id) return
         const fresh = ChatMessageAssembler.toEntitiesFromResponse(res).filter(m => m.conversationId === id)
-        if (fresh.length !== messages.value.length) messages.value = fresh
+        const knownIds = new Set([...messages.value.map(m => m.id), ...pending])
+        const incoming = fresh.filter(m => !knownIds.has(m.id))
+
+        incoming.forEach((msg, i) => {
+          pending.add(msg.id)
+          setTimeout(() => {
+            if (selectedConversationId.value !== id) return
+            if (!messages.value.some(m => m.id === msg.id)) {
+              messages.value = [...messages.value, msg]
+            }
+            pending.delete(msg.id)
+          }, i * 450)
+        })
       })
+
       api.chatOrders.getAll().then(res => {
         if (selectedConversationId.value !== id) return
         orders.value = ChatOrderAssembler.toEntitiesFromResponse(res)
       })
+
       loadConversations()
-    }, 2000)
+    }, 1500)
   }
 
   function selectConversation(id) {
+    _stopPoll()
     selectedConversationId.value = id
     messages.value               = []
     isClientTyping.value         = false
@@ -108,14 +126,13 @@ const useChatbotStore = defineStore('chatbot', () => {
       if (selectedConversationId.value !== id) return
       const all = ChatMessageAssembler.toEntitiesFromResponse(res)
       messages.value = all.filter(m => m.conversationId === id)
+      _startPoll(id)
     })
 
     api.chatOrders.getAll().then(res => {
       if (selectedConversationId.value !== id) return
       orders.value = ChatOrderAssembler.toEntitiesFromResponse(res)
     })
-
-    _startPoll(id)
   }
 
   function stopConversationPoll() { _stopPoll() }
