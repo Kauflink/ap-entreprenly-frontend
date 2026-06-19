@@ -71,7 +71,7 @@ function forgotPassword() {
     <main class="access-page">
         <div class="access-shell">
             <header class="access-header">
-                <a class="ghost-button" href="https://entreprenly.online/">
+                <a class="ghost-button" href="https://landing.entreprenly.online/">
                     <span class="material-icons" aria-hidden="true">arrow_back</span>
                     <span>Volver</span>
                 </a>
