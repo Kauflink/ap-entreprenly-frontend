@@ -5,6 +5,7 @@ import { SubscriptionActivity } from '@/subscription/domain/model/subscription-a
 import { SubscriptionDashboard } from '@/subscription/domain/model/subscription-dashboard-entity.js'
 import { SubscriptionLimit } from '@/subscription/domain/model/subscription-limit-entity.js'
 import { SubscriptionApi } from '@/subscription/infrastructure/subscription-api.js'
+import useAuthStore from '@/auth/application/auth.store.js'
 
 const subscriptionApi = new SubscriptionApi()
 
@@ -13,6 +14,7 @@ function formatCurrency(priceInPen) {
 }
 
 const useSubscriptionStore = defineStore('subscription', () => {
+    const authStore = useAuthStore()
     const dashboardSignal = ref(new SubscriptionDashboard())
     const inventoryUsage = ref({ products: 0, lots: 0 })
     const loaded = ref(false)
@@ -59,7 +61,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
     }
 
     function activateControlPlan() {
-        return subscriptionApi.activateControlPlan(selectedCycle.value, dashboard.value)
+        return subscriptionApi.activateControlPlan(authStore.userId, selectedCycle.value)
             .then(nextDashboard => {
                 dashboardSignal.value = nextDashboard
                 selectedPlanId.value = null
@@ -68,7 +70,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
     }
 
     function scheduleCancellation() {
-        return subscriptionApi.scheduleCancellation(dashboard.value)
+        return subscriptionApi.scheduleCancellation(authStore.userId)
             .then(nextDashboard => {
                 dashboardSignal.value = nextDashboard
                 feedback.value = 'Cancelacion programada.'
@@ -76,7 +78,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
     }
 
     function keepControlPlan() {
-        return subscriptionApi.keepControlPlan(dashboard.value)
+        return subscriptionApi.keepControlPlan(authStore.userId)
             .then(nextDashboard => {
                 dashboardSignal.value = nextDashboard
                 feedback.value = 'Plan Control se mantendra activo.'
@@ -257,7 +259,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
 
         dashboardSignal.value = nextDashboard
 
-        return subscriptionApi.updateBillingSetup(nextDashboard, billingSetup)
+        return subscriptionApi.updateBillingSetup(authStore.userId, billingSetup)
             .then(savedDashboard => {
                 dashboardSignal.value = savedDashboard
                 feedback.value = nextFeedback
