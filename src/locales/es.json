@@ -945,7 +945,9 @@
         "weightTitle":  "Productos por peso",
         "subtitle":     "Administra el catálogo de productos del inventario",
         "add":          "Agregar",
+        "search":       "Buscar producto...",
         "empty":        "No hay productos registrados",
+        "noResults":    "No se encontraron productos",
         "deleteConfirm": "¿Eliminar el producto \"{name}\"? Esta acción no se puede deshacer.",
         "col": {
             "type":        "Tipo",
