@@ -950,7 +950,9 @@
         "weightTitle":  "Weight products",
         "subtitle":     "Manage your inventory product catalog",
         "add":          "Add",
+        "search":       "Search product...",
         "empty":        "No products registered",
+        "noResults":    "No products found",
         "deleteConfirm": "Delete product \"{name}\"? This action cannot be undone.",
         "col": {
             "type":        "Type",
