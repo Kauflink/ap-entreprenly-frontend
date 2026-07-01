@@ -146,21 +146,16 @@ function onDelete(product) {
 .search-input {
   width: 220px;
   height: 44px;
-  border: 1px solid var(--color-card-border);
+  border: none;
   border-radius: 999px;
-  background: var(--color-card-bg);
-  color: var(--color-text-strong);
+  background: var(--color-avatar-bg);
+  color: var(--color-avatar-fg);
   padding: 0 18px;
   outline: none;
   font-size: 14px;
   font-family: inherit;
-  transition: border-color 0.18s, box-shadow 0.18s;
 }
 .search-input::placeholder { color: var(--color-text-muted); }
-.search-input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
-}
 
 .btn-add {
   display: inline-flex;
