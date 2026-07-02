@@ -214,7 +214,7 @@ function onDelete(product) {
   }
   .header-actions {
     width: 100%;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
   .search-input { flex: 1; width: auto; min-width: 0; }
   .btn-add { flex-shrink: 0; }
@@ -231,9 +231,8 @@ function onDelete(product) {
 
 @media (max-width: 600px) {
   .page-title  { font-size: 22px; }
-  .header-actions { flex-direction: column; align-items: stretch; }
-  .search-input { width: 100%; }
-  .btn-add { width: 100%; justify-content: center; }
+  /* Keep the search + button on a single row (like desktop, just tighter) */
+  .btn-add { padding: 11px 16px; }
   /* Hide table header — items render as cards */
   .table-head  { display: none; }
   .table-card  { overflow-x: visible; border-radius: 14px; }
