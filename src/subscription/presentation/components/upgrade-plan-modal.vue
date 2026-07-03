@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { detectCardBrand } from '@/subscription/domain/model/billing-setup-entity.js'
@@ -408,19 +408,21 @@ onBeforeUnmount(() => document.removeEventListener('keydown', closeFromKeyboard)
                         <div class="stack">
                             <article
                                 v-if="paymentMethods.length === 1 && selectedPaymentMethod"
-                                class="summary-card summary-card--plain"
+                                class="summary-card summary-card--plain payment-card-summary"
                             >
-                                <div>
+                                <div class="payment-card-summary__body">
                                     <CardBrandBadge :brand="selectedPaymentMethod.cardBrand" />
-                                    <h3>{{ t('subscription.upgrade.payment.registeredCard') }}</h3>
-                                    <p>
-                                        {{ t('subscription.upgrade.payment.cardEnding', {
-                                            brand: displayCardBrand(selectedPaymentMethod.cardBrand),
-                                            lastFour: selectedPaymentMethod.lastFour,
-                                            month: selectedPaymentMethod.expiryMonth,
-                                            year: selectedPaymentMethod.expiryYear
-                                        }) }}
-                                    </p>
+                                    <div class="payment-card-summary__copy">
+                                        <h3>{{ t('subscription.upgrade.payment.registeredCard') }}</h3>
+                                        <p>
+                                            {{ t('subscription.upgrade.payment.cardEnding', {
+                                                brand: displayCardBrand(selectedPaymentMethod.cardBrand),
+                                                lastFour: selectedPaymentMethod.lastFour,
+                                                month: selectedPaymentMethod.expiryMonth,
+                                                year: selectedPaymentMethod.expiryYear
+                                            }) }}
+                                        </p>
+                                    </div>
                                 </div>
                             </article>
 
@@ -720,6 +722,25 @@ h3 {
     margin-top: 0;
 }
 
+.payment-card-summary {
+    justify-content: flex-start;
+}
+
+.payment-card-summary__body {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.payment-card-summary__copy {
+    display: grid;
+    gap: 4px;
+}
+
+.payment-card-summary__copy p {
+    margin-top: 0;
+}
+
 .ready-card {
     display: block;
     border-color: #b9e2c8;
@@ -894,3 +915,4 @@ select:focus-visible {
     }
 }
 </style>
+
