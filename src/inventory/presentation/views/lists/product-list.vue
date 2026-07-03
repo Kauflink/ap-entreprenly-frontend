@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import useInventoryStore from '@/inventory/application/inventory.store.js';
@@ -9,17 +9,28 @@ const { t } = useI18n();
 const store  = useInventoryStore();
 const router = useRouter();
 
+const searchTerm = ref('');
+
 onMounted(() => {
-  if (!store.unit_productsLoaded)  store.fetchUnitProducts();
+  store.fetchUnitLots();
+  store.fetchWeightLots();
+  if (!store.unit_productsLoaded)   store.fetchUnitProducts();
   if (!store.weight_productsLoaded) store.fetchWeightProducts();
-  if (!store.unit_lotsLoaded)      store.fetchUnitLots();
-  if (!store.weight_lotsLoaded)    store.fetchWeightLots();
 });
 
 const allProducts = computed(() => [
   ...store.unit_products,
   ...store.weight_products,
 ]);
+
+const filteredProducts = computed(() => {
+  const term = searchTerm.value.trim().toLowerCase();
+  if (!term) return allProducts.value;
+  return allProducts.value.filter(p =>
+    (p.name || '').toLowerCase().includes(term) ||
+    (p.description || '').toLowerCase().includes(term)
+  );
+});
 
 const stockMap = computed(() => {
   const map = {};
@@ -51,9 +62,17 @@ function onDelete(product) {
         <h1 class="page-title">{{ t('products.title') }}</h1>
         <p class="page-subtitle">{{ t('products.subtitle') }}</p>
       </div>
-      <button class="btn-add" @click="$router.push({ name: 'inventory-products-new' })">
-        <span class="plus">+</span> {{ t('products.add') }}
-      </button>
+      <div class="header-actions">
+        <input
+          v-model="searchTerm"
+          type="text"
+          class="search-input"
+          :placeholder="t('products.search')"
+        />
+        <button class="btn-add" @click="$router.push({ name: 'inventory-products-new' })">
+          <span class="plus">+</span> {{ t('products.add') }}
+        </button>
+      </div>
     </div>
 
     <div v-if="loading" class="empty-state">{{ t('chatbot.page.loading') }}</div>
@@ -73,8 +92,11 @@ function onDelete(product) {
         <template v-if="allProducts.length === 0">
           <div class="empty-state">{{ t('products.empty') }}</div>
         </template>
+        <template v-else-if="filteredProducts.length === 0">
+          <div class="empty-state">{{ t('products.noResults') }}</div>
+        </template>
         <ProductItem
-          v-for="p in allProducts"
+          v-for="p in filteredProducts"
           :key="p.productType + '-' + p.id"
           :product="p"
           :stock="stockMap[p.id] || 0"
@@ -114,6 +136,26 @@ function onDelete(product) {
   color: var(--color-text-muted);
   margin: 0;
 }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-input {
+  width: 220px;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-avatar-bg);
+  color: var(--color-avatar-fg);
+  padding: 0 18px;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+}
+.search-input::placeholder { color: var(--color-text-muted); }
 
 .btn-add {
   display: inline-flex;
@@ -170,7 +212,12 @@ function onDelete(product) {
     gap: 14px;
     align-items: flex-start;
   }
-  .btn-add { width: 100%; justify-content: center; }
+  .header-actions {
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+  .search-input { flex: 1; width: auto; min-width: 0; }
+  .btn-add { flex-shrink: 0; }
 
   /* Horizontal scroll for product table */
   .table-card { overflow-x: auto; }
@@ -184,6 +231,8 @@ function onDelete(product) {
 
 @media (max-width: 600px) {
   .page-title  { font-size: 22px; }
+  /* Keep the search + button on a single row (like desktop, just tighter) */
+  .btn-add { padding: 11px 16px; }
   /* Hide table header — items render as cards */
   .table-head  { display: none; }
   .table-card  { overflow-x: visible; border-radius: 14px; }

@@ -6,7 +6,6 @@ const weightProductsPath  = '/inventory-weight-products'
 const unitLotsPath        = '/inventory-unit-lots'
 const weightLotsPath      = '/inventory-weight-lots'
 const salesPath           = '/sales'
-const cashRegistersPath   = '/cash-registers'
 
 export class SalesApi extends BaseApi {
     #unitProductsEndpoint
@@ -14,7 +13,6 @@ export class SalesApi extends BaseApi {
     #unitLotsEndpoint
     #weightLotsEndpoint
     #salesEndpoint
-    #cashRegistersEndpoint
 
     constructor() {
         super()
@@ -23,7 +21,6 @@ export class SalesApi extends BaseApi {
         this.#unitLotsEndpoint       = new BaseEndpoint(this, unitLotsPath)
         this.#weightLotsEndpoint     = new BaseEndpoint(this, weightLotsPath)
         this.#salesEndpoint          = new BaseEndpoint(this, salesPath)
-        this.#cashRegistersEndpoint  = new BaseEndpoint(this, cashRegistersPath)
     }
 
     getUnitProducts()    { return this.#unitProductsEndpoint.getAll() }
@@ -32,22 +29,19 @@ export class SalesApi extends BaseApi {
     getWeightLots()      { return this.#weightLotsEndpoint.getAll() }
 
     createSale(sale)     { return this.#salesEndpoint.create(sale) }
+    getAllSales()        { return this.#salesEndpoint.getAll() }
 
-    getCashRegisterByDate(date) {
-        return this.http.get(`${cashRegistersPath}?date=${date}`)
-    }
-    createCashRegister(date) {
-        return this.#cashRegistersEndpoint.create({ date, totalCash: 0, totalDigital: 0, saleCount: 0 })
-    }
-    updateCashRegister(register) {
-        return this.#cashRegistersEndpoint.update(register.id, register)
+    getSalesByDate(date) {
+        return this.http.get(`${salesPath}?date=${date}`)
     }
 
-    patchUnitLot(id, quantity) {
-        return this.http.patch(`${unitLotsPath}/${id}`, { quantity })
+    // Stock is decremented by replacing the lot through the inventory PUT endpoint, which expects
+    // the full lot resource (the backend exposes no PATCH for lots).
+    updateUnitLot(lot) {
+        return this.http.put(`${unitLotsPath}/${lot.id}`, lot)
     }
-    patchWeightLot(id, quantityKg) {
-        return this.http.patch(`${weightLotsPath}/${id}`, { quantityKg })
+    updateWeightLot(lot) {
+        return this.http.put(`${weightLotsPath}/${lot.id}`, lot)
     }
 
     getScaleStatus() { return this.http.get('/iot-scale') }

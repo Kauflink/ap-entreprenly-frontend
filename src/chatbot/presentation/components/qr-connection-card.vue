@@ -1,54 +1,34 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
-  hasError: { type: Boolean, default: false }
+  hasError:   { type: Boolean, default: false },
+  qrDataUrl:  { type: String,  default: null  }
 })
 const emit = defineEmits(['scanned'])
 
 const { t } = useI18n()
 
-const seconds      = ref(120)
-const isExpired    = ref(false)
-const sessionToken = ref(_generateToken())
+const seconds   = ref(20)
+const isExpired = ref(false)
+let intervalId  = null
 
-const qrSrc = computed(() =>
-  `https://api.qrserver.com/v1/create-qr-code/?size=192x192&data=${encodeURIComponent(sessionToken.value)}`
-)
-
-function _generateToken() {
-  const chars  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-  const random = Array.from({ length: 8 }, () =>
-    chars[Math.floor(Math.random() * chars.length)]
-  ).join('')
-  const ts = Math.floor(Date.now() / 1000)
-  return `WA-SESSION-${random}-${ts}`
-}
-
-let resetting = false
-let intervalId = null
+watch(() => props.qrDataUrl, (newQr) => {
+  if (newQr) {
+    isExpired.value = false
+    seconds.value   = 20
+  }
+})
 
 onMounted(() => {
   intervalId = setInterval(() => {
-    if (resetting) return
-
     if (seconds.value <= 1) {
       isExpired.value = true
-      resetting = true
-
-      setTimeout(() => {
-        sessionToken.value = _generateToken()
-        isExpired.value    = false
-        seconds.value      = 120
-        resetting          = false
-      }, 3000)
-
-      seconds.value = 0
-      return
+      seconds.value   = 0
+    } else {
+      seconds.value--
     }
-
-    seconds.value--
   }, 1000)
 })
 
@@ -71,17 +51,24 @@ onUnmounted(() => {
       <p class="qr-sub">{{ t('chatbot.qr.scanInstruction') }}</p>
 
       <div class="qr-frame">
+        <div v-if="!qrDataUrl" class="qr-loading" aria-label="Generando QR">
+          <span class="qr-loading__dot" style="animation-delay:0ms"></span>
+          <span class="qr-loading__dot" style="animation-delay:200ms"></span>
+          <span class="qr-loading__dot" style="animation-delay:400ms"></span>
+        </div>
         <img
+          v-else
           class="qr-img"
-          :src="qrSrc"
+          :src="qrDataUrl"
           width="192"
           height="192"
           :alt="t('chatbot.qr.alt')"
         />
       </div>
 
-      <p :class="['qr-timer', seconds <= 10 && !isExpired ? 'qr-timer--urgent' : '']">
-        <template v-if="isExpired">{{ t('chatbot.qr.generating') }}</template>
+      <p :class="['qr-timer', seconds <= 5 && !isExpired && qrDataUrl ? 'qr-timer--urgent' : '']">
+        <template v-if="!qrDataUrl">{{ t('chatbot.qr.generating') }}</template>
+        <template v-else-if="isExpired">{{ t('chatbot.qr.generating') }}</template>
         <template v-else-if="seconds === 1">{{ t('chatbot.qr.expiresInOne') }}</template>
         <template v-else>{{ t('chatbot.qr.expiresIn', { seconds }) }}</template>
       </p>
@@ -127,10 +114,32 @@ onUnmounted(() => {
   color: #6b7280;
 }
 .qr-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   border-radius: 0.75rem;
   background: #fff;
   padding: 0.5rem;
+  width: 208px;
+  height: 208px;
+}
+.qr-loading {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.qr-loading__dot {
+  display: block;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  background: #d1d5db;
+  animation: pulse 1.2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%       { opacity: 1;   transform: scale(1);   }
 }
 .qr-img {
   display: block;

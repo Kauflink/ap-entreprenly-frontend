@@ -2,8 +2,10 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { buildQrCodeDataUrl } from '@/inventory/infrastructure/qr_code_generator.js';
+import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js';
 
 const { t } = useI18n();
+const { format } = useCurrencyFormatter();
 const props = defineProps({
   product: { type: Object, required: true },
   stock:   { type: Number, default: 0 },
@@ -18,8 +20,8 @@ const qrImageUrl = computed(() => {
 });
 
 const displayPrice = computed(() => {
-  if (isUnit.value) return props.product.price != null ? `$${Number(props.product.price).toFixed(2)}` : '-';
-  return props.product.pricePerKg != null ? `$${Number(props.product.pricePerKg).toFixed(2)}/kg` : '-';
+  if (isUnit.value) return props.product.price != null ? format(props.product.price) : '-';
+  return props.product.pricePerKg != null ? `${format(props.product.pricePerKg)}/kg` : '-';
 });
 </script>
 

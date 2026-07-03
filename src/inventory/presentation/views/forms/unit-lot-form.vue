@@ -109,7 +109,9 @@ async function submit() {
   <div class="modal-overlay" @click.self="closeModal">
     <div class="modal-card">
 
-      <button type="button" class="btn-close-circle" aria-label="Close modal" @click="closeModal">✕</button>
+      <button type="button" class="btn-close-circle" aria-label="Close modal" @click="closeModal">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg>
+      </button>
 
       <h2 class="modal-title-main">
         {{ isEdit ? t('lots.form.editTitle') : t('lots.form.addTitle') }}
@@ -158,7 +160,7 @@ async function submit() {
                 :class="{ 'input-error': form.quantity == null && (touched.quantity || submitted) }"
                 @blur="touched.quantity = true">
             <template v-if="form.quantity == null && (touched.quantity || submitted)">
-              <span class="v-x">✕</span>
+              <span class="v-x">&times;</span>
               <span class="v-text">{{ t('form.required') }}</span>
             </template>
           </div>
@@ -176,7 +178,7 @@ async function submit() {
                   :class="{ 'input-error': !form.entryDate && (touched.entryDate || submitted) }"
                   @blur="touched.entryDate = true">
               <template v-if="!form.entryDate && (touched.entryDate || submitted)">
-                <span class="v-x">✕</span>
+                <span class="v-x">&times;</span>
                 <span class="v-text">{{ t('form.required') }}</span>
               </template>
             </div>

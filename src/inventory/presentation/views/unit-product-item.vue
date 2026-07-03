@@ -27,7 +27,7 @@ const qrImageUrl = computed(() => {
     </div>
     <div class="actions">
       <button class="btn-edit" @click="emit('edit', product)" title="Edit">✏</button>
-      <button class="btn-delete" @click="emit('delete', product)" title="Delete">✕</button>
+      <button class="btn-delete" @click="emit('delete', product)" title="Delete">&times;</button>
     </div>
   </div>
 </template>
