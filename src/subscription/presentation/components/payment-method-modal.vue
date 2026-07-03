@@ -1,12 +1,19 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, reactive } from 'vue'
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { detectCardBrand } from '@/subscription/domain/model/billing-setup-entity.js'
 import CardBrandBadge from '@/subscription/presentation/components/card-brand-badge.vue'
 
-const emit = defineEmits(['closed', 'saved'])
+const props = defineProps({
+    billingSetup: { type: Object, required: true }
+})
+
+const emit = defineEmits(['closed', 'saved', 'selected'])
 const { t } = useI18n()
 
+const addingPaymentMethod = ref(false)
+const paymentMethods = computed(() => props.billingSetup.paymentMethods ?? [])
+const showPaymentForm = computed(() => addingPaymentMethod.value || paymentMethods.value.length === 0)
 const paymentForm = reactive({
     cardNumber: '',
     holderName: '',
@@ -31,6 +38,18 @@ function closeFromKeyboard(event) {
         event.preventDefault()
         close()
     }
+}
+
+function showAddPaymentForm() {
+    addingPaymentMethod.value = true
+}
+
+function showPaymentList() {
+    addingPaymentMethod.value = false
+}
+
+function selectPaymentMethod(paymentMethodId) {
+    emit('selected', paymentMethodId)
 }
 
 function save() {
@@ -96,9 +115,49 @@ onBeforeUnmount(() => document.removeEventListener('keydown', closeFromKeyboard)
                 &times;
             </button>
             <p class="eyebrow">{{ t('subscription.modal.eyebrow') }}</p>
-            <h2 id="payment-method-modal-title">{{ t('subscription.paymentMethod.addTitle') }}</h2>
+            <h2 id="payment-method-modal-title">
+                {{ t(showPaymentForm ? 'subscription.paymentMethod.addTitle' : 'subscription.upgrade.payment.selectMethod') }}
+            </h2>
 
-            <form class="modal-form" @submit.prevent="save">
+            <template v-if="!showPaymentForm">
+                <div class="payment-method-list">
+                    <button
+                        v-for="paymentMethod in paymentMethods"
+                        :key="paymentMethod.id"
+                        type="button"
+                        class="payment-method-option"
+                        :class="{ 'payment-method-option--selected': paymentMethod.isDefault }"
+                        :aria-pressed="paymentMethod.isDefault"
+                        @click="selectPaymentMethod(paymentMethod.id)"
+                    >
+                        <CardBrandBadge :brand="paymentMethod.cardBrand" />
+                        <span>
+                            <strong>
+                                {{ t('subscription.upgrade.payment.cardEndingShort', {
+                                    brand: paymentMethod.cardBrand,
+                                    lastFour: paymentMethod.lastFour
+                                }) }}
+                            </strong>
+                            <small>
+                                {{ t('subscription.upgrade.payment.holderExpiry', {
+                                    holder: paymentMethod.holderName,
+                                    month: paymentMethod.expiryMonth,
+                                    year: paymentMethod.expiryYear
+                                }) }}
+                            </small>
+                        </span>
+                        <em v-if="paymentMethod.isDefault">
+                            {{ t('subscription.billing.paymentMethod.available') }}
+                        </em>
+                    </button>
+                </div>
+
+                <button class="primary-button" type="button" @click="showAddPaymentForm">
+                    {{ t('subscription.paymentMethod.addTitle') }}
+                </button>
+            </template>
+
+            <form v-else class="modal-form" @submit.prevent="save">
                 <label>
                     <span>{{ t('subscription.upgrade.payment.cardNumber') }}</span>
                     <div class="card-number-field">
@@ -165,9 +224,14 @@ onBeforeUnmount(() => document.removeEventListener('keydown', closeFromKeyboard)
                     </small>
                 </label>
 
-                <button class="primary-button" type="submit">
-                    {{ t('subscription.paymentMethod.save') }}
-                </button>
+                <div class="modal-actions">
+                    <button v-if="paymentMethods.length > 0" class="secondary-button" type="button" @click="showPaymentList">
+                        {{ t('subscription.upgrade.back') }}
+                    </button>
+                    <button class="primary-button" type="submit">
+                        {{ t('subscription.paymentMethod.save') }}
+                    </button>
+                </div>
             </form>
         </section>
     </div>
@@ -207,9 +271,9 @@ onBeforeUnmount(() => document.removeEventListener('keydown', closeFromKeyboard)
     width: 38px;
     height: 38px;
     place-items: center;
-    border: 1px solid var(--color-inner-bg);
+    border: 1px solid #eae4e0;
     border-radius: 50%;
-    background: var(--color-card-bg);
+    background: #fbfaf8;
     color: var(--color-label-accent);
     cursor: pointer;
     font: inherit;
@@ -219,8 +283,9 @@ onBeforeUnmount(() => document.removeEventListener('keydown', closeFromKeyboard)
 
 .eyebrow {
     display: inline-flex;
+    border: 1px solid #eae4e0;
     border-radius: 999px;
-    background: var(--color-inner-bg);
+    background: #fbfaf8;
     color: var(--color-label-accent);
     font-size: 11px;
     font-weight: 800;
@@ -247,6 +312,59 @@ h2 {
     margin-top: 26px;
 }
 
+.payment-method-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.payment-method-option {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: center;
+    width: 100%;
+    border: 1px solid #eae4e0;
+    border-radius: 18px;
+    background: #fbfaf8;
+    color: #080604;
+    cursor: pointer;
+    font: inherit;
+    padding: 16px;
+    text-align: left;
+}
+
+.payment-method-option--selected {
+    border-color: #bee3cb;
+    background: #f2fbf5;
+}
+
+.payment-method-option span {
+    display: grid;
+    gap: 4px;
+}
+
+.payment-method-option strong {
+    font-size: 14px;
+    font-weight: 850;
+}
+
+.payment-method-option small {
+    color: #6f625a;
+    font-size: 12px;
+}
+
+.payment-method-option em {
+    border-radius: 999px;
+    background: #eaf7ef;
+    color: #004e1d;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 850;
+    padding: 6px 10px;
+    text-transform: uppercase;
+}
+
 label {
     display: grid;
     gap: 8px;
@@ -258,9 +376,9 @@ label {
 input {
     width: 100%;
     min-height: 46px;
-    border: 1px solid var(--color-inner-bg);
+    border: 1px solid #eae4e0;
     border-radius: 12px;
-    background: #fffdfa;
+    background: #fbfaf8;
     color: #080604;
     font: inherit;
     padding: 0 14px;
@@ -292,6 +410,7 @@ small {
 
 .primary-button {
     grid-column: 1 / -1;
+    width: 100%;
     min-height: 58px;
     border: 0;
     border-radius: 999px;
@@ -302,6 +421,33 @@ small {
     font-weight: 850;
     padding: 0 30px;
     box-shadow: 0 14px 28px rgb(243 131 19 / 28%);
+}
+
+.payment-method-list + .primary-button {
+    margin-top: 20px;
+}
+
+.modal-actions {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+}
+
+.modal-actions .primary-button {
+    grid-column: auto;
+}
+
+.secondary-button {
+    min-height: 58px;
+    border: 1px solid #eae4e0;
+    border-radius: 999px;
+    background: #fbfaf8;
+    color: var(--color-label-accent);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 850;
+    padding: 0 24px;
 }
 
 button:focus-visible,
@@ -320,7 +466,9 @@ input:focus-visible {
         padding: 24px 18px;
     }
 
-    .modal-form {
+    .modal-form,
+    .payment-method-option,
+    .modal-actions {
         grid-template-columns: 1fr;
     }
 }
