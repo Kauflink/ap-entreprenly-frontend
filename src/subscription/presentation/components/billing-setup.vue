@@ -18,6 +18,7 @@ const primaryPaymentMethod = computed(() =>
 const fiscalData = computed(() => props.billingSetup.fiscalData)
 const hasPaymentMethod = computed(() => primaryPaymentMethod.value !== null)
 const hasFiscalData = computed(() => fiscalData.value !== null)
+const paymentActionLabelKey = computed(() => 'subscription.billing.paymentMethod.manageAction')
 const fiscalActionLabelKey = computed(() =>
     hasFiscalData.value
         ? 'subscription.billing.fiscalData.editAction'
@@ -73,7 +74,7 @@ function displayCardBrand(cardBrand) {
                     </div>
                 </div>
                 <button type="button" @click="emit('payment-method-requested')">
-                    {{ t('subscription.billing.paymentMethod.addAction') }}
+                    {{ t(paymentActionLabelKey) }}
                 </button>
             </article>
 
@@ -113,8 +114,9 @@ function displayCardBrand(cardBrand) {
 
 .eyebrow {
     display: inline-flex;
+    border: 1px solid #eae4e0;
     border-radius: 999px;
-    background: var(--color-inner-bg);
+    background: #fbfaf8;
     color: var(--color-label-accent);
     font-size: 11px;
     font-weight: 800;
@@ -147,9 +149,9 @@ h2 {
 .billing-card {
     display: grid;
     min-height: 164px;
-    border: 1px solid var(--color-inner-bg);
+    border: 1px solid #eae4e0;
     border-radius: 14px;
-    background: #fffdf9;
+    background: #fbfaf8;
     padding: 18px 16px 14px;
 }
 
@@ -170,8 +172,9 @@ h2 {
     width: 36px;
     height: 36px;
     place-items: center;
+    border: 1px solid #eae4e0;
     border-radius: 12px;
-    background: #fff2d8;
+    background: #fbfaf8;
     color: #6f2700;
 }
 
@@ -216,9 +219,9 @@ h2 {
 .billing-card button {
     align-self: end;
     min-height: 52px;
-    border: 1px solid var(--color-card-border);
+    border: 1px solid #eae4e0;
     border-radius: 999px;
-    background: var(--color-card-bg);
+    background: #fbfaf8;
     color: var(--color-label-accent);
     cursor: pointer;
     font: inherit;

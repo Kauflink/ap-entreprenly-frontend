@@ -181,6 +181,7 @@
                 "title": "Payment method",
                 "emptyDescription": "No payment method registered yet.",
                 "addAction": "Add payment methods",
+                "manageAction": "View payment methods",
                 "available": "Available for payments and renewals",
                 "additionalMethod": "+{count} additional method",
                 "additionalMethods": "+{count} additional methods",

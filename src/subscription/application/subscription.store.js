@@ -93,7 +93,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
             ...currentDashboard.billingSetup,
             hasPaymentMethod: true,
             paymentMethodDescription: toPaymentMethodDescription(paymentMethod),
-            paymentMethodActionLabel: 'Agregar metodos de pago',
+            paymentMethodActionLabel: 'Ver metodos de pago',
             paymentMethods: [
                 ...currentPaymentMethods.map(method => ({ ...method, isDefault: false })),
                 paymentMethod

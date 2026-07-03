@@ -91,6 +91,10 @@ function savePaymentMethod(paymentMethod) {
         .then(() => closePaymentMethodModal())
 }
 
+function selectPaymentMethod(paymentMethodId) {
+    subscriptionApp.selectPaymentMethod(paymentMethodId)
+}
+
 function saveUpgradePaymentMethod(paymentMethod) {
     subscriptionApp.addPaymentMethod(paymentMethod)
 }
@@ -217,8 +221,10 @@ function reloadDashboard() {
 
             <PaymentMethodModal
                 v-if="paymentMethodModalOpen"
+                :billing-setup="dashboard.billingSetup"
                 @closed="closePaymentMethodModal"
                 @saved="savePaymentMethod"
+                @selected="selectPaymentMethod"
             />
 
             <BillingDataModal
