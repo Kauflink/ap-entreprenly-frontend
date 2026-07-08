@@ -852,6 +852,9 @@
                     "label":       "Número de teléfono",
                     "placeholder": "+51 999 999 999"
                 }
+            },
+            "feedback": {
+                "success": "Número de teléfono actualizado."
             }
         },
         "preferences": {
@@ -888,16 +891,6 @@
                     "name":        "Alertas de stock",
                     "desc":        "Recibe avisos cuando los productos se agoten",
                     "toggleLabel": "Activar alertas de stock"
-                },
-                "payment": {
-                    "name":        "Alertas de pago",
-                    "desc":        "Recibe avisos de nuevos pagos",
-                    "toggleLabel": "Activar alertas de pago"
-                },
-                "chatbot": {
-                    "name":        "Mensajes del chatbot",
-                    "desc":        "Recibe avisos de conversaciones del chatbot",
-                    "toggleLabel": "Activar mensajes del chatbot"
                 }
             }
         },

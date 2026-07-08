@@ -5,17 +5,13 @@ export class NotificationSettingsAssembler {
         const notifications = resource.notificationSettings ?? {}
         return new NotificationSettings({
             id: resource.id,
-            stockAlerts: notifications.stockAlerts ?? false,
-            paymentAlerts: notifications.paymentAlerts ?? false,
-            chatbotMessages: notifications.chatbotMessages ?? false
+            stockAlerts: notifications.stockAlerts ?? false
         })
     }
 
     static toResourceFromEntity(entity) {
         return {
-            stockAlerts: entity.stockAlerts,
-            paymentAlerts: entity.paymentAlerts,
-            chatbotMessages: entity.chatbotMessages
+            stockAlerts: entity.stockAlerts
         }
     }
 }

@@ -9,15 +9,11 @@ const profileStore = useProfileStore()
 const { notificationSettings } = storeToRefs(profileStore)
 
 const form = reactive({
-    stockAlerts: notificationSettings.value.stockAlerts,
-    paymentAlerts: notificationSettings.value.paymentAlerts,
-    chatbotMessages: notificationSettings.value.chatbotMessages
+    stockAlerts: notificationSettings.value.stockAlerts
 })
 
 watch(notificationSettings, current => {
     form.stockAlerts = current.stockAlerts
-    form.paymentAlerts = current.paymentAlerts
-    form.chatbotMessages = current.chatbotMessages
 }, { deep: true })
 
 function onToggle(key, event) {
@@ -46,44 +42,6 @@ function onToggle(key, event) {
                         :checked="form.stockAlerts"
                         class="visually-hidden"
                         @change="onToggle('stockAlerts', $event)"
-                    />
-                    <span class="toggle-item__track" aria-hidden="true"></span>
-                </label>
-            </div>
-
-            <div class="toggle-item">
-                <div class="toggle-item__text">
-                    <p class="toggle-item__name">{{ t('profile.notifications.items.payment.name') }}</p>
-                    <p class="toggle-item__desc">{{ t('profile.notifications.items.payment.desc') }}</p>
-                </div>
-                <label
-                    class="toggle-item__switch"
-                    :aria-label="t('profile.notifications.items.payment.toggleLabel')"
-                >
-                    <input
-                        type="checkbox"
-                        :checked="form.paymentAlerts"
-                        class="visually-hidden"
-                        @change="onToggle('paymentAlerts', $event)"
-                    />
-                    <span class="toggle-item__track" aria-hidden="true"></span>
-                </label>
-            </div>
-
-            <div class="toggle-item">
-                <div class="toggle-item__text">
-                    <p class="toggle-item__name">{{ t('profile.notifications.items.chatbot.name') }}</p>
-                    <p class="toggle-item__desc">{{ t('profile.notifications.items.chatbot.desc') }}</p>
-                </div>
-                <label
-                    class="toggle-item__switch"
-                    :aria-label="t('profile.notifications.items.chatbot.toggleLabel')"
-                >
-                    <input
-                        type="checkbox"
-                        :checked="form.chatbotMessages"
-                        class="visually-hidden"
-                        @change="onToggle('chatbotMessages', $event)"
                     />
                     <span class="toggle-item__track" aria-hidden="true"></span>
                 </label>
