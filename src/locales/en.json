@@ -888,16 +888,6 @@
                     "name":        "Stock alerts",
                     "desc":        "Get notified when products run low",
                     "toggleLabel": "Toggle stock alerts"
-                },
-                "payment": {
-                    "name":        "Payment alerts",
-                    "desc":        "Get notified about new payments",
-                    "toggleLabel": "Toggle payment alerts"
-                },
-                "chatbot": {
-                    "name":        "Chatbot messages",
-                    "desc":        "Get notified about chatbot conversations",
-                    "toggleLabel": "Toggle chatbot messages"
                 }
             }
         },
