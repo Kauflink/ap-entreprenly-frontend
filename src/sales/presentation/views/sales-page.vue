@@ -135,7 +135,6 @@ function onCloseSuccessModal() {
                         <span>{{ format(subtotal) }}</span>
                     </div>
                     <div class="summary-row">
-                        <span>{{ t('sales.summary.itemsLabel') }}</span>
                         <span>{{ itemCount }} {{ t('sales.summary.items') }}</span>
                     </div>
                     <hr />
@@ -188,7 +187,7 @@ function onCloseSuccessModal() {
 
 .page-header { margin-bottom: 24px; }
 .page-header h1 {
-    font-size: 40px;
+    font-size: clamp(28px, 5vw, 40px);
     margin: 0 0 4px 0;
     font-weight: 600;
     color: var(--color-text-strong);
@@ -201,12 +200,16 @@ function onCloseSuccessModal() {
 
 .main-layout {
     display: grid;
-    grid-template-columns: 1fr 380px;
+    /* minmax(0, 1fr) lets the left column shrink instead of forcing the grid
+       wider than the content area (which clipped the right column). */
+    grid-template-columns: minmax(0, 1fr) 380px;
     gap: 24px;
     align-items: start;
 }
-.left-column  { display: flex; flex-direction: column; }
-.right-column { display: flex; flex-direction: column; gap: 16px; }
+/* min-width: 0 lets the columns shrink below their content's intrinsic width so
+   the cart table scrolls inside its own card instead of widening the page. */
+.left-column  { display: flex; flex-direction: column; min-width: 0; }
+.right-column { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 
 .card {
     background: var(--color-card-bg);
@@ -261,6 +264,7 @@ function onCloseSuccessModal() {
     background: var(--color-card-bg);
     border-radius: 20px;
     padding: 40px 60px;
+    max-width: 90vw;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -287,7 +291,15 @@ function onCloseSuccessModal() {
 }
 .success-check { font-size: 64px; }
 
-@media (max-width: 1080px) {
-    .main-layout { grid-template-columns: 1fr; }
+/* Collapse to a single column at 1185px: above 1080px the dashboard sidebar
+   is still in flow, so the two-column layout only fits once the viewport is
+   wide enough for both the cart and the 380px summary aside. */
+@media (max-width: 1185px) {
+    .main-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .card { padding: 16px; }
+    .success-modal { padding: 28px 24px; }
 }
 </style>
