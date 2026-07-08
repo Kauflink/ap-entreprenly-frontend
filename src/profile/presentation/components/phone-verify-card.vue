@@ -1,14 +1,28 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
+import useProfileStore from '@/profile/application/profile.store.js'
 
 const { t } = useI18n()
-const phone = ref('')
+const profileStore = useProfileStore()
+const { profile } = storeToRefs(profileStore)
+
+const phone = ref(profile.value.phone ?? '')
 const phonePattern = /^\+?[\d\s\-()]{7,20}$/
 const isValid = computed(() => phonePattern.test(phone.value))
 
+/** Submission feedback: 'idle' | 'success'. */
+const status = ref('idle')
+
+watch(() => profile.value.phone, value => {
+    phone.value = value ?? ''
+})
+
 function onSubmit() {
     if (!isValid.value) return
+    profileStore.updateProfile({ phone: phone.value })
+    status.value = 'success'
 }
 </script>
 
@@ -34,6 +48,9 @@ function onSubmit() {
                         {{ t('profile.phoneVerify.verifyAction') }}
                     </button>
                 </div>
+                <p v-if="status === 'success'" class="field__success" role="status">
+                    {{ t('profile.phoneVerify.feedback.success') }}
+                </p>
             </div>
         </form>
     </div>
@@ -129,5 +146,12 @@ form {
 .btn-verify:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.field__success {
+    font-size: 11px;
+    color: var(--color-primary);
+    margin: 4px 0 0;
+    padding-left: 12px;
 }
 </style>

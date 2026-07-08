@@ -852,6 +852,9 @@
                     "label":       "Phone number",
                     "placeholder": "+51 999 999 999"
                 }
+            },
+            "feedback": {
+                "success": "Phone number updated."
             }
         },
         "preferences": {
