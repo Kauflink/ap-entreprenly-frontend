@@ -101,11 +101,7 @@ function submit() {
   <div class="modal-overlay" @click.self="closeModal">
     <div class="modal-card">
 
-      <button type="button" class="btn-close-circle" @click="closeModal">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-          <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
-        </svg>
-      </button>
+      <button type="button" class="btn-close-circle" aria-label="Close modal" @click="closeModal">&times;</button>
 
       <h2 class="modal-title-main">{{ t('lots.form.addTitle') }}</h2>
       <p class="modal-subtitle">{{ t('lots.form.addSubtitle') }}</p>
@@ -123,7 +119,7 @@ function submit() {
                   v-for="p in allProducts.filter(x => x.type === 'unit')"
                   :key="'unit-' + p.id"
                   :value="p.id + '-unit'">
-                  {{ p.name }}{{ p.brand ? ' · ' + p.brand : '' }}
+                  {{ p.name }}{{ p.brand ? ' ' + p.brand : '' }}
                 </option>
               </optgroup>
               <optgroup :label="t('products.col.byWeight')">
@@ -131,7 +127,7 @@ function submit() {
                   v-for="p in allProducts.filter(x => x.type === 'weight')"
                   :key="'weight-' + p.id"
                   :value="p.id + '-weight'">
-                  {{ p.name }}{{ p.brand ? ' · ' + p.brand : '' }}
+                  {{ p.name }}{{ p.brand ? ' ' + p.brand : '' }}
                 </option>
               </optgroup>
             </select>
