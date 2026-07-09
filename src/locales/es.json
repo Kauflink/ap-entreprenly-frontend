@@ -43,7 +43,19 @@
             "subscription": "Suscripción",
             "orders":       "Pedidos",
             "chatbot":      "Chatbot",
+            "profile":      "Perfil",
             "help":         "Ayuda"
+        }
+    },
+    "profile": {
+        "page": {
+            "title":    "Perfil y configuración",
+            "subtitle": "Gestiona el idioma del chatbot y otras preferencias"
+        },
+        "preferences": {
+            "title":        "Preferencias",
+            "language":     "Idioma",
+            "languageHint": "El chatbot responderá en el idioma que selecciones"
         }
     },
     "sales": {
