@@ -28,7 +28,6 @@ const useProfileStore = defineStore('profile', () => {
         currency: readStorage('entreprenly-currency') ?? 'PEN'
     }))
     const notificationSettings = ref(new NotificationSettings())
-    // Identifier of the loaded profile, used to target the update endpoints.
     const profileId = ref(0)
     const loading = ref(false)
     const errors = ref([])
@@ -108,7 +107,6 @@ const useProfileStore = defineStore('profile', () => {
         return persist(profileApi.updateNotifications(profileId.value, notificationSettings.value))
     }
 
-    // Load the profile on login, clear it on logout.
     watch(() => authStore.user, user => {
         if (user) loadProfile()
         else reset()

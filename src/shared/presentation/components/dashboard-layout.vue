@@ -16,6 +16,8 @@ const profileStore = useProfileStore()
 const { profile, fullName } = storeToRefs(profileStore)
 const mobileMenuOpen = ref(false)
 
+useProfileStore()
+
 const navItems = [
     { labelKey: 'dashboard.nav.home',         icon: 'dashboard',          path: '/home' },
     { labelKey: 'dashboard.nav.products',     icon: 'inventory_2',        path: '/inventory-products' },
