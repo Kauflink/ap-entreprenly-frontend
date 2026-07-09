@@ -1,4 +1,4 @@
-import { BillingSetup } from '@/subscription/domain/model/billing-setup-entity.js'
+import { BillingSetup, normalizePaymentMethods } from '@/subscription/domain/model/billing-setup-entity.js'
 import { SubscriptionActivity } from '@/subscription/domain/model/subscription-activity-entity.js'
 import { SubscriptionDashboard } from '@/subscription/domain/model/subscription-dashboard-entity.js'
 import { SubscriptionLimit } from '@/subscription/domain/model/subscription-limit-entity.js'
@@ -26,7 +26,7 @@ export class SubscriptionAssembler {
             fiscalDataActionLabel: billingSetup.fiscalDataActionLabel,
             hasPaymentMethod: billingSetup.hasPaymentMethod,
             hasFiscalData: billingSetup.hasFiscalData,
-            paymentMethods: billingSetup.paymentMethods.map(paymentMethod => ({
+            paymentMethods: normalizePaymentMethods(billingSetup.paymentMethods).map(paymentMethod => ({
                 id: paymentMethod.id,
                 cardBrand: paymentMethod.cardBrand,
                 lastFour: paymentMethod.lastFour,
@@ -90,7 +90,7 @@ export class SubscriptionAssembler {
             fiscalDataActionLabel: response.fiscalDataActionLabel,
             hasPaymentMethod: response.hasPaymentMethod,
             hasFiscalData: response.hasFiscalData,
-            paymentMethods: response.paymentMethods ?? [],
+            paymentMethods: normalizePaymentMethods(response.paymentMethods ?? []),
             fiscalData: response.fiscalData ?? null
         })
     }
