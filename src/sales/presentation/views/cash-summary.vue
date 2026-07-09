@@ -58,7 +58,7 @@ const { format } = useCurrencyFormatter()
 
 .cash-widgets {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 16px;
 }
 .cash-widget {
@@ -84,7 +84,7 @@ const { format } = useCurrencyFormatter()
 }
 .widget-icon { font-size: 18px; }
 .widget-value {
-    font-size: 28px;
+    font-size: clamp(20px, 4vw, 28px);
     font-weight: bold;
     margin: 0;
     color: var(--color-text-strong);
