@@ -173,7 +173,12 @@ function onCloseSuccessModal() {
             <div class="success-modal" @click.stop>
                 <button class="close-btn" @click="onCloseSuccessModal">✕</button>
                 <h2 class="success-title">{{ t('sales.success.title') }}</h2>
-                <div class="success-check">✅</div>
+                <div class="success-check" aria-hidden="true">
+                    <svg class="check-svg" viewBox="0 0 52 52">
+                        <circle class="check-circle" cx="26" cy="26" r="24" />
+                        <path class="check-mark" d="M15 27 l7 7 l15 -16" />
+                    </svg>
+                </div>
             </div>
         </div>
     </div>
@@ -289,7 +294,28 @@ function onCloseSuccessModal() {
     margin: 0;
     color: var(--color-text-strong);
 }
-.success-check { font-size: 64px; }
+.success-check {
+    width: 72px;
+    height: 72px;
+    animation: check-pop 0.3s ease-out both;
+}
+.check-svg { width: 100%; height: 100%; display: block; }
+.check-circle { fill: #22c55e; }
+.check-mark {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+@keyframes check-pop {
+    0%   { transform: scale(0.7);  opacity: 0; }
+    60%  { transform: scale(1.05); }
+    100% { transform: scale(1);    opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .success-check { animation: none; }
+}
 
 /* Collapse to a single column at 1185px: above 1080px the dashboard sidebar
    is still in flow, so the two-column layout only fits once the viewport is
