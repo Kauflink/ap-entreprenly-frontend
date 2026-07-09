@@ -358,11 +358,23 @@
             "holderPlaceholder": "Cardholder name",
             "save": "Save changes"
         },
+        "feedback": {
+            "controlPlanSelected": "Control Plan selected. Complete billing to continue.",
+            "controlPlanActivated": "Subscription updated to Control Plan.",
+            "cancellationScheduled": "Cancellation scheduled.",
+            "controlPlanKept": "Control Plan will remain active.",
+            "paymentMethodAdded": "Payment method registered for the subscription.",
+            "paymentMethodSelected": "Payment method selected for the subscription.",
+            "fiscalDataCompleted": "Fiscal data completed for billing.",
+            "historyEmpty": "There is not enough activity to download."
+        },
         "history": {
             "title": "Subscription history",
             "ariaLabel": "Subscription history",
             "downloaded": "History downloaded successfully with the visible subscription activity.",
             "downloadAction": "Download history",
+            "fileName": "entreprenly-subscription-history.csv",
+            "csvHeader": "Event,Detail",
             "paymentMethod": {
                 "title": "Payment method",
                 "empty": "No payment method registered.",

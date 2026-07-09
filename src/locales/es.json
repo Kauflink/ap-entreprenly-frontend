@@ -358,11 +358,23 @@
             "holderPlaceholder": "Nombre del titular",
             "save": "Guardar cambios"
         },
+        "feedback": {
+            "controlPlanSelected": "Plan Control seleccionado. Completa facturacion para continuar.",
+            "controlPlanActivated": "Suscripcion actualizada a Plan Control.",
+            "cancellationScheduled": "Cancelacion programada.",
+            "controlPlanKept": "Plan Control se mantendra activo.",
+            "paymentMethodAdded": "Metodo de pago registrado para la suscripcion.",
+            "paymentMethodSelected": "Metodo de pago seleccionado para la suscripcion.",
+            "fiscalDataCompleted": "Datos fiscales completados para facturacion.",
+            "historyEmpty": "No hay actividad suficiente para descargar."
+        },
         "history": {
             "title": "Historial de suscripción",
             "ariaLabel": "Historial de suscripción",
             "downloaded": "Historial descargado correctamente con la actividad visible de la suscripción.",
             "downloadAction": "Descargar historial",
+            "fileName": "historial-suscripcion-entreprenly.csv",
+            "csvHeader": "Evento,Detalle",
             "paymentMethod": {
                 "title": "Método de pago",
                 "empty": "Sin método de pago registrado.",
