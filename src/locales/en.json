@@ -100,6 +100,24 @@
         "success": {
             "title": "Sale Completed"
         },
+        "history": {
+            "title":    "Sales history",
+            "loading":  "Loading sales…",
+            "empty":    "No sales registered for this day.",
+            "products": "items",
+            "unit":     "u.",
+            "total":    "Total",
+            "method": {
+                "cash":    "Cash",
+                "digital": "Card / Yape / Plin"
+            },
+            "col": {
+                "product":   "Product",
+                "measure":   "Qty/weight",
+                "unitPrice": "Unit P.",
+                "subtotal":  "Subtotal"
+            }
+        },
         "quantity-modal": {
             "title":             "Enter Quantity",
             "subtitle":          "Enter the number of products",
