@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Sales history panel. Shows the sales registered on the selected business day (newest first,
+ * scrollable) and opens a detail modal with the line items.
+ */
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import useSalesStore from '@/sales/application/sales.store.js'

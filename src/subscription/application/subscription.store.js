@@ -85,7 +85,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
             })
     }
 
-    function addPaymentMethod(paymentMethodInput) {
+    function addPaymentMethod(paymentMethodInput, skipApi = false) {
         const currentDashboard = dashboard.value
         const currentPaymentMethods = currentDashboard.billingSetup.paymentMethods
         const paymentMethod = toPaymentMethod(paymentMethodInput, currentPaymentMethods)
@@ -100,10 +100,10 @@ const useSubscriptionStore = defineStore('subscription', () => {
             ]
         })
 
-        return saveBillingSetup(billingSetup, 'Metodo de pago registrado para la suscripcion.')
+        return saveBillingSetup(billingSetup, 'Metodo de pago registrado para la suscripcion.', skipApi)
     }
 
-    function selectPaymentMethod(paymentMethodId) {
+    function selectPaymentMethod(paymentMethodId, skipApi = false) {
         const currentDashboard = dashboard.value
         const selectedPaymentMethod = currentDashboard.billingSetup.paymentMethods
             .find(paymentMethod => paymentMethod.id === paymentMethodId)
@@ -120,10 +120,10 @@ const useSubscriptionStore = defineStore('subscription', () => {
             }))
         })
 
-        return saveBillingSetup(billingSetup, 'Metodo de pago seleccionado para la suscripcion.')
+        return saveBillingSetup(billingSetup, 'Metodo de pago seleccionado para la suscripcion.', skipApi)
     }
 
-    function completeFiscalData(fiscalData) {
+    function completeFiscalData(fiscalData, skipApi = false) {
         const currentDashboard = dashboard.value
         const billingSetup = new BillingSetup({
             ...currentDashboard.billingSetup,
@@ -133,7 +133,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
             fiscalData
         })
 
-        return saveBillingSetup(billingSetup, 'Datos fiscales completados para facturacion.')
+        return saveBillingSetup(billingSetup, 'Datos fiscales completados para facturacion.', skipApi)
     }
 
     function downloadActivityHistory() {
@@ -251,13 +251,18 @@ const useSubscriptionStore = defineStore('subscription', () => {
         return limit
     }
 
-    function saveBillingSetup(billingSetup, nextFeedback) {
+    function saveBillingSetup(billingSetup, nextFeedback, skipApi = false) {
         const nextDashboard = new SubscriptionDashboard({
             ...dashboard.value,
             billingSetup
         })
 
         dashboardSignal.value = nextDashboard
+
+        if (skipApi) {
+            feedback.value = nextFeedback
+            return Promise.resolve()
+        }
 
         return subscriptionApi.updateBillingSetup(authStore.userId, billingSetup)
             .then(savedDashboard => {

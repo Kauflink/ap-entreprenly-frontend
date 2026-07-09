@@ -20,6 +20,9 @@ coverage
 .vscode/*
 !.vscode/extensions.json
 .idea
+
+# AI tooling (MCP config, local assistant files)
+.ai/
 *.suo
 *.ntvs*
 *.njsproj
