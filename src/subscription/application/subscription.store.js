@@ -11,11 +11,16 @@ import { SubscriptionDashboard } from '@/subscription/domain/model/subscription-
 import { SubscriptionLimit } from '@/subscription/domain/model/subscription-limit-entity.js'
 import { SubscriptionApi } from '@/subscription/infrastructure/subscription-api.js'
 import useAuthStore from '@/auth/application/auth.store.js'
+import i18n from '@/i18n.js'
 
 const subscriptionApi = new SubscriptionApi()
 
 function formatCurrency(priceInPen) {
     return `S/ ${Number(priceInPen ?? 0).toFixed(2)}`
+}
+
+function t(key, params) {
+    return i18n.global.t(key, params)
 }
 
 const useSubscriptionStore = defineStore('subscription', () => {
@@ -62,7 +67,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
     function selectControlPlan() {
         const plan = dashboardSignal.value.recommendedPlan
         selectedPlanId.value = plan.id
-        feedback.value = 'Plan Control seleccionado. Completa facturacion para continuar.'
+        feedback.value = t('subscription.feedback.controlPlanSelected')
     }
 
     function activateControlPlan() {
@@ -70,7 +75,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
             .then(nextDashboard => {
                 dashboardSignal.value = nextDashboard
                 selectedPlanId.value = null
-                feedback.value = 'Suscripcion actualizada a Plan Control.'
+                feedback.value = t('subscription.feedback.controlPlanActivated')
             })
     }
 
@@ -78,7 +83,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
         return subscriptionApi.scheduleCancellation(authStore.userId)
             .then(nextDashboard => {
                 dashboardSignal.value = nextDashboard
-                feedback.value = 'Cancelacion programada.'
+                feedback.value = t('subscription.feedback.cancellationScheduled')
             })
     }
 
@@ -86,7 +91,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
         return subscriptionApi.keepControlPlan(authStore.userId)
             .then(nextDashboard => {
                 dashboardSignal.value = nextDashboard
-                feedback.value = 'Plan Control se mantendra activo.'
+                feedback.value = t('subscription.feedback.controlPlanKept')
             })
     }
 
@@ -104,14 +109,14 @@ const useSubscriptionStore = defineStore('subscription', () => {
             ...currentDashboard.billingSetup,
             hasPaymentMethod: true,
             paymentMethodDescription: toPaymentMethodDescription(nextPaymentMethod),
-            paymentMethodActionLabel: 'Ver metodos de pago',
+            paymentMethodActionLabel: t('subscription.billing.paymentMethod.manageAction'),
             paymentMethods: currentPaymentMethods
                 .filter(method => method.id !== nextPaymentMethod.id)
                 .map(method => ({ ...method, isDefault: false }))
                 .concat(nextPaymentMethod)
         })
 
-        return saveBillingSetup(billingSetup, 'Metodo de pago registrado para la suscripcion.', skipApi)
+        return saveBillingSetup(billingSetup, t('subscription.feedback.paymentMethodAdded'), skipApi)
     }
 
     function selectPaymentMethod(paymentMethodId, skipApi = false) {
@@ -131,7 +136,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
             }))
         })
 
-        return saveBillingSetup(billingSetup, 'Metodo de pago seleccionado para la suscripcion.', skipApi)
+        return saveBillingSetup(billingSetup, t('subscription.feedback.paymentMethodSelected'), skipApi)
     }
 
     function completeFiscalData(fiscalData, skipApi = false) {
@@ -140,18 +145,18 @@ const useSubscriptionStore = defineStore('subscription', () => {
             ...currentDashboard.billingSetup,
             hasFiscalData: true,
             fiscalDataDescription: `${fiscalData.documentType} ${fiscalData.documentNumber} - ${fiscalData.businessName}`,
-            fiscalDataActionLabel: 'Editar datos fiscales',
+            fiscalDataActionLabel: t('subscription.billing.fiscalData.editAction'),
             fiscalData
         })
 
-        return saveBillingSetup(billingSetup, 'Datos fiscales completados para facturacion.', skipApi)
+        return saveBillingSetup(billingSetup, t('subscription.feedback.fiscalDataCompleted'), skipApi)
     }
 
     function downloadActivityHistory() {
         const activity = subscriptionActivityRows()
 
         if (activity.length === 0) {
-            feedback.value = 'No hay actividad suficiente para descargar.'
+            feedback.value = t('subscription.feedback.historyEmpty')
             return
         }
 
@@ -161,10 +166,10 @@ const useSubscriptionStore = defineStore('subscription', () => {
         const anchor = document.createElement('a')
 
         anchor.href = url
-        anchor.download = 'historial-suscripcion-entreprenly.csv'
+        anchor.download = t('subscription.history.fileName')
         anchor.click()
         URL.revokeObjectURL(url)
-        feedback.value = 'Historial de suscripcion descargado.'
+        feedback.value = t('subscription.history.downloaded')
     }
 
     function toSubscriptionActivityCsv(activity) {
@@ -172,7 +177,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
             [item.title, item.detail].map(value => toCsvValue(value)).join(',')
         )
 
-        return ['sep=,', 'Evento,Detalle', ...rows].join('\r\n')
+        return ['sep=,', t('subscription.history.csvHeader'), ...rows].join('\r\n')
     }
 
     function toCsvValue(value) {
@@ -186,12 +191,12 @@ const useSubscriptionStore = defineStore('subscription', () => {
             ...currentDashboard.activity.map(item => withCurrentCurrencyActivityDetail(item, currentDashboard)),
             new SubscriptionActivity({
                 id: 'payment-method',
-                title: 'Metodo de pago',
+                title: t('subscription.history.paymentMethod.title'),
                 detail: paymentMethodActivityDetail(currentDashboard.billingSetup)
             }),
             new SubscriptionActivity({
                 id: 'fiscal-data',
-                title: 'Datos fiscales',
+                title: t('subscription.history.fiscalData.title'),
                 detail: fiscalDataActivityDetail(currentDashboard.billingSetup)
             })
         ]
@@ -208,33 +213,40 @@ const useSubscriptionStore = defineStore('subscription', () => {
 
     function currentStatusActivityDetail(currentDashboard) {
         if (currentDashboard.currentPlan.status === 'free') {
-            return 'Plan Free activo - Sin cargos registrados'
+            return t('subscription.activity.current-status.detail.free')
         }
 
         const price = formatCurrency(currentDashboard.currentPlan.monthlyPrice)
 
         if (currentDashboard.currentPlan.status === 'scheduled-cancellation') {
-            return `Cancelacion programada - ${price}/mes`
+            return t('subscription.activity.current-status.detail.scheduled-cancellation', { price })
         }
 
-        return `Plan Control activo - ${price}/mes`
+        return t('subscription.activity.current-status.detail.active', { price })
     }
 
     function paymentMethodActivityDetail(billingSetup) {
         const paymentMethod = billingSetup.paymentMethods.find(method => method.isDefault)
             ?? billingSetup.paymentMethods.at(-1)
 
-        if (!paymentMethod) return 'Sin metodo de pago registrado.'
+        if (!paymentMethod) return t('subscription.history.paymentMethod.empty')
 
-        return `${paymentMethod.cardBrand} terminada en ${paymentMethod.lastFour} registrada para pagos y renovaciones`
+        return t('subscription.history.paymentMethod.detail', {
+            brand: paymentMethod.cardBrand,
+            lastFour: paymentMethod.lastFour
+        })
     }
 
     function fiscalDataActivityDetail(billingSetup) {
         const fiscalData = billingSetup.fiscalData
 
-        if (fiscalData === null) return 'Datos fiscales pendientes de completar.'
+        if (fiscalData === null) return t('subscription.history.fiscalData.empty')
 
-        return `${fiscalData.documentType} ${fiscalData.documentNumber} - ${fiscalData.businessName}`
+        return t('subscription.history.fiscalData.detail', {
+            documentType: fiscalData.documentType,
+            documentNumber: fiscalData.documentNumber,
+            businessName: fiscalData.businessName
+        })
     }
 
     function withInventoryUsage(currentDashboard) {
@@ -301,7 +313,12 @@ const useSubscriptionStore = defineStore('subscription', () => {
     }
 
     function toPaymentMethodDescription(paymentMethod) {
-        return `${paymentMethod.cardBrand} terminada en ${paymentMethod.lastFour} - vence ${paymentMethod.expiryMonth}/${paymentMethod.expiryYear}`
+        return t('subscription.billing.paymentMethod.cardEnding', {
+            brand: paymentMethod.cardBrand,
+            lastFour: paymentMethod.lastFour,
+            month: paymentMethod.expiryMonth,
+            year: paymentMethod.expiryYear
+        })
     }
 
     return {
