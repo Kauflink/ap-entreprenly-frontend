@@ -1,34 +1,41 @@
 import { BaseApi } from '@/shared/infrastructure/base-api.js'
+import { UserProfileAssembler } from '@/profile/infrastructure/user-profile.assembler.js'
+import { UserPreferencesAssembler } from '@/profile/infrastructure/user-preferences.assembler.js'
+import { NotificationSettingsAssembler } from '@/profile/infrastructure/notification-settings.assembler.js'
 
-const STORAGE_KEY = 'entreprenly-auth'
 const profilesPath = import.meta.env.VITE_PROFILES_ENDPOINT_PATH ?? '/profiles'
 
-function readUserId() {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY)
-        return raw ? (JSON.parse(raw).id ?? 0) : 0
-    } catch {
-        return 0
+function toModels(resource) {
+    return {
+        id: resource.id,
+        profile: UserProfileAssembler.toEntityFromResource(resource),
+        preferences: UserPreferencesAssembler.toEntityFromResource(resource),
+        notificationSettings: NotificationSettingsAssembler.toEntityFromResource(resource)
     }
 }
 
 export class ProfileApi extends BaseApi {
-    getProfile() {
-        const userId = readUserId()
-        if (!userId) return Promise.reject(new Error('No authenticated user'))
-        return this.http
-            .get(`${profilesPath}/by-user/${userId}`)
-            .then(res => ({ id: res.data.id, userId: res.data.userId, preferences: res.data.preferences ?? {} }))
+    getProfile(userId) {
+        return this.http.get(`${profilesPath}?userId=${userId}`).then(response => {
+            const list = Array.isArray(response.data) ? response.data : [response.data]
+            const resource = list.find(item => item.userId === userId) ?? list[0]
+            if (!resource) throw new Error(`Profile not found for user ${userId}`)
+            return toModels(resource)
+        })
     }
 
-    updatePreferences(profileId, preferences) {
-        return this.http
-            .put(`${profilesPath}/${profileId}/preferences`, {
-                language: preferences.language,
-                timezone: preferences.timezone ?? '',
-                theme:    preferences.theme    ?? 'light',
-                currency: preferences.currency ?? 'PEN'
-            })
-            .then(res => ({ id: res.data.id, preferences: res.data.preferences ?? {} }))
+    updateProfile(id, profile) {
+        const payload = UserProfileAssembler.toResourceFromEntity(profile)
+        return this.http.put(`${profilesPath}/${id}`, payload).then(response => toModels(response.data))
+    }
+
+    updatePreferences(id, preferences) {
+        const payload = UserPreferencesAssembler.toResourceFromEntity(preferences)
+        return this.http.put(`${profilesPath}/${id}/preferences`, payload).then(response => toModels(response.data))
+    }
+
+    updateNotifications(id, notificationSettings) {
+        const payload = NotificationSettingsAssembler.toResourceFromEntity(notificationSettings)
+        return this.http.put(`${profilesPath}/${id}/notification-settings`, payload).then(response => toModels(response.data))
     }
 }

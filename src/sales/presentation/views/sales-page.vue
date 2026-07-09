@@ -7,12 +7,15 @@ import { SaleItem } from '@/sales/domain/model/sale-item-entity.js'
 import SalesCart from './sales-cart.vue'
 import PaymentMethod from './payment-method.vue'
 import CashSummary from './cash-summary.vue'
+import SalesHistory from './sales-history.vue'
 import QuantityModal from '../components/quantity-modal.vue'
 import WeightModal from '../components/weight-modal.vue'
+import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js'
 
 const { t } = useI18n()
 const store = useSalesStore()
 const { loading } = storeToRefs(store)
+const { format } = useCurrencyFormatter()
 
 const cartItems        = ref([])
 const pendingProduct   = ref(null)
@@ -28,8 +31,8 @@ const subtotal  = computed(() =>
 const itemCount = computed(() => cartItems.value.length)
 
 onMounted(() => {
-    store.fetchProducts()
-    store.loadTodayCashRegister()
+    store.reloadProducts()
+    store.loadSales()
 })
 
 function onProductSelected(product) {
@@ -118,6 +121,7 @@ function onCloseSuccessModal() {
                     @item-deleted="onItemDeleted"
                 />
                 <CashSummary />
+                <SalesHistory />
             </div>
 
             <aside class="right-column">
@@ -128,16 +132,15 @@ function onCloseSuccessModal() {
                     </h2>
                     <div class="summary-row">
                         <span>{{ t('sales.summary.subtotal') }}</span>
-                        <span>S/ {{ subtotal.toFixed(2) }}</span>
+                        <span>{{ format(subtotal) }}</span>
                     </div>
                     <div class="summary-row">
-                        <span>{{ t('sales.summary.itemsLabel') }}</span>
                         <span>{{ itemCount }} {{ t('sales.summary.items') }}</span>
                     </div>
                     <hr />
                     <div class="summary-total">
                         <span>{{ t('sales.summary.total') }}</span>
-                        <span class="total-value">S/ {{ subtotal.toFixed(2) }}</span>
+                        <span class="total-value">{{ format(subtotal) }}</span>
                     </div>
                 </section>
 
@@ -170,7 +173,12 @@ function onCloseSuccessModal() {
             <div class="success-modal" @click.stop>
                 <button class="close-btn" @click="onCloseSuccessModal">✕</button>
                 <h2 class="success-title">{{ t('sales.success.title') }}</h2>
-                <div class="success-check">✅</div>
+                <div class="success-check" aria-hidden="true">
+                    <svg class="check-svg" viewBox="0 0 52 52">
+                        <circle class="check-circle" cx="26" cy="26" r="24" />
+                        <path class="check-mark" d="M15 27 l7 7 l15 -16" />
+                    </svg>
+                </div>
             </div>
         </div>
     </div>
@@ -184,7 +192,7 @@ function onCloseSuccessModal() {
 
 .page-header { margin-bottom: 24px; }
 .page-header h1 {
-    font-size: 40px;
+    font-size: clamp(28px, 5vw, 40px);
     margin: 0 0 4px 0;
     font-weight: 600;
     color: var(--color-text-strong);
@@ -197,12 +205,16 @@ function onCloseSuccessModal() {
 
 .main-layout {
     display: grid;
-    grid-template-columns: 1fr 380px;
+    /* minmax(0, 1fr) lets the left column shrink instead of forcing the grid
+       wider than the content area (which clipped the right column). */
+    grid-template-columns: minmax(0, 1fr) 380px;
     gap: 24px;
     align-items: start;
 }
-.left-column  { display: flex; flex-direction: column; }
-.right-column { display: flex; flex-direction: column; gap: 16px; }
+/* min-width: 0 lets the columns shrink below their content's intrinsic width so
+   the cart table scrolls inside its own card instead of widening the page. */
+.left-column  { display: flex; flex-direction: column; min-width: 0; }
+.right-column { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 
 .card {
     background: var(--color-card-bg);
@@ -257,6 +269,7 @@ function onCloseSuccessModal() {
     background: var(--color-card-bg);
     border-radius: 20px;
     padding: 40px 60px;
+    max-width: 90vw;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -281,9 +294,38 @@ function onCloseSuccessModal() {
     margin: 0;
     color: var(--color-text-strong);
 }
-.success-check { font-size: 64px; }
+.success-check {
+    width: 72px;
+    height: 72px;
+    animation: check-pop 0.3s ease-out both;
+}
+.check-svg { width: 100%; height: 100%; display: block; }
+.check-circle { fill: #22c55e; }
+.check-mark {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+@keyframes check-pop {
+    0%   { transform: scale(0.7);  opacity: 0; }
+    60%  { transform: scale(1.05); }
+    100% { transform: scale(1);    opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .success-check { animation: none; }
+}
 
-@media (max-width: 1080px) {
-    .main-layout { grid-template-columns: 1fr; }
+/* Collapse to a single column at 1185px: above 1080px the dashboard sidebar
+   is still in flow, so the two-column layout only fits once the viewport is
+   wide enough for both the cart and the 380px summary aside. */
+@media (max-width: 1185px) {
+    .main-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .card { padding: 16px; }
+    .success-modal { padding: 28px 24px; }
 }
 </style>

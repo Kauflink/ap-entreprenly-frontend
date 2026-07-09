@@ -1,54 +1,36 @@
 import { BaseApi } from '@/shared/infrastructure/base-api.js'
 import { BaseEndpoint } from '@/shared/infrastructure/base-endpoint.js'
 
-const unitProductsPath    = '/inventory-unit-products'
-const weightProductsPath  = '/inventory-weight-products'
-const unitLotsPath        = '/inventory-unit-lots'
-const weightLotsPath      = '/inventory-weight-lots'
-const salesPath           = '/sales'
-const cashRegistersPath   = '/cash-registers'
+const salesProductsPath = '/sales-products'
+const salesPath         = '/sales'
 
 export class SalesApi extends BaseApi {
-    #unitProductsEndpoint
-    #weightProductsEndpoint
-    #unitLotsEndpoint
-    #weightLotsEndpoint
+    #salesProductsEndpoint
     #salesEndpoint
-    #cashRegistersEndpoint
 
     constructor() {
         super()
-        this.#unitProductsEndpoint   = new BaseEndpoint(this, unitProductsPath)
-        this.#weightProductsEndpoint = new BaseEndpoint(this, weightProductsPath)
-        this.#unitLotsEndpoint       = new BaseEndpoint(this, unitLotsPath)
-        this.#weightLotsEndpoint     = new BaseEndpoint(this, weightLotsPath)
-        this.#salesEndpoint          = new BaseEndpoint(this, salesPath)
-        this.#cashRegistersEndpoint  = new BaseEndpoint(this, cashRegistersPath)
+        this.#salesProductsEndpoint = new BaseEndpoint(this, salesProductsPath)
+        this.#salesEndpoint         = new BaseEndpoint(this, salesPath)
     }
 
-    getUnitProducts()    { return this.#unitProductsEndpoint.getAll() }
-    getWeightProducts()  { return this.#weightProductsEndpoint.getAll() }
-    getUnitLots()        { return this.#unitLotsEndpoint.getAll() }
-    getWeightLots()      { return this.#weightLotsEndpoint.getAll() }
+    /**
+     * Fetches the sellable catalog in a single request. The backend returns each product with its
+     * stock already computed by the Inventory context, so the client no longer composes products
+     * and lots itself.
+     */
+    getSalesProducts() { return this.#salesProductsEndpoint.getAll() }
 
-    createSale(sale)     { return this.#salesEndpoint.create(sale) }
+    /** Registers a sale; the backend recomputes totals and deducts inventory stock. */
+    createSale(sale)   { return this.#salesEndpoint.create(sale) }
 
-    getCashRegisterByDate(date) {
-        return this.http.get(`${cashRegistersPath}?date=${date}`)
-    }
-    createCashRegister(date) {
-        return this.#cashRegistersEndpoint.create({ date, totalCash: 0, totalDigital: 0, saleCount: 0 })
-    }
-    updateCashRegister(register) {
-        return this.#cashRegistersEndpoint.update(register.id, register)
-    }
+    getAllSales()      { return this.#salesEndpoint.getAll() }
 
-    patchUnitLot(id, quantity) {
-        return this.http.patch(`${unitLotsPath}/${id}`, { quantity })
-    }
-    patchWeightLot(id, quantityKg) {
-        return this.http.patch(`${weightLotsPath}/${id}`, { quantityKg })
+    /** Retrieves the sales registered on the given business day (YYYY-MM-DD). */
+    getSalesByDate(date) {
+        return this.http.get(`${salesPath}?date=${date}`)
     }
 
+    /** Reads the IoT scale connection status used by the weight-entry modal. */
     getScaleStatus() { return this.http.get('/iot-scale') }
 }

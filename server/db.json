@@ -358,6 +358,20 @@
       "totalDigital": 0,
       "saleCount": 0,
       "id": 4
+    },
+    {
+      "date": "2026-05-16",
+      "totalCash": 0,
+      "totalDigital": 0,
+      "saleCount": 0,
+      "id": 5
+    },
+    {
+      "date": "2026-06-03",
+      "totalCash": 0,
+      "totalDigital": 0,
+      "saleCount": 0,
+      "id": 6
     }
   ],
   "iot-scale": {
@@ -725,7 +739,7 @@
       "language": "en",
       "timezone": "America/Bogota (UTC-05:00)",
       "theme": "light",
-      "currency": "USD"
+      "currency": "PEN"
     },
     "notification_settings": {
       "id": 1,

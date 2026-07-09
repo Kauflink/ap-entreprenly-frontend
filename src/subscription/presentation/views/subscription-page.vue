@@ -31,6 +31,10 @@ const billingDataModalOpen = ref(false)
 const historyModalOpen = ref(false)
 const historyDownloaded = ref(false)
 
+const pendingFiscalData = ref(null)
+const pendingPaymentMethod = ref(null)
+const pendingPaymentMethodId = ref(null)
+
 onMounted(() => {
     subscriptionApp.loadDashboard()
 })
@@ -49,7 +53,27 @@ function closeUpgradeModal() {
 }
 
 function activateControlPlan() {
-    subscriptionApp.activateControlPlan()
+    const pendingFiscal = pendingFiscalData.value
+    const pendingPayment = pendingPaymentMethod.value
+    const pendingMethodId = pendingPaymentMethodId.value
+
+    pendingFiscalData.value = null
+    pendingPaymentMethod.value = null
+    pendingPaymentMethodId.value = null
+
+    let chain = Promise.resolve()
+
+    if (pendingFiscal) {
+        chain = chain.then(() => subscriptionApp.completeFiscalData(pendingFiscal))
+    }
+
+    if (pendingPayment) {
+        chain = chain.then(() => subscriptionApp.addPaymentMethod(pendingPayment))
+    } else if (pendingMethodId) {
+        chain = chain.then(() => subscriptionApp.selectPaymentMethod(pendingMethodId))
+    }
+
+    chain.then(() => subscriptionApp.activateControlPlan())
 }
 
 function openRenewalModal() {
@@ -91,12 +115,18 @@ function savePaymentMethod(paymentMethod) {
         .then(() => closePaymentMethodModal())
 }
 
+function selectPaymentMethod(paymentMethodId) {
+    subscriptionApp.selectPaymentMethod(paymentMethodId)
+}
+
 function saveUpgradePaymentMethod(paymentMethod) {
-    subscriptionApp.addPaymentMethod(paymentMethod)
+    pendingPaymentMethod.value = paymentMethod
+    subscriptionApp.addPaymentMethod(paymentMethod, true)
 }
 
 function selectUpgradePaymentMethod(paymentMethodId) {
-    subscriptionApp.selectPaymentMethod(paymentMethodId)
+    pendingPaymentMethodId.value = paymentMethodId
+    subscriptionApp.selectPaymentMethod(paymentMethodId, true)
 }
 
 function openBillingDataModal() {
@@ -113,7 +143,8 @@ function saveFiscalData(fiscalData) {
 }
 
 function saveUpgradeFiscalData(fiscalData) {
-    subscriptionApp.completeFiscalData(fiscalData)
+    pendingFiscalData.value = fiscalData
+    subscriptionApp.completeFiscalData(fiscalData, true)
 }
 
 function openHistoryModal() {
@@ -217,8 +248,10 @@ function reloadDashboard() {
 
             <PaymentMethodModal
                 v-if="paymentMethodModalOpen"
+                :billing-setup="dashboard.billingSetup"
                 @closed="closePaymentMethodModal"
                 @saved="savePaymentMethod"
+                @selected="selectPaymentMethod"
             />
 
             <BillingDataModal

@@ -77,6 +77,26 @@ export function resolveCardBrand(cardBrand) {
     return CARD_BRANDS.unknown
 }
 
+export function paymentMethodIdentity(paymentMethod = {}) {
+    return [
+        paymentMethod.cardBrand,
+        paymentMethod.lastFour,
+        paymentMethod.holderName,
+        paymentMethod.expiryMonth,
+        paymentMethod.expiryYear
+    ].map(value => String(value ?? '').trim().toLowerCase()).join('|')
+}
+
+export function normalizePaymentMethods(paymentMethods = []) {
+    const paymentMethodsByIdentity = new Map()
+
+    paymentMethods.forEach(paymentMethod => {
+        paymentMethodsByIdentity.set(paymentMethodIdentity(paymentMethod), paymentMethod)
+    })
+
+    return [...paymentMethodsByIdentity.values()]
+}
+
 export class BillingSetup {
     constructor({
         paymentMethodTitle = '',
@@ -96,9 +116,11 @@ export class BillingSetup {
         this.fiscalDataTitle = fiscalDataTitle
         this.fiscalDataDescription = fiscalDataDescription
         this.fiscalDataActionLabel = fiscalDataActionLabel
-        this.paymentMethods = paymentMethods
+        const normalizedPaymentMethods = normalizePaymentMethods(paymentMethods)
+
+        this.paymentMethods = normalizedPaymentMethods
         this.fiscalData = fiscalData
-        this.hasPaymentMethod = hasPaymentMethod ?? paymentMethods.length > 0
+        this.hasPaymentMethod = hasPaymentMethod ?? normalizedPaymentMethods.length > 0
         this.hasFiscalData = hasFiscalData ?? fiscalData !== null
     }
 }

@@ -1,8 +1,9 @@
 <script setup>
-import { ref, computed, watch, nextTick, onMounted } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import useChatbotStore from '../../application/chatbot.store.js'
+import useProfileStore from '@/profile/application/profile.store.js'
 import ConversationList   from '../components/conversation-list.vue'
 import ConversationHeader from '../components/conversation-header.vue'
 import MessageBubble      from '../components/message-bubble.vue'
@@ -11,6 +12,7 @@ import ChatInput          from '../components/chat-input.vue'
 const { t }  = useI18n()
 const store  = useChatbotStore()
 const router = useRouter()
+const profileStore = useProfileStore()
 
 const messagesContainer = ref(null)
 const showRejectForm    = ref(false)
@@ -22,10 +24,7 @@ const rejectReasons = [
   'chatbot.payment.reasons.fake'
 ]
 
-/** Show payment bar only after the client sends a receipt image */
-const receiptVisible = computed(() =>
-  store.messages.some(m => m.sender === 'client' && m.type === 'image')
-)
+const chatbotAllowed = computed(() => profileStore.profile.plan !== 'Free')
 
 const clientInitials = computed(() => {
   const conv = store.selectedConversation
@@ -34,10 +33,13 @@ const clientInitials = computed(() => {
   return `${parts[0]?.[0] ?? ''}${parts[1]?.[0] ?? ''}`
 })
 
-// Luis Ramirez → Plin · todos los demás → Yape
-const paymentApp = computed(() => {
-  const name = store.selectedConversation?.clientName ?? ''
-  return name.toLowerCase().startsWith('luis') ? 'plin' : 'yape'
+const conversationReceiptUrl = computed(() => {
+  const convId = store.selectedConversationId
+  if (!convId) return null
+  const withReceipt = store.orders
+    .filter(o => o.conversationId === convId && o.receiptImageUrl)
+    .sort((a, b) => b.id - a.id)
+  return withReceipt[0]?.receiptImageUrl ?? null
 })
 
 /** Redirect to chatbot config if session is not connected */
@@ -71,10 +73,17 @@ watch(
 )
 
 onMounted(() => {
+  if (!chatbotAllowed.value) {
+    router.replace('/chatbot')
+    return
+  }
+
   store.loadSession()
   store.loadConversations()
   store.loadOrders()
 })
+
+onUnmounted(() => store.stopConversationPoll())
 
 function onConversationSelected(id) {
   store.selectConversation(id)
@@ -136,13 +145,12 @@ function onCancelReject() {
             <div
               v-for="message in store.messages"
               :key="message.id"
-              class="msg-animate"
+              :class="{ 'msg-animate': store.liveAnimation }"
             >
               <MessageBubble
                 :message="message"
                 :client-initials="clientInitials"
-                :payment-app="paymentApp"
-                :order="store.pendingOrder ?? store.orders.find(o => o.conversationId === store.selectedConversationId) ?? null"
+                :receipt-image-url="message.content === '[Comprobante recibido]' ? conversationReceiptUrl : null"
               />
             </div>
 
@@ -163,7 +171,7 @@ function onCancelReject() {
           </div>
 
           <!-- Payment bar -->
-          <template v-if="store.pendingOrder && receiptVisible">
+          <template v-if="store.pendingOrder">
             <!-- Reject form -->
             <div v-if="showRejectForm" class="payment-reject">
               <p class="payment-reject__title">{{ t('chatbot.payment.rejectTitle') }}</p>
@@ -192,7 +200,7 @@ function onCancelReject() {
             <div v-else class="payment-bar">
               <div>
                 <p class="payment-bar__title">
-                  {{ t('chatbot.payment.pendingBar', { orderNumber: store.pendingOrder.orderNumber }) }}
+                  {{ t('chatbot.payment.pendingBar', { orderNumber: store.pendingOrder.id }) }}
                 </p>
                 <p class="payment-bar__detail">
                   {{ t('chatbot.payment.pendingBarDetail', { paymentMethod: store.pendingOrder.paymentMethod, total: store.pendingOrder.total.toFixed(2) }) }}

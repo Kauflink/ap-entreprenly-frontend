@@ -1,4 +1,4 @@
-import { BillingSetup } from '@/subscription/domain/model/billing-setup-entity.js'
+import { BillingSetup, normalizePaymentMethods } from '@/subscription/domain/model/billing-setup-entity.js'
 import { SubscriptionActivity } from '@/subscription/domain/model/subscription-activity-entity.js'
 import { SubscriptionDashboard } from '@/subscription/domain/model/subscription-dashboard-entity.js'
 import { SubscriptionLimit } from '@/subscription/domain/model/subscription-limit-entity.js'
@@ -16,50 +16,6 @@ export class SubscriptionAssembler {
         })
     }
 
-    static toResourceFromEntity(dashboard) {
-        return {
-            id: 1,
-            defaultBillingCycle: dashboard.defaultBillingCycle,
-            currentPlan: this.toPlanResponseFromEntity(dashboard.currentPlan),
-            recommendedPlan: this.toPlanResponseFromEntity(dashboard.recommendedPlan),
-            limits: dashboard.limits.map(limit => ({
-                id: limit.id,
-                label: limit.label,
-                usedValue: limit.usedValue,
-                maxValue: limit.maxValue
-            })),
-            billingSetup: this.toBillingSetupResponseFromEntity(dashboard.billingSetup),
-            activity: dashboard.activity.map(item => ({
-                id: item.id,
-                title: item.title,
-                detail: item.detail
-            }))
-        }
-    }
-
-    static toPlanResponseFromEntity(plan) {
-        const response = {
-            id: plan.id,
-            name: plan.name,
-            shortDescription: plan.shortDescription,
-            monthlyPrice: plan.monthlyPrice,
-            annualPrice: plan.annualPrice,
-            status: plan.status,
-            statusLabel: plan.statusLabel,
-            badgeLabel: plan.badgeLabel,
-            recommended: plan.recommended,
-            features: plan.features.map(feature => ({
-                description: feature.description,
-                available: feature.available
-            }))
-        }
-
-        if (plan.currentPeriodStartDate) response.currentPeriodStartDate = plan.currentPeriodStartDate
-        if (plan.currentPeriodEndDate) response.currentPeriodEndDate = plan.currentPeriodEndDate
-
-        return response
-    }
-
     static toBillingSetupResponseFromEntity(billingSetup) {
         return {
             paymentMethodTitle: billingSetup.paymentMethodTitle,
@@ -70,7 +26,7 @@ export class SubscriptionAssembler {
             fiscalDataActionLabel: billingSetup.fiscalDataActionLabel,
             hasPaymentMethod: billingSetup.hasPaymentMethod,
             hasFiscalData: billingSetup.hasFiscalData,
-            paymentMethods: billingSetup.paymentMethods.map(paymentMethod => ({
+            paymentMethods: normalizePaymentMethods(billingSetup.paymentMethods).map(paymentMethod => ({
                 id: paymentMethod.id,
                 cardBrand: paymentMethod.cardBrand,
                 lastFour: paymentMethod.lastFour,
@@ -134,7 +90,7 @@ export class SubscriptionAssembler {
             fiscalDataActionLabel: response.fiscalDataActionLabel,
             hasPaymentMethod: response.hasPaymentMethod,
             hasFiscalData: response.hasFiscalData,
-            paymentMethods: response.paymentMethods ?? [],
+            paymentMethods: normalizePaymentMethods(response.paymentMethods ?? []),
             fiscalData: response.fiscalData ?? null
         })
     }

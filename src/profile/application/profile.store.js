@@ -1,13 +1,17 @@
-import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { computed, ref, watch } from 'vue'
 import { ProfileApi } from '@/profile/infrastructure/profile-api.js'
+import { UserProfile } from '@/profile/domain/model/user-profile-entity.js'
 import { UserPreferences } from '@/profile/domain/model/user-preferences-entity.js'
+import { NotificationSettings } from '@/profile/domain/model/notification-settings-entity.js'
+import useAuthStore from '@/auth/application/auth.store.js'
 import i18n from '@/i18n.js'
+import { setCurrency } from '@/shared/infrastructure/currency-formatter.js'
 
 const profileApi = new ProfileApi()
 
-function readStorage(key, fallback) {
-    try { return localStorage.getItem(key) ?? fallback } catch { return fallback }
+function readStorage(key) {
+    try { return localStorage.getItem(key) } catch { return null }
 }
 
 function writeStorage(key, value) {
@@ -15,53 +19,106 @@ function writeStorage(key, value) {
 }
 
 const useProfileStore = defineStore('profile', () => {
-    const profileId   = ref(0)
+    const authStore = useAuthStore()
+
+    const profile = ref(new UserProfile())
     const preferences = ref(new UserPreferences({
-        language: readStorage('entreprenly-lang', 'es'),
-        theme:    readStorage('entreprenly-theme', 'light'),
-        currency: readStorage('entreprenly-currency', 'PEN')
+        language: readStorage('entreprenly-lang') ?? 'es',
+        theme: readStorage('entreprenly-theme') ?? 'light',
+        currency: readStorage('entreprenly-currency') ?? 'PEN'
     }))
+    const notificationSettings = ref(new NotificationSettings())
+    const profileId = ref(0)
+    const loading = ref(false)
+    const errors = ref([])
 
-    // Apply locale from localStorage immediately so the UI is correct on reload.
-    i18n.global.locale.value = preferences.value.language
+    const fullName = computed(() => profile.value.fullName)
+    const roleAndPlan = computed(() => profile.value.roleAndPlan)
 
-    function _applyResource(data) {
-        profileId.value = data.id
-        const p = data.preferences
-        preferences.value = new UserPreferences({
-            language: p.language ?? 'es',
-            timezone: p.timezone ?? '',
-            theme:    p.theme    ?? 'light',
-            currency: p.currency ?? 'PEN'
-        })
-        i18n.global.locale.value = preferences.value.language
-        writeStorage('entreprenly-lang',     preferences.value.language)
-        writeStorage('entreprenly-theme',    preferences.value.theme)
-        writeStorage('entreprenly-currency', preferences.value.currency)
+    watch(() => preferences.value.language, language => {
+        if (!language) return
+        writeStorage('entreprenly-lang', language)
+        if (i18n.global.locale.value !== language) {
+            i18n.global.locale.value = language
+        }
+    }, { immediate: true })
+
+    watch(() => preferences.value.theme, theme => {
+        if (!theme) return
+        document.documentElement.dataset.theme = theme
+        writeStorage('entreprenly-theme', theme)
+    }, { immediate: true })
+
+    watch(() => preferences.value.currency, currency => {
+        if (!currency) return
+        writeStorage('entreprenly-currency', currency)
+        setCurrency(currency)
+    }, { immediate: true })
+
+    function applyModels(models) {
+        profileId.value = models.id
+        profile.value = models.profile
+        preferences.value = models.preferences
+        notificationSettings.value = models.notificationSettings
+    }
+
+    function reset() {
+        profileId.value = 0
+        profile.value = new UserProfile()
+        notificationSettings.value = new NotificationSettings()
     }
 
     function loadProfile() {
-        return profileApi.getProfile()
-            .then(_applyResource)
-            .catch(() => { /* user not logged in yet — ignore */ })
+        const userId = authStore.userId
+        if (!userId) return Promise.resolve()
+        loading.value = true
+        return profileApi.getProfile(userId)
+            .then(applyModels)
+            .catch(error => {
+                errors.value.push(error)
+                console.error('Failed to load profile', error)
+            })
+            .finally(() => {
+                loading.value = false
+            })
+    }
+
+    function persist(request) {
+        return request
+            .then(applyModels)
+            .catch(error => {
+                errors.value.push(error)
+                console.error('Failed to persist profile changes', error)
+            })
+    }
+
+    function updateProfile(partial) {
+        profile.value = new UserProfile({ ...profile.value, ...partial })
+        return persist(profileApi.updateProfile(profileId.value, profile.value))
     }
 
     function updatePreferences(partial) {
         preferences.value = new UserPreferences({ ...preferences.value, ...partial })
-        if (partial.language) {
-            i18n.global.locale.value = partial.language
-            writeStorage('entreprenly-lang', partial.language)
-        }
-        if (!profileId.value) return Promise.resolve()
-        return profileApi.updatePreferences(profileId.value, preferences.value)
-            .then(_applyResource)
-            .catch(err => console.error('Preferences update failed', err))
+        return persist(profileApi.updatePreferences(profileId.value, preferences.value))
     }
 
-    // Auto-load when the store is first used.
-    loadProfile()
+    function updateNotifications(partial) {
+        notificationSettings.value = new NotificationSettings({ ...notificationSettings.value, ...partial })
+        return persist(profileApi.updateNotifications(profileId.value, notificationSettings.value))
+    }
 
-    return { profileId, preferences, loadProfile, updatePreferences }
+    watch(() => authStore.user, user => {
+        if (user) loadProfile()
+        else reset()
+    }, { immediate: true })
+
+    return {
+        profile, preferences, notificationSettings,
+        profileId, loading, errors,
+        fullName, roleAndPlan,
+        loadProfile,
+        updateProfile, updatePreferences, updateNotifications
+    }
 })
 
 export default useProfileStore

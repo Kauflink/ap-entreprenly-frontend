@@ -22,18 +22,18 @@ const emit = defineEmits(['method-selected', 'finalize-sale', 'cancel-sale'])
         <div class="payment-buttons">
             <button
                 class="payment-btn"
-                :class="{ selected: selectedMethod === 'cash' }"
+                :class="{ selected: selectedMethod === 'CASH' }"
                 :disabled="!hasItems"
-                @click="emit('method-selected', 'cash')"
+                @click="emit('method-selected', 'CASH')"
             >
                 <span class="material-icons payment-icon">payments</span>
                 <span class="payment-label">{{ t('sales.payment.cash') }}</span>
             </button>
             <button
                 class="payment-btn"
-                :class="{ selected: selectedMethod === 'digital' }"
+                :class="{ selected: selectedMethod === 'DIGITAL' }"
                 :disabled="!hasItems"
-                @click="emit('method-selected', 'digital')"
+                @click="emit('method-selected', 'DIGITAL')"
             >
                 <span class="material-icons payment-icon">point_of_sale</span>
                 <span class="payment-label">{{ t('sales.payment.digital') }}</span>

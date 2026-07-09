@@ -1,9 +1,40 @@
 {
+    "pages": {
+        "home":                 "Inicio",
+        "help":                 "Ayuda",
+        "products":             "Productos",
+        "unitProducts":         "Productos por unidad",
+        "weightProducts":       "Productos por peso",
+        "newProduct":           "Nuevo producto",
+        "editProduct":          "Editar producto",
+        "lots":                 "Lotes",
+        "unitLots":             "Lotes por unidad",
+        "weightLots":           "Lotes por peso",
+        "newLot":               "Nuevo lote",
+        "editLot":              "Editar lote",
+        "sales":                "Ventas",
+        "subscription":         "Suscripción",
+        "chatbot":              "Chatbot",
+        "chatbotConversations": "Conversaciones",
+        "chatbotOrders":        "Pedidos",
+        "profile":              "Perfil",
+        "login":                "Iniciar sesión",
+        "register":             "Crear cuenta"
+    },
+    "comingSoon": {
+        "title": "Próximamente",
+        "subtitle": "Esta sección está en desarrollo."
+    },
     "dashboard": {
         "welcome": "Bienvenido, usuario",
+        "currentUserLabel": "Abrir configuración del perfil",
         "role": "Administrador",
         "sidebarLabel": "Navegación principal",
         "logout": "Cerrar sesión",
+        "menu": {
+            "open": "Abrir menú",
+            "close": "Cerrar menú"
+        },
         "nav": {
             "home":         "Inicio",
             "products":     "Productos",
@@ -80,6 +111,24 @@
         "cancel":   "Cancelar Venta",
         "success": {
             "title": "Venta Exitosa"
+        },
+        "history": {
+            "title":    "Historial de ventas",
+            "loading":  "Cargando ventas…",
+            "empty":    "No hay ventas registradas para este día.",
+            "products": "prod.",
+            "unit":     "u.",
+            "total":    "Total",
+            "method": {
+                "cash":    "Efectivo",
+                "digital": "Tarjeta / Yape / Plin"
+            },
+            "col": {
+                "product":   "Producto",
+                "measure":   "Cant./Peso",
+                "unitPrice": "P. Unit.",
+                "subtotal":  "Subtotal"
+            }
         },
         "quantity-modal": {
             "title":             "Registrar Cantidad",
@@ -162,6 +211,7 @@
                 "title": "Método de pago",
                 "emptyDescription": "Aún no hay tarjeta o medio de pago registrado.",
                 "addAction": "Agregar métodos de pago",
+                "manageAction": "Ver metodos de pago",
                 "available": "Disponible para pagos y renovaciones",
                 "additionalMethod": "+{count} método adicional",
                 "additionalMethods": "+{count} métodos adicionales",
@@ -356,6 +406,7 @@
         }
     },
     "dashboard-home": {
+        "title":       "Dashboard",
         "welcomeBack": "Panel de control",
         "welcome":     "¡Hola, bienvenido!",
         "quickLinksLabel": "Accesos rápidos",
@@ -394,11 +445,15 @@
             "empty":          "Sin pedidos aún",
             "emptySub":       "Los pedidos del chatbot aparecerán aquí.",
             "colClient":      "Cliente",
+            "colTime":        "Hora",
             "colStatus":      "Estado",
             "colTotal":       "Total",
             "clientFallback": "—",
+            "pendingBadge":   "pedidos por validar",
             "approved":       "Aprobados",
+            "approvedDetail": "Confirmados hoy",
             "pending":        "Por validar",
+            "pendingDetail":  "Esperando comprobante",
             "status": {
                 "confirmed":       "Confirmado",
                 "blocked":         "Bloqueado",
@@ -473,7 +528,7 @@
                 "category": "Chatbot",
                 "steps": {
                     "0": "Ingresa a <strong>Chatbot</strong> desde el menú lateral.",
-                    "1": "Escanea el código QR con WhatsApp Business (Ajustes → Dispositivos vinculados).",
+                    "1": "Escanea el código QR con WhatsApp Business (Ajustes â†’ Dispositivos vinculados).",
                     "2": "Espera la confirmación de conexión. El estado cambiará a <strong>Conectado</strong>.",
                     "3": "El chatbot empezará a recibir mensajes automáticamente. ✅"
                 }
@@ -663,8 +718,19 @@
         "page": {
             "title": "Chatbot de WhatsApp",
             "loading": "Verificando sesión...",
-            "connectPrompt": "Vincula tu cuenta de WhatsApp Business escaneando el código QR.",
+            "subtitle": "Conecta WhatsApp Business, automatiza respuestas y valida pedidos desde el panel.",
             "connectionStatus": "Tu cuenta de WhatsApp está conectada y activa."
+        },
+        "upgrade": {
+                  "eyebrow": "Plan Control",
+                  "title": "Actualiza para activar el chatbot",
+                  "description": "El chatbot de WhatsApp está disponible solo para negocios con Plan Control. Actualiza tu plan para conectar el QR y empezar a recibir pedidos automatizados.",
+                  "action": "Actualizar a Plan Control",
+                  "features": {
+                            "automation": "Respuestas automáticas para consultas frecuentes.",
+                            "orders": "Pedidos registrados desde conversaciones del chatbot.",
+                            "receipts": "Validación operativa de comprobantes desde el panel."
+                  }
         },
         "qr": {
             "expiredTitle": "El código QR ha expirado",
@@ -771,5 +837,261 @@
                 "awaitingReceipt": "Esperando pago"
             }
         }
+    },
+    "profile": {
+        "page": {
+            "ariaLabel":           "Configuración de perfil",
+            "eyebrow":              "Cuenta",
+            "title":                "Perfil y configuracion",
+            "subtitle":             "Gestiona tus datos personales, preferencias, contacto, seguridad y notificaciones desde un solo lugar.",
+            "identitySection":      "Identidad y foto de perfil",
+            "personalSection":      "Datos personales",
+            "preferencesSection":   "Preferencias",
+            "contactSection":       "Contacto y verificacion",
+            "securitySection":      "Seguridad de cuenta",
+            "notificationsSection": "Notificaciones"
+        },
+        "userInfo": {
+            "avatarAlt": "Avatar del usuario"
+        },
+        "uploadPhoto": {
+            "title":           "Subir foto",
+            "previewAlt":      "Vista previa de la foto",
+            "fileInputLabel":  "Seleccionar foto de perfil",
+            "selectAction":    "Seleccionar foto"
+        },
+        "updateProfile": {
+            "title":      "Actualizar perfil",
+            "saveAction": "Guardar cambios",
+            "fields": {
+                "firstName": {
+                    "label":       "Nombre",
+                    "placeholder": "Ingresa tu nombre"
+                },
+                "lastName": {
+                    "label":       "Apellido",
+                    "placeholder": "Ingresa tu apellido"
+                }
+            }
+        },
+        "phoneVerify": {
+            "title":         "Verificar teléfono",
+            "verifyAction":  "Verificar",
+            "fields": {
+                "phone": {
+                    "label":       "Número de teléfono",
+                    "placeholder": "+51 999 999 999"
+                }
+            },
+            "feedback": {
+                "success": "Número de teléfono actualizado."
+            }
+        },
+        "preferences": {
+            "title": "Preferencias",
+            "fields": {
+                "language": { "label": "Idioma" },
+                "timezone": { "label": "Zona horaria" },
+                "currency": { "label": "Moneda" }
+            },
+            "theme": {
+                "label": "Tema",
+                "light": "Claro",
+                "dark":  "Oscuro"
+            }
+        },
+        "emailChange": {
+            "title":        "Cambiar email",
+            "verifyAction": "Verificar",
+            "fields": {
+                "email": {
+                    "label":       "Nuevo email",
+                    "placeholder": "nombre{'@'}ejemplo.com"
+                }
+            },
+            "feedback": {
+                "success": "Email actualizado. Inicia sesión nuevamente.",
+                "error":   "No se pudo actualizar el email. Inténtalo de nuevo."
+            }
+        },
+        "notifications": {
+            "title": "Notificaciones",
+            "items": {
+                "stock": {
+                    "name":        "Alertas de stock",
+                    "desc":        "Recibe avisos cuando los productos se agoten",
+                    "toggleLabel": "Activar alertas de stock"
+                }
+            }
+        },
+        "changePassword": {
+            "title":        "Cambiar contraseña",
+            "updateAction": "Actualizar contraseña",
+            "fields": {
+                "current": {
+                    "label":       "Contraseña actual",
+                    "placeholder": "Ingresa tu contraseña actual",
+                    "showLabel":   "Mostrar contraseña actual",
+                    "hideLabel":   "Ocultar contraseña actual"
+                },
+                "new": {
+                    "label":       "Nueva contraseña",
+                    "placeholder": "Ingresa la nueva contraseña",
+                    "showLabel":   "Mostrar nueva contraseña",
+                    "hideLabel":   "Ocultar nueva contraseña"
+                },
+                "confirm": {
+                    "label":       "Confirmar contraseña",
+                    "placeholder": "Confirma la nueva contraseña",
+                    "showLabel":   "Mostrar confirmación",
+                    "hideLabel":   "Ocultar confirmación"
+                }
+            },
+            "errors": {
+                "mismatch": "Las contraseñas no coinciden"
+            },
+            "feedback": {
+                "success": "Contraseña actualizada correctamente.",
+                "error":   "No se pudo actualizar la contraseña. Inténtalo de nuevo."
+            }
+        }
+    },
+    "form": {
+        "required":   "Campo requerido",
+        "incomplete": "Formulario incompleto",
+        "saving":     "Guardando...",
+        "saveError":  "No se pudo guardar. Intenta de nuevo."
+    },
+    "common": {
+        "delete":         "Eliminar",
+        "cancel":         "Cancelar",
+        "confirm":        "Confirmar",
+        "deleteHeader":   "Confirmar eliminación",
+        "deleteMessage":  "¿Eliminar \"{name}\"? Esta acción no se puede deshacer."
+    },
+    "products": {
+        "title":        "Productos",
+        "weightTitle":  "Productos por peso",
+        "subtitle":     "Administra el catálogo de productos del inventario",
+        "add":          "Agregar",
+        "search":       "Buscar productos",
+        "empty":        "No hay productos registrados",
+        "noResults":    "No se encontraron productos",
+        "deleteConfirm": "¿Eliminar el producto \"{name}\"? Esta acción no se puede deshacer.",
+        "col": {
+            "type":        "Tipo",
+            "byUnit":      "Por unidad",
+            "byWeight":    "Por peso",
+            "name":        "Nombre",
+            "description": "Descripción",
+            "qrCode":      "Código QR",
+            "price":       "Precio",
+            "stock":       "Stock",
+            "edit":        "Editar",
+            "delete":      "Eliminar",
+            "actions":     "Acciones"
+        },
+        "form": {
+            "type":                       "Tipo de producto",
+            "byUnit":                     "Por unidad",
+            "byWeight":                   "Por peso",
+            "name":                       "Nombre",
+            "namePlaceholder":            "Ingresa el nombre del producto",
+            "description":                "Descripción",
+            "descriptionPlaceholder":     "Ingresa una breve descripción",
+            "qrCode":                     "Código QR",
+            "qrPlaceholder":              "Escanea o ingresa el código QR",
+            "qrHint":                     "Escanea con la cámara o ingresa el código manualmente",
+            "scanQr":                     "Escanear QR",
+            "orManual":                   "o ingrésalo manualmente",
+            "price":                      "Precio",
+            "pricePerKg":                 "Precio por kg",
+            "weight":                     "Peso (g)",
+            "brand":                      "Marca",
+            "brandPlaceholder":           "Ingresa la marca",
+            "save":                       "Guardar",
+            "ok":                         "Aceptar",
+            "addTitle":                   "Nuevo producto",
+            "addSubtitle":                "Registra un nuevo producto en el inventario",
+            "editTitle":                  "Editar producto",
+            "editSubtitle":               "Actualiza los datos del producto",
+            "scannerPermissionDenied":    "Permiso de cámara denegado",
+            "scannerCameraUnavailable":   "Cámara no disponible"
+        }
+    },
+    "lots": {
+        "title":          "Lotes",
+        "subtitle":       "Gestiona los lotes de tus productos",
+        "prefix":         "Lote",
+        "search":         "Buscar lotes",
+        "add":            "Agregar lote",
+        "create":         "Nuevo lote",
+        "back":           "Volver",
+        "empty":          "No hay lotes registrados",
+        "viewDetails":    "Ver detalles",
+        "totalLots":      "Lotes totales",
+        "totalLotCount":  "{count} lotes",
+        "totalUnits":     "Unidades totales",
+        "expiredLots":    "Lotes vencidos",
+        "outOfStock":     "Sin stock",
+        "status": {
+            "expired": "Vencido"
+        },
+        "form": {
+            "addTitle":     "Nuevo lote",
+            "addSubtitle":  "Registra un nuevo lote",
+            "editTitle":    "Editar lote",
+            "editSubtitle": "Actualiza los datos del lote",
+            "product":      "Producto",
+            "quantity":     "Cantidad",
+            "qrCode":       "Código QR",
+            "qrHint":       "Escanea o ingresa manualmente el código",
+            "entryDate":    "Fecha de ingreso",
+            "expiryDate":   "Fecha de vencimiento",
+            "select":       "Selecciona un producto",
+            "byWeight":     "Peso (kg)",
+            "save":         "Guardar"
+        },
+        "alerts": {
+            "totalLabel": "alertas",
+            "buttonLabel": "Ver alertas de lotes",
+            "dropdownTitle": "Alertas de lotes",
+            "empty": "No hay alertas pendientes.",
+            "title": {
+                "lowStock":     "{count} producto(s) con stock bajo",
+                "outOfStock":   "{count} producto(s) sin stock",
+                "expiringSoon": "{count} lote(s) próximos a vencer",
+                "expired":      "{count} lote(s) vencidos"
+            },
+            "detail": {
+                "lowStock":         "{productName} {lotId} tiene poco stock",
+                "lowStockNoLot":    "{productName} tiene poco stock",
+                "outOfStock":       "{productName} {lotId} está sin stock",
+                "outOfStockNoLot":  "{productName} está sin stock",
+                "expiringSoon":     "{productName} {lotId} vence en {days} día(s) ({expiryDate})",
+                "expired":          "{productName} {lotId} venció el {expiryDate}"
+            }
+        }
+    },
+    "stock-alerts": {
+        "title":    "Alertas de stock",
+        "subtitle": "Notificaciones del inventario",
+        "empty":    "No hay alertas registradas",
+        "expired":  "Vencido"
+    },
+    "inventory": {
+        "nav": {
+            "products":       "Productos",
+            "unitProducts":   "Productos por unidad",
+            "weightProducts": "Productos por peso",
+            "lots":           "Lotes",
+            "unitLots":       "Lotes por unidad",
+            "weightLots":     "Lotes por peso",
+            "stockAlerts":    "Alertas de stock"
+        }
     }
 }
+
+
+
+

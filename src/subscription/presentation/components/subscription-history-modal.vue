@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js'
 
 const props = defineProps({
     activity:     { type: Array, required: true },
@@ -12,6 +13,7 @@ const props = defineProps({
 
 const emit = defineEmits(['closed', 'history-download-requested'])
 const { t, locale } = useI18n()
+const { format: formatCurrency } = useCurrencyFormatter()
 
 const activityRows = computed(() =>
     [
@@ -28,10 +30,6 @@ const activityRows = computed(() =>
         }
     ]
 )
-
-function formatCurrency(priceInPen) {
-    return `S/ ${Number(priceInPen ?? 0).toFixed(2)}`
-}
 
 function toLocalDate(dateValue) {
     const [year, month, day] = String(dateValue ?? '').split('-').map(value => Number(value))

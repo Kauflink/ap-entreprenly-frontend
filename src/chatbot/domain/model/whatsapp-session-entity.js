@@ -5,9 +5,10 @@ export class WhatsappSession {
     EXPIRED:      'expired'
   }
 
-  constructor({ id, sellerId, phone, businessName, status, connectedAt = null, qrCode = null }) {
+  constructor({ id, sellerId, ownerEmail, phone, businessName, status, connectedAt = null, qrCode = null }) {
     this.id           = id
     this.sellerId     = sellerId
+    this.ownerEmail   = ownerEmail
     this.phone        = phone
     this.businessName = businessName
     this.status       = status

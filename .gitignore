@@ -14,10 +14,15 @@ dist-ssr
 coverage
 *.local
 
+.idea/workspace.xml
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
+
+# AI tooling (MCP config, local assistant files)
+.ai/
 *.suo
 *.ntvs*
 *.njsproj

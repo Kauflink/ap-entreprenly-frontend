@@ -1,5 +1,12 @@
 export class UserPreferences {
-    constructor({ language = 'es', timezone = '', theme = 'light', currency = 'PEN' } = {}) {
+    constructor({
+        id = 0,
+        language = 'es',
+        timezone = '',
+        theme = 'light',
+        currency = 'PEN'
+    } = {}) {
+        this.id = id
         this.language = language
         this.timezone = timezone
         this.theme = theme

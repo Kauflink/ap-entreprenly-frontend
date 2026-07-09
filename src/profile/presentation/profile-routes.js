@@ -1,8 +1,10 @@
-export default [
+const profileRoutes = [
     {
         path: 'profile',
         name: 'profile',
-        component: () => import('@/profile/presentation/views/profile-settings.vue'),
-        meta: { title: 'Perfil' }
+        component: () => import('@/profile/presentation/views/profile-page.vue'),
+        meta: { titleKey: 'pages.profile' }
     }
 ]
+
+export default profileRoutes

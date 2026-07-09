@@ -1,10 +1,16 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { BillingSetup, detectCardBrand } from '@/subscription/domain/model/billing-setup-entity.js'
+import {
+    BillingSetup,
+    detectCardBrand,
+    normalizePaymentMethods,
+    paymentMethodIdentity
+} from '@/subscription/domain/model/billing-setup-entity.js'
 import { SubscriptionActivity } from '@/subscription/domain/model/subscription-activity-entity.js'
 import { SubscriptionDashboard } from '@/subscription/domain/model/subscription-dashboard-entity.js'
 import { SubscriptionLimit } from '@/subscription/domain/model/subscription-limit-entity.js'
 import { SubscriptionApi } from '@/subscription/infrastructure/subscription-api.js'
+import useAuthStore from '@/auth/application/auth.store.js'
 
 const subscriptionApi = new SubscriptionApi()
 
@@ -13,6 +19,7 @@ function formatCurrency(priceInPen) {
 }
 
 const useSubscriptionStore = defineStore('subscription', () => {
+    const authStore = useAuthStore()
     const dashboardSignal = ref(new SubscriptionDashboard())
     const inventoryUsage = ref({ products: 0, lots: 0 })
     const loaded = ref(false)
@@ -59,7 +66,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
     }
 
     function activateControlPlan() {
-        return subscriptionApi.activateControlPlan(selectedCycle.value, dashboard.value)
+        return subscriptionApi.activateControlPlan(authStore.userId, selectedCycle.value)
             .then(nextDashboard => {
                 dashboardSignal.value = nextDashboard
                 selectedPlanId.value = null
@@ -68,7 +75,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
     }
 
     function scheduleCancellation() {
-        return subscriptionApi.scheduleCancellation(dashboard.value)
+        return subscriptionApi.scheduleCancellation(authStore.userId)
             .then(nextDashboard => {
                 dashboardSignal.value = nextDashboard
                 feedback.value = 'Cancelacion programada.'
@@ -76,32 +83,38 @@ const useSubscriptionStore = defineStore('subscription', () => {
     }
 
     function keepControlPlan() {
-        return subscriptionApi.keepControlPlan(dashboard.value)
+        return subscriptionApi.keepControlPlan(authStore.userId)
             .then(nextDashboard => {
                 dashboardSignal.value = nextDashboard
                 feedback.value = 'Plan Control se mantendra activo.'
             })
     }
 
-    function addPaymentMethod(paymentMethodInput) {
+    function addPaymentMethod(paymentMethodInput, skipApi = false) {
         const currentDashboard = dashboard.value
-        const currentPaymentMethods = currentDashboard.billingSetup.paymentMethods
+        const currentPaymentMethods = normalizePaymentMethods(currentDashboard.billingSetup.paymentMethods)
         const paymentMethod = toPaymentMethod(paymentMethodInput, currentPaymentMethods)
+        const existingPaymentMethod = currentPaymentMethods.find(method =>
+            paymentMethodIdentity(method) === paymentMethodIdentity(paymentMethod)
+        )
+        const nextPaymentMethod = existingPaymentMethod
+            ? { ...paymentMethod, id: existingPaymentMethod.id }
+            : paymentMethod
         const billingSetup = new BillingSetup({
             ...currentDashboard.billingSetup,
             hasPaymentMethod: true,
-            paymentMethodDescription: toPaymentMethodDescription(paymentMethod),
-            paymentMethodActionLabel: 'Agregar metodos de pago',
-            paymentMethods: [
-                ...currentPaymentMethods.map(method => ({ ...method, isDefault: false })),
-                paymentMethod
-            ]
+            paymentMethodDescription: toPaymentMethodDescription(nextPaymentMethod),
+            paymentMethodActionLabel: 'Ver metodos de pago',
+            paymentMethods: currentPaymentMethods
+                .filter(method => method.id !== nextPaymentMethod.id)
+                .map(method => ({ ...method, isDefault: false }))
+                .concat(nextPaymentMethod)
         })
 
-        return saveBillingSetup(billingSetup, 'Metodo de pago registrado para la suscripcion.')
+        return saveBillingSetup(billingSetup, 'Metodo de pago registrado para la suscripcion.', skipApi)
     }
 
-    function selectPaymentMethod(paymentMethodId) {
+    function selectPaymentMethod(paymentMethodId, skipApi = false) {
         const currentDashboard = dashboard.value
         const selectedPaymentMethod = currentDashboard.billingSetup.paymentMethods
             .find(paymentMethod => paymentMethod.id === paymentMethodId)
@@ -118,10 +131,10 @@ const useSubscriptionStore = defineStore('subscription', () => {
             }))
         })
 
-        return saveBillingSetup(billingSetup, 'Metodo de pago seleccionado para la suscripcion.')
+        return saveBillingSetup(billingSetup, 'Metodo de pago seleccionado para la suscripcion.', skipApi)
     }
 
-    function completeFiscalData(fiscalData) {
+    function completeFiscalData(fiscalData, skipApi = false) {
         const currentDashboard = dashboard.value
         const billingSetup = new BillingSetup({
             ...currentDashboard.billingSetup,
@@ -131,7 +144,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
             fiscalData
         })
 
-        return saveBillingSetup(billingSetup, 'Datos fiscales completados para facturacion.')
+        return saveBillingSetup(billingSetup, 'Datos fiscales completados para facturacion.', skipApi)
     }
 
     function downloadActivityHistory() {
@@ -249,7 +262,7 @@ const useSubscriptionStore = defineStore('subscription', () => {
         return limit
     }
 
-    function saveBillingSetup(billingSetup, nextFeedback) {
+    function saveBillingSetup(billingSetup, nextFeedback, skipApi = false) {
         const nextDashboard = new SubscriptionDashboard({
             ...dashboard.value,
             billingSetup
@@ -257,7 +270,12 @@ const useSubscriptionStore = defineStore('subscription', () => {
 
         dashboardSignal.value = nextDashboard
 
-        return subscriptionApi.updateBillingSetup(nextDashboard, billingSetup)
+        if (skipApi) {
+            feedback.value = nextFeedback
+            return Promise.resolve()
+        }
+
+        return subscriptionApi.updateBillingSetup(authStore.userId, billingSetup)
             .then(savedDashboard => {
                 dashboardSignal.value = savedDashboard
                 feedback.value = nextFeedback
