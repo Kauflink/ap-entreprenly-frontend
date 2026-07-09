@@ -33,5 +33,19 @@ export function useCurrencyFormatter() {
         return `${CURRENCY_SYMBOLS[currency.value]} ${converted.toFixed(2)}`
     }
 
-    return { currency, symbol, format }
+    // Converts a stored base-currency (PEN) amount into the user's display currency,
+    // for pre-filling inputs when editing.
+    function fromBaseCurrency(priceInPen) {
+        const value = Number(priceInPen ?? 0)
+        return Math.round(value * CURRENCY_RATES[currency.value] * 100) / 100
+    }
+
+    // Converts an amount typed in the user's display currency back into base currency (PEN),
+    // for persisting what the user entered.
+    function toBaseCurrency(displayPrice) {
+        const value = Number(displayPrice ?? 0)
+        return Math.round((value / CURRENCY_RATES[currency.value]) * 100) / 100
+    }
+
+    return { currency, symbol, format, fromBaseCurrency, toBaseCurrency }
 }

@@ -9,7 +9,7 @@ import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter
 
 const { t } = useI18n();
 const store  = useInventoryStore();
-const { symbol } = useCurrencyFormatter();
+const { symbol, fromBaseCurrency, toBaseCurrency } = useCurrencyFormatter();
 const router = useRouter();
 const route  = useRoute();
 
@@ -60,13 +60,13 @@ onMounted(() => {
     const up = store.getUnitProductById(editId.value);
     if (up) {
       productType.value = 'unit';
-      form.value = { name: up.name ?? '', description: up.description ?? '', codeQR: up.codeQR ?? '', price: up.price ?? null, weightGrams: up.weightGrams ?? null, brand: up.brand ?? '', pricePerKg: null };
+      form.value = { name: up.name ?? '', description: up.description ?? '', codeQR: up.codeQR ?? '', price: up.price != null ? fromBaseCurrency(up.price) : null, weightGrams: up.weightGrams ?? null, brand: up.brand ?? '', pricePerKg: null };
       return;
     }
     const wp = store.getWeightProductById(editId.value);
     if (wp) {
       productType.value = 'weight';
-      form.value = { name: wp.name ?? '', description: wp.description ?? '', codeQR: wp.codeQR ?? '', price: null, weightGrams: null, brand: '', pricePerKg: wp.pricePerKg ?? null };
+      form.value = { name: wp.name ?? '', description: wp.description ?? '', codeQR: wp.codeQR ?? '', price: null, weightGrams: null, brand: '', pricePerKg: wp.pricePerKg != null ? fromBaseCurrency(wp.pricePerKg) : null };
     }
   } else {
     form.value.codeQR = `PROD-${Date.now()}`;
@@ -76,9 +76,9 @@ onMounted(() => {
 watch([() => store.unit_productsLoaded, () => store.weight_productsLoaded], () => {
   if (!isEdit.value || form.value.name) return;
   const up = store.getUnitProductById(editId.value);
-  if (up) { productType.value = 'unit'; form.value = { name: up.name ?? '', description: up.description ?? '', codeQR: up.codeQR ?? '', price: up.price ?? null, weightGrams: up.weightGrams ?? null, brand: up.brand ?? '', pricePerKg: null }; return; }
+  if (up) { productType.value = 'unit'; form.value = { name: up.name ?? '', description: up.description ?? '', codeQR: up.codeQR ?? '', price: up.price != null ? fromBaseCurrency(up.price) : null, weightGrams: up.weightGrams ?? null, brand: up.brand ?? '', pricePerKg: null }; return; }
   const wp = store.getWeightProductById(editId.value);
-  if (wp) { productType.value = 'weight'; form.value = { name: wp.name ?? '', description: wp.description ?? '', codeQR: wp.codeQR ?? '', price: null, weightGrams: null, brand: '', pricePerKg: wp.pricePerKg ?? null }; }
+  if (wp) { productType.value = 'weight'; form.value = { name: wp.name ?? '', description: wp.description ?? '', codeQR: wp.codeQR ?? '', price: null, weightGrams: null, brand: '', pricePerKg: wp.pricePerKg != null ? fromBaseCurrency(wp.pricePerKg) : null }; }
 });
 
 async function save() {
@@ -88,11 +88,11 @@ async function save() {
   saving.value = true;
   try {
     if (isUnit.value) {
-      const payload = { name: form.value.name, description: form.value.description, codeQR: form.value.codeQR, price: form.value.price, weightGrams: form.value.weightGrams ?? 0, brand: form.value.brand };
+      const payload = { name: form.value.name, description: form.value.description, codeQR: form.value.codeQR, price: toBaseCurrency(form.value.price), weightGrams: form.value.weightGrams ?? 0, brand: form.value.brand };
       if (isEdit.value) await store.updateUnitProduct({ ...payload, id: editId.value });
       else              await store.addUnitProduct(payload);
     } else {
-      const payload = { name: form.value.name, description: form.value.description, codeQR: form.value.codeQR, pricePerKg: form.value.pricePerKg };
+      const payload = { name: form.value.name, description: form.value.description, codeQR: form.value.codeQR, pricePerKg: toBaseCurrency(form.value.pricePerKg) };
       if (isEdit.value) await store.updateWeightProduct({ ...payload, id: editId.value });
       else              await store.addWeightProduct(payload);
     }
