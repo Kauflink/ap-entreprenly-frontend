@@ -1,6 +1,11 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { BillingSetup, detectCardBrand } from '@/subscription/domain/model/billing-setup-entity.js'
+import {
+    BillingSetup,
+    detectCardBrand,
+    normalizePaymentMethods,
+    paymentMethodIdentity
+} from '@/subscription/domain/model/billing-setup-entity.js'
 import { SubscriptionActivity } from '@/subscription/domain/model/subscription-activity-entity.js'
 import { SubscriptionDashboard } from '@/subscription/domain/model/subscription-dashboard-entity.js'
 import { SubscriptionLimit } from '@/subscription/domain/model/subscription-limit-entity.js'
@@ -87,17 +92,23 @@ const useSubscriptionStore = defineStore('subscription', () => {
 
     function addPaymentMethod(paymentMethodInput, skipApi = false) {
         const currentDashboard = dashboard.value
-        const currentPaymentMethods = currentDashboard.billingSetup.paymentMethods
+        const currentPaymentMethods = normalizePaymentMethods(currentDashboard.billingSetup.paymentMethods)
         const paymentMethod = toPaymentMethod(paymentMethodInput, currentPaymentMethods)
+        const existingPaymentMethod = currentPaymentMethods.find(method =>
+            paymentMethodIdentity(method) === paymentMethodIdentity(paymentMethod)
+        )
+        const nextPaymentMethod = existingPaymentMethod
+            ? { ...paymentMethod, id: existingPaymentMethod.id }
+            : paymentMethod
         const billingSetup = new BillingSetup({
             ...currentDashboard.billingSetup,
             hasPaymentMethod: true,
-            paymentMethodDescription: toPaymentMethodDescription(paymentMethod),
+            paymentMethodDescription: toPaymentMethodDescription(nextPaymentMethod),
             paymentMethodActionLabel: 'Ver metodos de pago',
-            paymentMethods: [
-                ...currentPaymentMethods.map(method => ({ ...method, isDefault: false })),
-                paymentMethod
-            ]
+            paymentMethods: currentPaymentMethods
+                .filter(method => method.id !== nextPaymentMethod.id)
+                .map(method => ({ ...method, isDefault: false }))
+                .concat(nextPaymentMethod)
         })
 
         return saveBillingSetup(billingSetup, 'Metodo de pago registrado para la suscripcion.', skipApi)
