@@ -9,8 +9,6 @@ import { SaleStatus } from '@/sales/domain/model/sale-status.enum.js'
 
 const salesApi = new SalesApi()
 
-const WEIGHT_ID_OFFSET = 1000
-
 /** Returns the current business day (America/Lima) as an ISO date string (YYYY-MM-DD). */
 function todayLocalIso() {
     return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Lima' }).format(new Date())
@@ -23,8 +21,6 @@ function roundToCents(amount) {
 
 const useSalesStore = defineStore('sales', () => {
     const products     = ref([])
-    const unitLots     = ref([])
-    const weightLots   = ref([])
     const sales        = ref([])
     const salesLoading = ref(false)
     const selectedDate = ref(todayLocalIso())
@@ -44,26 +40,16 @@ const useSalesStore = defineStore('sales', () => {
     const totalDay  = computed(() => roundToCents(totalCash.value + totalDigital.value))
     const saleCount = computed(() => sales.value.length)
 
+    // Loads the sellable catalog in a single request. The backend returns each product with its
+    // stock already computed by the Inventory context, so the client no longer composes lots.
     function fetchProducts() {
         loading.value = true
         error.value   = null
 
-        Promise.all([
-            salesApi.getUnitProducts(),
-            salesApi.getWeightProducts(),
-            salesApi.getUnitLots(),
-            salesApi.getWeightLots()
-        ]).then(([unitRes, weightRes, unitLotsRes, weightLotsRes]) => {
-            unitLots.value   = unitLotsRes.data
-            weightLots.value = weightLotsRes.data
-
-            const unitEntities   = unitRes.data.map(p =>
-                ProductAssembler.toEntityFromUnitResource(p, unitLots.value))
-            const weightEntities = weightRes.data.map(p =>
-                ProductAssembler.toEntityFromWeightResource(p, weightLots.value))
-
-            products.value = [...unitEntities, ...weightEntities]
-            loading.value  = false
+        return salesApi.getSalesProducts().then(response => {
+            products.value = (response.data || [])
+                .map((product, index) => ProductAssembler.toEntityFromSalesProduct(product, index))
+            loading.value = false
         }).catch(err => {
             error.value   = err.message
             loading.value = false
@@ -72,7 +58,7 @@ const useSalesStore = defineStore('sales', () => {
 
     /** Refetches the product list from the API. Call when the Sales view is (re)entered. */
     function reloadProducts() {
-        fetchProducts()
+        return fetchProducts()
     }
 
     /** Loads the sales registered on the currently selected business day, newest first. */
@@ -104,8 +90,8 @@ const useSalesStore = defineStore('sales', () => {
     // selection is the UI payment selection: 'CASH' or 'DIGITAL'. Digital sales are settled
     // with a card/wallet payment method on the backend.
     function createSale(items, selection) {
-        const total      = Number(items.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2))
-        const isDigital  = selection === 'DIGITAL'
+        const total        = Number(items.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2))
+        const isDigital    = selection === 'DIGITAL'
         const domainMethod = isDigital ? PaymentMethod.CARD : PaymentMethod.CASH
 
         const sale = new Sale({
@@ -120,55 +106,15 @@ const useSalesStore = defineStore('sales', () => {
         return salesApi.createSale(SaleAssembler.toResourceFromEntity(sale))
             .then(res => {
                 const created = SaleAssembler.toEntityFromResource(res.data)
+                // The backend decrements inventory stock while registering the sale, so we just
+                // reload the sales list and the catalog to reflect the updated stock.
                 reloadSalesIfViewingToday()
-                return _decrementStock(items)
-                    .then(() => {
-                        fetchProducts()
-                        return created
-                    })
+                return fetchProducts().then(() => created)
             })
             .catch(err => {
                 error.value = err.message
                 throw err
             })
-    }
-
-    function _decrementStock(items) {
-        const patches = []
-
-        for (const item of items) {
-            if (!item.isWeighted) {
-                const productId = item.productId
-                let remaining = item.quantity
-
-                const sortedLots = [...unitLots.value]
-                    .filter(l => l.productId === productId)
-                    .sort((a, b) => new Date(a.entryDate) - new Date(b.entryDate))
-
-                for (const lot of sortedLots) {
-                    if (remaining <= 0) break
-                    const decrement = Math.min(lot.quantity, remaining)
-                    remaining -= decrement
-                    patches.push(salesApi.updateUnitLot({ ...lot, quantity: lot.quantity - decrement }))
-                }
-            } else {
-                const productId = item.productId - WEIGHT_ID_OFFSET
-                let remaining = item.quantity
-
-                const sortedLots = [...weightLots.value]
-                    .filter(l => l.productId === productId)
-                    .sort((a, b) => new Date(a.entryDate) - new Date(b.entryDate))
-
-                for (const lot of sortedLots) {
-                    if (remaining <= 0) break
-                    const decrement = Math.min(lot.quantityKg, remaining)
-                    remaining = Number((remaining - decrement).toFixed(3))
-                    patches.push(salesApi.updateWeightLot({ ...lot, quantityKg: Number((lot.quantityKg - decrement).toFixed(3)) }))
-                }
-            }
-        }
-
-        return Promise.all(patches)
     }
 
     function getScaleStatus() {
