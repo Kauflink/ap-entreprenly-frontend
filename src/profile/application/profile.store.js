@@ -6,6 +6,7 @@ import { UserPreferences } from '@/profile/domain/model/user-preferences-entity.
 import { NotificationSettings } from '@/profile/domain/model/notification-settings-entity.js'
 import useAuthStore from '@/auth/application/auth.store.js'
 import i18n from '@/i18n.js'
+import { setCurrency } from '@/shared/infrastructure/currency-formatter.js'
 
 const profileApi = new ProfileApi()
 
@@ -52,6 +53,7 @@ const useProfileStore = defineStore('profile', () => {
     watch(() => preferences.value.currency, currency => {
         if (!currency) return
         writeStorage('entreprenly-currency', currency)
+        setCurrency(currency)
     }, { immediate: true })
 
     function applyModels(models) {
