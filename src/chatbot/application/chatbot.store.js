@@ -75,9 +75,22 @@ const useChatbotStore = defineStore('chatbot', () => {
   // ── Conversation selection — loads history instantly, no animation ──────────
 
   let _pollInterval = null
+  let _globalPollInterval = null
 
   function _stopPoll() {
     if (_pollInterval) { clearInterval(_pollInterval); _pollInterval = null }
+  }
+
+  function startGlobalPoll() {
+    if (_globalPollInterval) return
+    _globalPollInterval = setInterval(() => {
+      loadConversations()
+      loadOrders()
+    }, 4000)
+  }
+
+  function _stopGlobalPoll() {
+    if (_globalPollInterval) { clearInterval(_globalPollInterval); _globalPollInterval = null }
   }
 
   function _startPoll(id) {
@@ -135,7 +148,7 @@ const useChatbotStore = defineStore('chatbot', () => {
     })
   }
 
-  function stopConversationPoll() { _stopPoll() }
+  function stopConversationPoll() { _stopPoll(); _stopGlobalPoll() }
 
   // ── Typewriter for bot replies (approval / rejection only) ────────────────
 
@@ -335,7 +348,7 @@ const useChatbotStore = defineStore('chatbot', () => {
     messages, isClientTyping, botInputText, liveAnimation, orders, inventoryProducts,
     selectedConversation, pendingOrder, isConnected,
     loadSession, loadConversations, loadOrders, loadInventoryProducts,
-    selectConversation, stopConversationPoll, sendMessage, simulateScan, simulateDisconnect,
+    selectConversation, startGlobalPoll, stopConversationPoll, sendMessage, simulateScan, simulateDisconnect,
     approveOrder, rejectOrder
   }
 })
