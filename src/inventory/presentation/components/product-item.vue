@@ -5,7 +5,7 @@ import { buildQrCodeDataUrl } from '@/inventory/infrastructure/qr_code_generator
 import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js';
 
 const { t } = useI18n();
-const { format } = useCurrencyFormatter();
+const { symbol } = useCurrencyFormatter();
 const props = defineProps({
   product: { type: Object, required: true },
   stock:   { type: Number, default: 0 },
@@ -20,8 +20,8 @@ const qrImageUrl = computed(() => {
 });
 
 const displayPrice = computed(() => {
-  if (isUnit.value) return props.product.price != null ? format(props.product.price) : '-';
-  return props.product.pricePerKg != null ? `${format(props.product.pricePerKg)}/kg` : '-';
+  if (isUnit.value) return props.product.price != null ? `${symbol.value} ${Number(props.product.price).toFixed(2)}` : '-';
+  return props.product.pricePerKg != null ? `${symbol.value} ${Number(props.product.pricePerKg).toFixed(2)}/kg` : '-';
 });
 </script>
 
