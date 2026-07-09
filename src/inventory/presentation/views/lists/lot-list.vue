@@ -328,7 +328,7 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
     <div v-if="showProductSelector" class="ps-overlay" @click.self="closeSelector">
       <div class="ps-card">
 
-        <button type="button" class="ps-close" @click="closeSelector">Ã¢Å“â€¢</button>
+        <button type="button" class="ps-close" @click="closeSelector">&times;</button>
 
         <h2 class="ps-title">{{ t('lots.form.addTitle') }}</h2>
         <p class="ps-subtitle">{{ t('lots.form.addSubtitle') }}</p>
@@ -343,7 +343,7 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
                   v-for="p in allProducts.filter(x => x.type === 'unit')"
                   :key="'unit-' + p.id"
                   :value="p.id + '-unit'">
-                  {{ p.name }}{{ p.brand ? ' Ã‚Â· ' + p.brand : '' }}
+                  {{ p.name }}{{ p.brand ? ' ' + p.brand : '' }}
                 </option>
               </optgroup>
               <optgroup :label="t('products.col.byWeight')">
@@ -767,7 +767,7 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
 .btn-add { display: none; }
 
 
-/* Ã¢â€â‚¬Ã¢â€â‚¬ Product Selector Modal Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
+/* ---- Product Selector Modal ---- */
 .ps-overlay {
   position: fixed;
   inset: 0;
@@ -802,7 +802,8 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
   border: none;
   border-radius: 50%;
   width: 36px; height: 36px;
-  font-size: 14px;
+  font-size: 20px;
+  line-height: 1;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -851,7 +852,7 @@ const loading = computed(() => !store.unit_productsLoaded || !store.weight_produ
   color: var(--color-text-muted);
 }
 
-/* Ã¢â€â‚¬Ã¢â€â‚¬ Responsive Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
+/* ---- Responsive ---- */
 @media (max-width: 768px) {
   .page-header {
     flex-direction: column;
