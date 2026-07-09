@@ -12,7 +12,19 @@
             "subscription": "Subscription",
             "orders":       "Orders",
             "chatbot":      "Chatbot",
+            "profile":      "Profile",
             "help":         "Help"
+        }
+    },
+    "profile": {
+        "page": {
+            "title":    "Profile & settings",
+            "subtitle": "Manage the chatbot language and other preferences"
+        },
+        "preferences": {
+            "title":        "Preferences",
+            "language":     "Language",
+            "languageHint": "The chatbot will reply in the language you select"
         }
     },
     "sales": {

@@ -1,10 +1,13 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import useProfileStore from '@/profile/application/profile.store.js'
 
 const { t } = useI18n()
 const router = useRouter()
 const route  = useRoute()
+
+useProfileStore()
 
 const navItems = [
     { labelKey: 'dashboard.nav.home',         icon: 'dashboard',     path: '/home' },
@@ -14,6 +17,7 @@ const navItems = [
     { labelKey: 'dashboard.nav.subscription', icon: 'credit_card',   path: '/subscription' },
     { labelKey: 'dashboard.nav.orders',       icon: 'shopping_cart', path: '/chatbot/orders' },
     { labelKey: 'dashboard.nav.chatbot',      icon: 'smart_toy',     path: '/chatbot' },
+    { labelKey: 'dashboard.nav.profile',      icon: 'person',        path: '/profile' },
     { labelKey: 'dashboard.nav.help',         icon: 'help_outline',  path: '/help' },
 ]
 
