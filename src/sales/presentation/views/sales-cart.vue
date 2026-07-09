@@ -96,6 +96,7 @@ function formatQty(item) {
             </div>
         </div>
 
+        <div class="table-wrap">
         <table class="ticket-table">
             <thead>
                 <tr>
@@ -130,6 +131,7 @@ function formatQty(item) {
                 </tr>
             </tbody>
         </table>
+        </div>
     </section>
 </template>
 
@@ -208,7 +210,11 @@ function formatQty(item) {
 }
 .error-icon { font-size: 14px; font-weight: bold; }
 
-.ticket-table { width: 100%; border-collapse: collapse; }
+.table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.ticket-table { width: 100%; min-width: 480px; border-collapse: collapse; }
 .ticket-table th {
     text-align: left;
     padding: 12px 8px;
@@ -251,4 +257,8 @@ function formatQty(item) {
     border-radius: 4px;
 }
 .delete-btn:hover { background: rgba(211, 47, 47, 0.12); }
+
+@media (max-width: 600px) {
+    .card { padding: 16px; }
+}
 </style>

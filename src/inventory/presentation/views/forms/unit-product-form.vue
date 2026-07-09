@@ -5,9 +5,11 @@ import { useI18n } from 'vue-i18n';
 import { buildQrCodeDataUrl } from '@/inventory/infrastructure/qr_code_generator.js';
 import useInventoryStore from '@/inventory/application/inventory.store.js';
 import QrScanner from '@/inventory/presentation/components/qr-scanner.vue';
+import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js';
 
 const { t } = useI18n();
 const store  = useInventoryStore();
+const { symbol, fromBaseCurrency, toBaseCurrency } = useCurrencyFormatter();
 const router = useRouter();
 const route  = useRoute();
 
@@ -32,7 +34,7 @@ function populate(p) {
     name:        p.name        ?? '',
     description: p.description ?? '',
     codeQR:      p.codeQR      ?? '',
-    price:       p.price       ?? null,
+    price:       p.price != null ? fromBaseCurrency(p.price) : null,
     weightGrams: p.weightGrams ?? null,
     brand:       p.brand       ?? '',
   };
@@ -65,7 +67,7 @@ function save() {
     name:        form.value.name,
     description: form.value.description,
     codeQR:      form.value.codeQR,
-    price:       form.value.price,
+    price:       toBaseCurrency(form.value.price),
     weightGrams: form.value.weightGrams,
     brand:       form.value.brand,
   };
@@ -143,7 +145,7 @@ function save() {
           <label class="field-label">{{ t('products.form.price') }}</label>
           <div class="field-row-valid">
             <div class="input-prefix" :class="{ 'input-prefix--error': form.price == null && (touched.price || submitted) }">
-              <span class="prefix-sym">$</span>
+              <span class="prefix-sym">{{ symbol }}</span>
               <input class="field-input prefix-inp"
                      v-model.number="form.price" type="number" step="0.01" min="0"
                      @blur="touched.price = true" />

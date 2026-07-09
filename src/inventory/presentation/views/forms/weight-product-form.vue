@@ -5,9 +5,11 @@ import { useI18n } from 'vue-i18n';
 import { buildQrCodeDataUrl } from '@/inventory/infrastructure/qr_code_generator.js';
 import useInventoryStore from '@/inventory/application/inventory.store.js';
 import QrScanner from '@/inventory/presentation/components/qr-scanner.vue';
+import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js';
 
 const { t } = useI18n();
 const store  = useInventoryStore();
+const { symbol, fromBaseCurrency, toBaseCurrency } = useCurrencyFormatter();
 const router = useRouter();
 const route  = useRoute();
 
@@ -32,7 +34,7 @@ function populate(p) {
     name:        p.name        ?? '',
     description: p.description ?? '',
     codeQR:      p.codeQR      ?? '',
-    pricePerKg:  p.pricePerKg  ?? null,
+    pricePerKg:  p.pricePerKg != null ? fromBaseCurrency(p.pricePerKg) : null,
   };
 }
 
@@ -63,7 +65,7 @@ function save() {
     name:        form.value.name,
     description: form.value.description,
     codeQR:      form.value.codeQR,
-    pricePerKg:  form.value.pricePerKg,
+    pricePerKg:  toBaseCurrency(form.value.pricePerKg),
   };
   if (isEdit.value) store.updateWeightProduct({ ...payload, id: editId.value });
   else              store.addWeightProduct(payload);
@@ -139,7 +141,7 @@ function save() {
           <label class="field-label">{{ t('products.form.pricePerKg') }}</label>
           <div class="field-row-valid">
             <div class="input-prefix" :class="{ 'input-prefix--error': form.pricePerKg == null && (touched.pricePerKg || submitted) }">
-              <span class="prefix-sym">$</span>
+              <span class="prefix-sym">{{ symbol }}</span>
               <input class="field-input prefix-inp"
                      v-model.number="form.pricePerKg" type="number" step="0.01" min="0"
                      @blur="touched.pricePerKg = true" />
