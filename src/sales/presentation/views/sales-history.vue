@@ -4,11 +4,13 @@
  * scrollable) and opens a detail modal with the line items.
  */
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import useSalesStore from '@/sales/application/sales.store.js'
 import { useCurrencyFormatter } from '@/shared/infrastructure/currency-formatter.js'
 import { PaymentMethod } from '@/sales/domain/model/payment-method.enum.js'
 
+const { t } = useI18n()
 const store = useSalesStore()
 const { sales, salesLoading, selectedDate } = storeToRefs(store)
 const { format } = useCurrencyFormatter()
@@ -21,11 +23,14 @@ function onDateChange(event) {
 }
 
 function methodLabel(sale) {
-    return sale.paymentMethod === PaymentMethod.CASH ? 'Efectivo' : 'Tarjeta / Yape / Plin'
+    return sale.paymentMethod === PaymentMethod.CASH
+        ? t('sales.history.method.cash')
+        : t('sales.history.method.digital')
 }
 
 function measure(item) {
-    return item.isWeighted ? `${item.quantity} kg` : `${item.quantity} u.`
+    const unit = item.isWeighted ? t('sales.ticket.kg') : t('sales.history.unit')
+    return `${item.quantity} ${unit}`
 }
 
 function pad(value) {
@@ -54,7 +59,7 @@ function closeDetail() {
 <template>
     <section class="history">
         <div class="history-head">
-            <h2 class="history-title">Historial de ventas</h2>
+            <h2 class="history-title">{{ t('sales.history.title') }}</h2>
             <input
                 type="date"
                 class="history-date"
@@ -63,9 +68,9 @@ function closeDetail() {
             />
         </div>
 
-        <p v-if="salesLoading" class="history-empty">Cargando ventas…</p>
+        <p v-if="salesLoading" class="history-empty">{{ t('sales.history.loading') }}</p>
         <p v-else-if="sales.length === 0" class="history-empty">
-            No hay ventas registradas para este día.
+            {{ t('sales.history.empty') }}
         </p>
         <div v-else class="history-list">
             <button
@@ -77,7 +82,7 @@ function closeDetail() {
             >
                 <span class="row-time">{{ timeLabel(sale.createdAt) }}</span>
                 <span class="row-method">{{ methodLabel(sale) }}</span>
-                <span class="row-items">{{ sale.items.length }} prod.</span>
+                <span class="row-items">{{ sale.items.length }} {{ t('sales.history.products') }}</span>
                 <span class="row-total">{{ format(sale.total) }}</span>
             </button>
         </div>
@@ -86,17 +91,17 @@ function closeDetail() {
     <div v-if="selectedSale" class="modal-backdrop" @click="closeDetail">
         <div class="detail-modal" @click.stop>
             <button class="close-btn" type="button" @click="closeDetail">✕</button>
-            <h3 class="detail-title">Detalle de venta</h3>
+            <h3 class="detail-title">{{ t('sales.detail.title') }}</h3>
             <p class="detail-sub">
                 {{ dateTimeLabel(selectedSale.createdAt) }} · {{ methodLabel(selectedSale) }}
             </p>
             <table class="detail-table">
                 <thead>
                     <tr>
-                        <th>Producto</th>
-                        <th>Cant./Peso</th>
-                        <th>P. Unit.</th>
-                        <th>Subtotal</th>
+                        <th>{{ t('sales.history.col.product') }}</th>
+                        <th>{{ t('sales.history.col.measure') }}</th>
+                        <th>{{ t('sales.history.col.unitPrice') }}</th>
+                        <th>{{ t('sales.history.col.subtotal') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,7 +114,7 @@ function closeDetail() {
                 </tbody>
             </table>
             <div class="detail-total">
-                <span>Total</span>
+                <span>{{ t('sales.history.total') }}</span>
                 <span>{{ format(selectedSale.total) }}</span>
             </div>
         </div>
