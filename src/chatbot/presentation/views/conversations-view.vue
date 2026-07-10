@@ -81,6 +81,7 @@ onMounted(() => {
   store.loadSession()
   store.loadConversations()
   store.loadOrders()
+  store.startGlobalPoll()
 })
 
 onUnmounted(() => store.stopConversationPoll())
