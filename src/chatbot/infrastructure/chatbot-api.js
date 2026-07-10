@@ -30,4 +30,8 @@ export class ChatbotApi extends BaseApi {
   getWhatsappQr(ownerEmail) {
     return this.http.get(`/chatbot/whatsapp/qr?ownerEmail=${encodeURIComponent(ownerEmail)}`)
   }
+
+  getMessagesByConversation(conversationId) {
+    return this.http.get(`/chat-messages/by-conversation/${conversationId}`)
+  }
 }
