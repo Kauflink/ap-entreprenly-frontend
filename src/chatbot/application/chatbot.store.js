@@ -100,9 +100,9 @@ const useChatbotStore = defineStore('chatbot', () => {
     _pollInterval = setInterval(() => {
       if (selectedConversationId.value !== id) { _stopPoll(); return }
 
-      api.chatMessages.getAll().then(res => {
+      api.getMessagesByConversation(id).then(res => {
         if (selectedConversationId.value !== id) return
-        const fresh = ChatMessageAssembler.toEntitiesFromResponse(res).filter(m => m.conversationId === id)
+        const fresh = ChatMessageAssembler.toEntitiesFromResponse(res)
         const knownIds = new Set([...messages.value.map(m => m.id), ...pending])
         const incoming = fresh.filter(m => !knownIds.has(m.id))
 
@@ -135,10 +135,9 @@ const useChatbotStore = defineStore('chatbot', () => {
     botInputText.value           = ''
     liveAnimation.value          = false
 
-    api.chatMessages.getAll().then(res => {
+    api.getMessagesByConversation(id).then(res => {
       if (selectedConversationId.value !== id) return
-      const all = ChatMessageAssembler.toEntitiesFromResponse(res)
-      messages.value = all.filter(m => m.conversationId === id)
+      messages.value = ChatMessageAssembler.toEntitiesFromResponse(res)
       _startPoll(id)
     })
 
