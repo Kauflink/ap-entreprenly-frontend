@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
+import pinia from '@/pinia.js'
 import { AuthApi } from '@/auth/infrastructure/auth-api.js'
 import { AuthenticatedUser } from '@/auth/domain/model/authenticated-user.js'
 
@@ -54,6 +55,11 @@ const useAuthStore = defineStore('auth', () => {
         } catch {
             // Ignore storage failures.
         }
+        // Wipe every other store so the next account never sees the previous
+        // user's cached data (products, lots, sales, subscription, chats…).
+        pinia._s.forEach(store => {
+            if (store.$id !== 'auth' && typeof store.$reset === 'function') store.$reset()
+        })
     }
 
     return {
