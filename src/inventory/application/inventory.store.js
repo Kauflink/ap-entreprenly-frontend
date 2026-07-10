@@ -1,10 +1,8 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { InventoryApi } from "@/inventory/infrastructure/inventory-api.js";
-import { ProductAssembler } from "@/inventory/infrastructure/product-assembler.js";
 import { UnitProductAssembler } from "@/inventory/infrastructure/unit-product-assembler.js";
 import { WeightProductAssembler } from "@/inventory/infrastructure/weight-product-assembler.js";
-import { LotAssembler } from "@/inventory/infrastructure/lot-assembler.js";
 import { UnitLotAssembler } from "@/inventory/infrastructure/unit-lot-assembler.js";
 import { WeightLotAssembler } from "@/inventory/infrastructure/weight-lot-assembler.js";
 import { StockAlertAssembler } from "@/inventory/infrastructure/stock-alert-assembler.js";
@@ -12,65 +10,25 @@ import { StockAlertAssembler } from "@/inventory/infrastructure/stock-alert-asse
 const inventoryApi = new InventoryApi();
 
 const useInventoryStore = defineStore('inventory', () => {
-    const products = ref([]);
     const unit_products = ref([]);
     const weight_products = ref([]);
-    const lots = ref([]);
     const unit_lots = ref([]);
     const weight_lots = ref([]);
     const stock_alerts = ref([]);
 
-    const productsLoaded = ref(false);
     const unit_productsLoaded = ref(false);
     const weight_productsLoaded = ref(false);
-    const lotsLoaded = ref(false);
     const unit_lotsLoaded = ref(false);
     const weight_lotsLoaded = ref(false);
     const stock_alertsLoaded = ref(false);
 
     const errors = ref([]);
 
-    const productsCount = computed(() => productsLoaded.value ? products.value.length : 0);
     const unit_products_count = computed(() => unit_productsLoaded.value ? unit_products.value.length : 0);
     const weight_products_count = computed(() => weight_productsLoaded.value ? weight_products.value.length : 0);
-    const lots_count = computed(() => lotsLoaded.value ? lots.value.length : 0);
     const unit_lots_count = computed(() => unit_lotsLoaded.value ? unit_lots.value.length : 0);
     const weight_lots_count = computed(() => weight_lotsLoaded.value ? weight_lots.value.length : 0);
     const stock_alerts_count = computed(() => stock_alertsLoaded.value ? stock_alerts.value.length : 0);
-
-    // PRODUCTS
-
-    function fetchProducts() {
-        inventoryApi.getProducts().then(response => {
-            products.value = ProductAssembler.toEntitiesFromResponse(response);
-            productsLoaded.value = true;
-        }).catch(error => errors.value.push(error));
-    }
-
-    function getProductById(id) {
-        return products.value.find(p => p.id === parseInt(id));
-    }
-
-    function addProduct(product) {
-        inventoryApi.createProduct(product).then(response => {
-            products.value.push(ProductAssembler.toEntityFromResource(response.data));
-        }).catch(error => errors.value.push(error));
-    }
-
-    function updateProduct(product) {
-        inventoryApi.updateProduct(product).then(response => {
-            const updated = ProductAssembler.toEntityFromResource(response.data);
-            const index = products.value.findIndex(p => p.id === updated.id);
-            if (index !== -1) products.value[index] = updated;
-        }).catch(error => errors.value.push(error));
-    }
-
-    function deleteProduct(product) {
-        inventoryApi.deleteProduct(product.id).then(() => {
-            const index = products.value.findIndex(p => p.id === product.id);
-            if (index !== -1) products.value.splice(index, 1);
-        }).catch(error => errors.value.push(error));
-    }
 
     // UNIT PRODUCTS
 
@@ -137,40 +95,6 @@ const useInventoryStore = defineStore('inventory', () => {
         inventoryApi.deleteWeightProduct(product.id).then(() => {
             const index = weight_products.value.findIndex(p => p.id === product.id);
             if (index !== -1) weight_products.value.splice(index, 1);
-        }).catch(error => errors.value.push(error));
-    }
-
-    // LOTS
-
-    function fetchLots() {
-        inventoryApi.getLots().then(response => {
-            lots.value = LotAssembler.toEntitiesFromResponse(response);
-            lotsLoaded.value = true;
-        }).catch(error => errors.value.push(error));
-    }
-
-    function getLotById(id) {
-        return lots.value.find(l => l.id === parseInt(id));
-    }
-
-    function addLot(lot) {
-        inventoryApi.createLot(lot).then(response => {
-            lots.value.push(LotAssembler.toEntityFromResource(response.data));
-        }).catch(error => errors.value.push(error));
-    }
-
-    function updateLot(lot) {
-        inventoryApi.updateLot(lot).then(response => {
-            const updated = LotAssembler.toEntityFromResource(response.data);
-            const index = lots.value.findIndex(l => l.id === updated.id);
-            if (index !== -1) lots.value[index] = updated;
-        }).catch(error => errors.value.push(error));
-    }
-
-    function deleteLot(lot) {
-        inventoryApi.deleteLot(lot.id).then(() => {
-            const index = lots.value.findIndex(l => l.id === lot.id);
-            if (index !== -1) lots.value.splice(index, 1);
         }).catch(error => errors.value.push(error));
     }
 
@@ -277,17 +201,15 @@ const useInventoryStore = defineStore('inventory', () => {
     }
 
     return {
-        products, unit_products, weight_products,
-        lots, unit_lots, weight_lots,
+        unit_products, weight_products,
+        unit_lots, weight_lots,
         stock_alerts, errors,
-        productsLoaded, unit_productsLoaded, weight_productsLoaded,
-        lotsLoaded, unit_lotsLoaded, weight_lotsLoaded, stock_alertsLoaded,
-        productsCount, unit_products_count, weight_products_count,
-        lots_count, unit_lots_count, weight_lots_count, stock_alerts_count,
-        fetchProducts, getProductById, addProduct, updateProduct, deleteProduct,
+        unit_productsLoaded, weight_productsLoaded,
+        unit_lotsLoaded, weight_lotsLoaded, stock_alertsLoaded,
+        unit_products_count, weight_products_count,
+        unit_lots_count, weight_lots_count, stock_alerts_count,
         fetchUnitProducts, getUnitProductById, addUnitProduct, updateUnitProduct, deleteUnitProduct,
         fetchWeightProducts, getWeightProductById, addWeightProduct, updateWeightProduct, deleteWeightProduct,
-        fetchLots, getLotById, addLot, updateLot, deleteLot,
         fetchUnitLots, getUnitLotById, addUnitLot, updateUnitLot, deleteUnitLot,
         fetchWeightLots, getWeightLotById, addWeightLot, updateWeightLot, deleteWeightLot,
         fetchStockAlerts, getStockAlertById, addStockAlert, updateStockAlert, deleteStockAlert,

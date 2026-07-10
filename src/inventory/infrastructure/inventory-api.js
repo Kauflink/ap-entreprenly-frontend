@@ -1,8 +1,6 @@
 import { BaseApi } from "@/shared/infrastructure/base-api.js";
 import { BaseEndpoint } from "@/shared/infrastructure/base-endpoint.js";
 
-const productEndpointPath = import.meta.env.VITE_PRODUCT_ENDPOINT_PATH;
-const lotEndpointPath = import.meta.env.VITE_LOT_ENDPOINT_PATH;
 const unitLotEndpointPath = import.meta.env.VITE_UNIT_LOT_ENDPOINT_PATH;
 const weightLotEndPointPath = import.meta.env.VITE_WEIGHT_LOT_ENDPOINT_PATH;
 const weightProductEndPointPath = import.meta.env.VITE_WEIGHT_PRODUCT_ENDPOINT_PATH;
@@ -11,8 +9,6 @@ const stockAlertEndPointPath = import.meta.env.VITE_STOCK_ALERT_ENDPOINT_PATH;
 
 export class InventoryApi extends BaseApi {
 
-    #productEndpoint;
-    #lotEndpoint;
     #unitLotEndpoint;
     #weightLotEndpoint;
     #weightProductEndpoint;
@@ -22,57 +18,11 @@ export class InventoryApi extends BaseApi {
     constructor() {
         super();
 
-        this.#productEndpoint = new BaseEndpoint(this, productEndpointPath);
-        this.#lotEndpoint = new BaseEndpoint(this, lotEndpointPath);
         this.#unitLotEndpoint = new BaseEndpoint(this, unitLotEndpointPath);
         this.#weightLotEndpoint = new BaseEndpoint(this, weightLotEndPointPath);
         this.#weightProductEndpoint = new BaseEndpoint(this, weightProductEndPointPath);
         this.#unitProductEndpoint = new BaseEndpoint(this, unitProductEndPointPath);
         this.#stockAlertEndpoint = new BaseEndpoint(this, stockAlertEndPointPath);
-    }
-
-    // PRODUCTS
-
-    getProducts() {
-        return this.#productEndpoint.getAll();
-    }
-
-    getProductById(id) {
-        return this.#productEndpoint.getById(id);
-    }
-
-    createProduct(resource) {
-        return this.#productEndpoint.create(resource);
-    }
-
-    updateProduct(resource) {
-        return this.#productEndpoint.update(resource.id, resource);
-    }
-
-    deleteProduct(id) {
-        return this.#productEndpoint.delete(id);
-    }
-
-    // LOTS
-
-    getLots() {
-        return this.#lotEndpoint.getAll();
-    }
-
-    getLotById(id) {
-        return this.#lotEndpoint.getById(id);
-    }
-
-    createLot(resource) {
-        return this.#lotEndpoint.create(resource);
-    }
-
-    updateLot(resource) {
-        return this.#lotEndpoint.update(resource.id, resource);
-    }
-
-    deleteLot(id) {
-        return this.#lotEndpoint.delete(id);
     }
 
     // UNIT LOTS
