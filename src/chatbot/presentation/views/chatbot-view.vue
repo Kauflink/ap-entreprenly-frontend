@@ -15,8 +15,9 @@ const profileStore = useProfileStore()
 const authStore = useAuthStore()
 const api = new ChatbotApi()
 
-const justConnected = ref(false)
-const qrDataUrl     = ref(null)
+const justConnected   = ref(false)
+const qrDataUrl       = ref(null)
+const bridgeConnected = ref(false)
 let qrPollId = null
 
 const chatbotAllowed = computed(() => profileStore.profile.plan !== 'Free')
@@ -25,11 +26,23 @@ function startQrPolling(ownerEmail) {
   stopQrPolling()
   function poll() {
     api.getWhatsappQr(ownerEmail).then(res => {
+      // When the bridge session is already paired there is no QR to scan
+      // (qr is null); rely on `connected` to switch to the connected state
+      // instead of waiting on a QR that will never come.
+      if (res.data?.connected) { onBridgeConnected(); return }
       qrDataUrl.value = res.data?.qr ?? null
     }).catch(() => {})
   }
   poll()
   qrPollId = setInterval(poll, 5000)
+}
+
+function onBridgeConnected() {
+  if (bridgeConnected.value) return
+  bridgeConnected.value = true
+  justConnected.value   = true
+  stopQrPolling()
+  store.loadSession()   // refresh the session so the connected card has fresh data
 }
 
 function stopQrPolling() {
@@ -62,7 +75,8 @@ function onScanned() {
 
 function onReconnect() {
   store.simulateDisconnect()
-  justConnected.value = false
+  justConnected.value   = false
+  bridgeConnected.value = false
 }
 </script>
 
@@ -94,7 +108,7 @@ function onReconnect() {
       {{ t('chatbot.page.loading') }}
     </p>
 
-    <template v-else-if="!store.session || store.session?.status === 'disconnected'">
+    <template v-else-if="!bridgeConnected && (!store.session || store.session?.status === 'disconnected')">
       <div class="chatbot-page__card">
         <QrConnectionCard :has-error="false" :qr-data-url="qrDataUrl" @scanned="onScanned" />
       </div>
