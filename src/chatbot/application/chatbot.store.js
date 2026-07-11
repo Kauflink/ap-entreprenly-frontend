@@ -10,6 +10,7 @@ import { ChatMessage } from '../domain/model/chat-message-entity.js'
 import { ChatOrder } from '../domain/model/chat-order-entity.js'
 import { WhatsappSession } from '../domain/model/whatsapp-session-entity.js'
 import { InventoryApi } from '@/inventory/infrastructure/inventory-api.js'
+import useAuthStore from '@/auth/application/auth.store.js'
 
 const api = new ChatbotApi()
 const inventoryApi = new InventoryApi()
@@ -17,6 +18,7 @@ const inventoryApi = new InventoryApi()
 const useChatbotStore = defineStore('chatbot', () => {
   const session                = ref(null)
   const isSessionLoaded        = ref(false)
+  const bridgeConnected        = ref(false)
   const conversations          = ref([])
   const selectedConversationId = ref(null)
   const messages               = ref([])
@@ -40,9 +42,22 @@ const useChatbotStore = defineStore('chatbot', () => {
     ) ?? null
   )
 
+  // Connected if the DB session says so OR the live bridge reports the account
+  // as paired. The DB session can lag behind the bridge, so the bridge is the
+  // source of truth for "is my WhatsApp actually linked right now".
   const isConnected = computed(() =>
-    session.value?.status === WhatsappSession.Status.CONNECTED
+    session.value?.status === WhatsappSession.Status.CONNECTED || bridgeConnected.value
   )
+
+  // Asks the backend (which asks the bridge) for the live connection state.
+  function checkBridgeConnection() {
+    const authStore = useAuthStore()
+    const email = session.value?.ownerEmail ?? authStore.user?.email ?? null
+    if (!email) return
+    api.getWhatsappQr(email).then(res => {
+      bridgeConnected.value = res.data?.connected ?? false
+    }).catch(() => {})
+  }
 
   // ── Loaders ────────────────────────────────────────────────────────────────
 
@@ -343,9 +358,9 @@ const useChatbotStore = defineStore('chatbot', () => {
   }
 
   return {
-    session, isSessionLoaded, conversations, selectedConversationId,
+    session, isSessionLoaded, bridgeConnected, conversations, selectedConversationId,
     messages, isClientTyping, botInputText, liveAnimation, orders, inventoryProducts,
-    selectedConversation, pendingOrder, isConnected,
+    selectedConversation, pendingOrder, isConnected, checkBridgeConnection,
     loadSession, loadConversations, loadOrders, loadInventoryProducts,
     selectConversation, startGlobalPoll, stopConversationPoll, sendMessage, simulateScan, simulateDisconnect,
     approveOrder, rejectOrder

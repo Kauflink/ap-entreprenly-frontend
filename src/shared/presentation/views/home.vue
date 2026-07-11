@@ -149,6 +149,7 @@ onMounted(async () => {
   store.loadSession()
   store.loadOrders()
   store.loadConversations()
+  store.checkBridgeConnection()
 
   // Cash summary comes from the shared Sales store, derived from the day's real sales.
   salesStore.loadSales()

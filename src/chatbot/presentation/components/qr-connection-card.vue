@@ -72,10 +72,6 @@ onUnmounted(() => {
         <template v-else-if="seconds === 1">{{ t('chatbot.qr.expiresInOne') }}</template>
         <template v-else>{{ t('chatbot.qr.expiresIn', { seconds }) }}</template>
       </p>
-
-      <button class="qr-btn" type="button" @click="emit('scanned')">
-        {{ t('chatbot.qr.simulateScan') }}
-      </button>
     </div>
   </div>
 </template>
