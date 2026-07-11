@@ -6,6 +6,7 @@ import useChatbotStore from '../../application/chatbot.store.js'
 import useProfileStore from '@/profile/application/profile.store.js'
 import useAuthStore from '@/auth/application/auth.store.js'
 import { ChatbotApi } from '../../infrastructure/chatbot-api.js'
+import { buildQrCodeDataUrl } from '@/inventory/infrastructure/qr_code_generator.js'
 import QrConnectionCard    from '../components/qr-connection-card.vue'
 import WhatsappStatusCard  from '../components/whatsapp-status-card.vue'
 
@@ -30,7 +31,13 @@ function startQrPolling(ownerEmail) {
       // (qr is null); rely on `connected` to switch to the connected state
       // instead of waiting on a QR that will never come.
       if (res.data?.connected) { onBridgeConnected(); return }
-      qrDataUrl.value = res.data?.qr ?? null
+      // The bridge sends the raw whatsapp-web.js pairing payload, not an image —
+      // it has to be rendered into a scannable QR code client-side.
+      try {
+        qrDataUrl.value = res.data?.qr ? buildQrCodeDataUrl(res.data.qr, 192) : null
+      } catch {
+        qrDataUrl.value = null
+      }
     }).catch(() => {})
   }
   poll()
