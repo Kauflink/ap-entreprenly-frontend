@@ -121,6 +121,18 @@ function onReconnect() {
         :just-connected="justConnected"
         @reconnect="onReconnect"
       />
+
+      <!-- The bridge reports connected but the DB session may be missing/out of
+           sync, so the status card can't render its links. Always expose the
+           navigation to chats and orders once the bridge is connected. -->
+      <div v-if="bridgeConnected && store.session?.status !== 'connected'" class="chatbot-page__links">
+        <RouterLink to="/chatbot/conversations" class="chatbot-page__link chatbot-page__link--primary">
+          {{ t('chatbot.statusCard.viewConversations') }}
+        </RouterLink>
+        <RouterLink to="/chatbot/orders" class="chatbot-page__link">
+          {{ t('pages.chatbotOrders') }}
+        </RouterLink>
+      </div>
     </template>
   </div>
 </template>
@@ -162,6 +174,33 @@ function onReconnect() {
   background: #fff;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.07);
 }
+.chatbot-page__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.chatbot-page__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0 1.25rem;
+  border-radius: 9999px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+.chatbot-page__link:hover { background: #f9fafb; }
+.chatbot-page__link--primary {
+  background: #f97316;
+  border-color: #f97316;
+  color: #fff;
+}
+.chatbot-page__link--primary:hover { background: #ea6c0a; }
 .upgrade-card {
   display: flex;
   gap: 1.25rem;
