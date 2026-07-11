@@ -1,14 +1,19 @@
 <script setup>
 import { computed, ref, watch, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import useInventoryStore from '@/inventory/application/inventory.store.js';
+import useProfileStore from '@/profile/application/profile.store.js';
 import { StockAlert } from '@/inventory/domain/model/stock-alert-entity.js';
 
 const { t } = useI18n();
 const store  = useInventoryStore();
 const router = useRouter();
 const route  = useRoute();
+
+const profileStore = useProfileStore();
+const { notificationSettings } = storeToRefs(profileStore);
 
 const productId = computed(() => Number(route.query.productId) || null);
 
@@ -41,7 +46,8 @@ const alertSummaries = ref([]);
 
 function _recomputeAlerts() {
   const pid = productId.value;
-  if (!pid) { alertSummaries.value = []; return; }
+  // Respect the account's stock alert notification preference: when disabled, show no alerts.
+  if (!pid || !notificationSettings.value.stockAlerts) { alertSummaries.value = []; return; }
   const raw = StockAlert.buildFromLots(
     store.unit_products,
     store.weight_products,
@@ -52,7 +58,7 @@ function _recomputeAlerts() {
 }
 
 watch(
-  [() => store.unit_lots, () => store.weight_lots, () => store.unit_products, () => store.weight_products, productId],
+  [() => store.unit_lots, () => store.weight_lots, () => store.unit_products, () => store.weight_products, productId, () => notificationSettings.value.stockAlerts],
   _recomputeAlerts,
   { deep: true, immediate: true },
 );
